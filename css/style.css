@@ -34,7 +34,7 @@ header {
     justify-content: space-between;
     align-items: center; 
     padding: 15px 0px 12px 0px; 
-    background-color: #496989;
+    background-color: #496989e5;
     color:#A8CD9F;
     margin-bottom: 0px;
 }
@@ -108,18 +108,33 @@ header a:hover{
 
 main {
     flex: 1;
-    margin: 0px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    height: 100vh;
 }
+
+.rectangle {
+    width: 400px;
+    height: 500px;
+    background-color: #58a399c2; 
+    margin: 50px 20px 0px 20px;
+    border-radius: 10%;
+    border : solid 2px #E2F4C5;
+}
+
+
 
 /*         ↑↑↑          MAIN          ↑↑↑         */
 /*         ↓↓↓         FOOTER         ↓↓↓         */
 
 footer {
-    background-color: #496989;
+    background-color: #496989cb;
     color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 50px;
 }
 
 footer p{
