@@ -23,8 +23,26 @@ body {
     font-family: 'Playful', sans-serif;
 
     background-image: url('../images/background/background.jpg');
+    backdrop-filter: blur(3px);
     background-size: cover; 
     background-position: center; 
+    background-attachment: fixed;
+}
+
+body::-webkit-scrollbar{
+    width: 2px;
+}
+
+body::-webkit-scrollbar-track-piece{
+    background: green;
+}
+
+body::-webkit-scrollbar-thumb{
+    background-color: blue;
+}
+
+body::-webkit-scrollbar-thumb:hover{
+    background-color: rgba(0, 0, 255, 0.507);
 }
 
 /*         ↓↓↓         HEADER         ↓↓↓         */
@@ -61,12 +79,50 @@ header a:hover{
 .left h1{
     font-weight: bold;
     padding-left: 10px;
+    margin-right: 60px;
 }
 
 .left #plant_Logo{
     width: 80px;
     padding-bottom: 5px;
 }
+
+.search_Bar{
+    width:50%;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    border-radius: 60px;
+    padding: 10px 20px;
+}
+
+.search_Bar input{
+    background: transparent;
+    flex:1;
+    border:0;
+    outline: none;
+    padding: 20px 16px;
+    font-size: 20px;
+    color: #cac7ff;
+}
+
+::placeholder{
+    color: #cac7ff;
+}
+
+.search_Bar button img{
+    width:25px;
+}
+.search_Bar button{
+    border: 0;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    background: #58629b;
+    cursor: pointer;
+}
+
 
 .right{
     padding-right: 100px;
@@ -79,8 +135,9 @@ header a:hover{
 
 .right nav ul li {
     display: inline;
-    margin-left: 40px;
-    font-size: 20px;
+    margin-left: 60px;
+    font-size: 2.5vmin;
+    padding-bottom: 12px;
 }
 
 @media (max-width: 600px) {
@@ -92,37 +149,33 @@ header a:hover{
         padding-left: 20px;
         padding-right: 150px;
     }
-    .left #plant_Logo{
-        display: none;
-    }
     .left h1{
         font-weight: bold;
         font-size: 25px;
+    }
+    .left #plant_Logo{
+        display: none;
     }
     .right{
         display: none;
     }
 }
+
+@media (max-width: 1650px) {
+    .right{
+        padding-bottom: 15px;
+    }
+    .right nav ul li {
+        margin-left: 100px;
+    }
+}
+
 /*         ↑↑↑         HEADER         ↑↑↑         */
 /*         ↓↓↓          MAIN          ↓↓↓         */
 
 main {
     flex: 1;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    height: 100vh;
 }
-
-.rectangle {
-    width: 400px;
-    height: 500px;
-    background-color: #58a399c2; 
-    margin: 50px 20px 0px 20px;
-    border-radius: 10%;
-    border : solid 2px #E2F4C5;
-}
-
 
 /*         ↑↑↑          MAIN          ↑↑↑         */
 /*         ↓↓↓         FOOTER         ↓↓↓         */
@@ -138,7 +191,7 @@ footer {
 
 footer p{
     font-weight: bold;
-    font-size: 23px;
+    font-size: max(2.5vmin, 15px);
     margin: 8px 10px;
 }
 
@@ -147,25 +200,13 @@ footer p{
     opacity: 60%;
     display: inline-block;
     position: relative;
-    width: 35px;
-    height: 35px;
+    width: max(3vmin, 25px);
+    height: max(3vmin, 25px);
     transition: opacity 0.3s ease;
 }
 
 .socialMediaIcon:hover{
     opacity: 100%;
-}
-
-@media (max-width: 600px) {
-    footer p {
-        font-size: 15px;
-        margin: 8px 10px;
-    }
-    .socialMediaIcon{
-        width: 25px;
-        height: 25px;
-        margin: 0px 3px;
-    }
 }
 
 /*         ↑↑↑         FOOTER         ↑↑↑         */
