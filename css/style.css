@@ -123,15 +123,6 @@ main {
     border : solid 2px #E2F4C5;
 }
 
-.rectangle-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center; /* Centers items horizontally */
-    align-items: center; /* Aligns items vertically */
-}
-
-
-
 
 /*         ↑↑↑          MAIN          ↑↑↑         */
 /*         ↓↓↓         FOOTER         ↓↓↓         */
