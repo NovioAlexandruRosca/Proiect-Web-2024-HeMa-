@@ -1,0 +1,315 @@
+main {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    height: 100vh;
+}
+
+/*     LOGIN BOX   ↧   */
+
+.login{
+    /* position: absolute; */
+    
+    /* width:90%; */
+    /* height:50%; */
+    /* max-width: 600px; */
+
+    background-image: linear-gradient(to bottom, #496989,#3f867d,#496989);
+    
+    border-radius: 13%;
+    border: #E2F4C5 2px solid;
+
+    /* top:50%; */
+    transform: translate(0%,+5%);
+    
+    opacity: 90%;
+
+    /* */
+
+    display: flex;
+	flex-wrap: nowrap;
+	justify-content: space-evenly;
+	
+    width: 65vmin;
+	height: 70vmin;
+	margin: 2rem 3rem auto;
+    
+    background-image: linear-gradient(to bottom, #496989,#3f867d,#496989);
+
+	position: relative;
+	overflow: hidden;
+}
+
+@media (max-width: 850px) {
+    .login{
+        position: relative;
+        
+        width:90%;
+        height: 500px;
+    
+        background-image: linear-gradient(to bottom, #496989,#3f867d,#496989);
+        
+        border-radius: 13%;
+        border: #E2F4C5 2px solid;
+    
+        top:50%;
+        transform: translate(0%,0%);
+        opacity: 90%;
+    }
+}
+
+#header
+{
+    font-size: max(9vmin, 80px);
+    position: relative;
+    text-align: center;
+    top:5%;
+    opacity: 100%;
+}
+
+#line{
+    position: absolute;
+    top:29%;
+    left:50%;
+    transform: translate(-50%,-50%);
+
+    width:0;
+    height: 0;
+    margin-left: auto;
+    margin-right: auto;
+    border-left:  max(13vw, 170px) solid transparent;
+    border-right: max(13vw, 170px) solid transparent;
+    border-bottom: 4px solid #A8CD9F;
+
+}
+
+#Error_Message
+{
+    position: absolute; 
+    left:50%;
+    top: 88%;
+    transform: translate(-50%,0%);
+    font-size: 22px;
+    width:300px;
+
+    background-image: linear-gradient(to right, #e7e422 ,rgb(198, 198, 254),white);
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+}
+
+#login1{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+#login1 #header{
+    padding-bottom: 100px;
+}
+
+#textBox{
+    margin-left: 90px;
+    margin-right: 90px;
+    padding-bottom: 100px;
+}
+
+@media (max-width: 850px) {
+    #login1 #header{
+        font-size: 60px;
+    }
+    #textBox{
+        margin-left: 50px;
+        margin-right: 40px;
+        transform: translate(0%,-7%);
+    }
+}
+
+#textBox p{
+    font-size: max(2.5vmin, 18px);
+}
+
+#login_form
+{
+    position: absolute;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-40%);
+}
+
+form p
+{
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: 0px;
+    margin-top: 20px;
+}
+
+#Email
+{
+    position: relative;
+    width: 150%;
+    right:100%;
+    transform: translate(+49%,0%);
+    height: 25px;
+    font-size: 20px;
+    color:#496989;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 8%;
+    border:0px solid black;
+    -webkit-text-fill-color:#496989;
+    background-color: #e6f0d6;
+}
+
+#Password
+{
+    position: relative;
+    width: 150%;
+    right:100%;
+    transform: translate(+49%,0%);
+    height: 25px;
+    font-size: 20px;
+    color:#496989;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 8%;
+    border:0px solid black;
+    -webkit-text-fill-color: #496989;
+    background-color: #e6f0d6;
+}
+
+#Name{
+    position: relative;
+    width: 150%;
+    right:100%;
+    transform: translate(+49%,0%);
+    height: 25px;
+    font-size: 20px;
+    color:#496989;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 8%;
+    border:0px solid black;
+    -webkit-text-fill-color: #496989;
+    background-color: #e6f0d6;
+}
+
+#Email:focus
+{
+   background-color: #A8CD9F;
+   transition: 200ms;
+}
+
+#Password:focus
+{
+   background-color: #A8CD9F;
+   transition: 200ms;
+}
+
+#Email:hover
+{
+   background-color: #A8CD9F;
+   transition: 200ms;
+}
+
+#Password:hover
+{
+   background-color: #A8CD9F;
+   transition: 200ms;
+}
+
+#Name:hover
+{
+    background-color: #A8CD9F;
+    transition: 200ms;
+}
+
+#Email:hover
+{
+   background-color: #A8CD9F;
+   transition: 200ms;
+}
+
+#submit
+{
+    position: absolute;
+    left:15%;
+    transform: translate(-50%,0%);
+    width:130px;
+    height: 27px;
+    margin-top: 25px;
+    border-radius: 25%;
+    border:0px solid black;
+    color: #A8CD9F;
+    font-weight:bold;
+    font-size: 20px;
+    background-color: #e7eedb;  
+    transition: width 0.1s ease-in-out;
+}
+
+#submit:hover
+{
+    color:#58A399;
+    width:140px;
+    height: 30px;
+    margin-top: 23px;
+    transition: 200ms;
+    font-size: 22px;
+}
+
+#register
+{
+    width:130px;
+    height: 27px;
+    position: absolute;
+    top:110.3%;
+    left:85%;
+    transform: translate(-50%,-50%);
+    border-radius: 25%;
+    border:0px solid black;
+    font-weight:bold;
+    font-size: 20px;
+    background-color: #e7eedb;
+    text-align: center;
+    color: #A8CD9F;
+    transition: width 0.1s ease-in-out;
+}
+
+#register:hover
+{
+    color:#58A399;
+    width:140px;
+    height: 30px;
+    transition: 200ms;
+    font-size: 22px;
+}
+
+@media (max-width: 600px) {
+    #register{
+        transform: translate(-38%,-49%);
+    }
+    #submit{
+        transform: translate(-65%,0%);
+    }
+    
+    #submit:hover{
+        width:130px;
+        height: 27px;
+        font-size: 20px;
+    }
+
+    #register:hover{
+        width:130px;
+        height: 27px;
+        font-size: 20px;
+    }
+}
+
+/*     LOGIN BOX   ↥   */
+
+footer {
+    margin-top: 70px;
+}
