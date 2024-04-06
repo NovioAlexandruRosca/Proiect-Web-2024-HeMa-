@@ -1,5 +1,8 @@
 const RSS = require('rss-generator');
 const fs = require('fs');
+require('dotenv').config();
+
+const port = process.env.PORT || 5500;
 
 const planteClasament = [
     { nume: 'Lavanda', popularitate: 100 },
@@ -14,7 +17,7 @@ const feed = new RSS({
     title: 'Cele mai populare plante',
     description: 'Lista celor mai populare plante din aplicația noastră',
     feed_url: 'http:/plantemistoraudetot/rss',
-    site_url: 'http://localhost:5501'
+    site_url: 'http://localhost:' + port
 });
 
 planteClasament.forEach(planta => {
