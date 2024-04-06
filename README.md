@@ -37,6 +37,7 @@ Various statistics will be generated and made available in open formats, includi
 - **node-cron** (Version 3.0.3)
 - **rss-generator** (Version 0.0.3)
 - **dotenv** (Version 16.4.5)
+- **nodemon** (Version 3.1.0)
 
 ## Contribution
 - You are welcome to create pull requests in order to report bugs or suggest further improvments of the app
