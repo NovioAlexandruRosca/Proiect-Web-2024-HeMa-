@@ -1,7 +1,7 @@
 const cron = require('node-cron');
 const { exec } = require('child_process');
 
-console.log('The scheduler was launched');
+console.log('Scheduler.js: The Scheduler.js was launched');
 
  // Primul câmp (0) specifică minutele.
     // 0 înseamnă că functia lambda va fi rulată când campul minute este setat 0.
@@ -11,7 +11,7 @@ console.log('The scheduler was launched');
 
 cron.schedule('* * * * *', () => {
 
-    console.log('rss_generator.js is called');
+    console.log('Scheduler.js: rss_generator.js is called');
     exec('node ./scripts/rss_generator.js', (error, stdout, stderr) => {
         if (error) {
             console.error(`Error: ${error.message}`);
@@ -21,7 +21,7 @@ cron.schedule('* * * * *', () => {
             console.error(`Error: ${stderr}`);
             return;
         }
-        console.log('The script ran succesfully');
+        console.log('Scheduler.js: The rss generator script ran succesfully');
     });
 }, {
     scheduled: true,
