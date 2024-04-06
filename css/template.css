@@ -1,3 +1,4 @@
+@import url(https://fonts.googleapis.com/css?family=Dancing+Script:400,700);
 @font-face {
     font-family: 'Playful';
     src: url('../fonts/Playful/PlayfairDisplay-VariableFont_wght.ttf') format("truetype"),
@@ -26,7 +27,8 @@ body {
     
     cursor: url(../images/cursors/Potted\ Plant\ NS.cur),auto;
 
-    font-family: 'Playful', sans-serif;
+    font-family: 'Dancing Script', sans-serif;
+    /* font-family: 'Playful', sans-serif; */
 
     background-image: url('../images/background/background.jpg');
     backdrop-filter: blur(3px);
@@ -45,11 +47,11 @@ body::-webkit-scrollbar-track-piece{
 }
 
 body::-webkit-scrollbar-thumb{
-    background-color: blue;
+    background-color: #496989;
 }
 
 body::-webkit-scrollbar-thumb:hover{
-    background-color: rgba(0, 0, 255, 0.507);
+    background-color: #A8CD9F;
 }
 
 /*         ↓↓↓         HEADER         ↓↓↓         */
@@ -104,14 +106,21 @@ header a:hover{
     padding: 10px 20px;
 }
 
+@media (max-width: 600px) {
+    .search_Bar{
+        display: none;
+    }
+}
+
 .search_Bar input{
     background: transparent;
     flex:1;
     border:0;
     outline: none;
     padding: 20px 16px;
-    font-size: 20px;
+    font-size: 25px;
     color: #cac7ff;
+    font-family: 'Dancing Script', sans-serif;
 }
 
 ::placeholder{
@@ -161,7 +170,7 @@ header a:hover{
         font-size: 25px;
     }
     .left #plant_Logo{
-        display: none;
+        width: 50px;
     }
     .right{
         display: none;
