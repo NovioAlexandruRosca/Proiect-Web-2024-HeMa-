@@ -25,7 +25,7 @@ body {
 
     user-select: none;
     
-    cursor: url(../images/cursors/Potted\ Plant\ NS.cur),auto;
+    cursor: url(../images/cursors/PottedPlantNS.cur),auto;
 
     font-family: 'Dancing Script', sans-serif;
     /* font-family: 'Playful', sans-serif; */
@@ -71,7 +71,7 @@ header a{
     color:inherit;
     font-size: 1.2em;
     transition: text-shadow 0.2s ease;
-    cursor: url(../images/cursors/Potted\ Plant\ NS.cur),auto;
+    cursor: url(../images/cursors/PottedPlantNS.cur),auto;
 }
 
 header a:hover{

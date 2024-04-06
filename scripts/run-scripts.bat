@@ -1,7 +1,10 @@
 rem run-scripts.bat
 
-rem Run settingsJson.js
-node scripts\settingsJson.js
+rem Run scheduler.js in the background
+start node scripts\scheduler.js
 
-rem Run scheduler.js
-node scripts\scheduler.js
+rem Wait for a moment to ensure the scheduler script starts
+timeout /t 2
+
+rem Run the server
+start npx nodemon scripts\server.js
