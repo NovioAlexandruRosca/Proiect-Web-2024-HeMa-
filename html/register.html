@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="../css/template.css">
+    <link rel="stylesheet" href="../css/register.css">
+    <link rel="stylesheet" href="../css/loginRegisterHeader.css">
+    <link rel="icon" href="../images/website_Icon/plant.png" type="image/x-icon">
+</head>
+
+<body>    
+    <header>
+        <div class="left">
+            <img id="plant_Logo" src="../images/website_Icon/plant.png" alt="Logo Small">
+            <h1 class="gradient_Text">HeMa (Herbal Web Manager)</h1>
+        </div>
+        
+        <form action="" class="search_Bar">
+            <input type="text" placeholder="search plant" name="q" autocomplete="off">
+            <button type="submit"><img src="../images/website_Icon/search.png" alt=""></button>
+        </form>
+
+        <div class="right">
+            <nav>
+                <ul>
+                    <li class="gradient_Text"><a href="#">Home</a></li>
+                    <li class="gradient_Text"><a href="#">About</a></li>
+                    <li class="gradient_Text"><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+
+    
+        <div class = "login" id ="login1">
+
+            <p id = "header" class ="gradient_Text">Description</p>
+
+            <div id = "line"></div>
+
+            <div id="textBox">
+                <P class="gradient_Text"">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</P>
+            </div>
+        </div>
+
+    
+        <div class = "login" id="login2">
+
+            <p id = "header" class ="gradient_Text">REGISTER</p>
+
+            <div id = "line"></div>
+
+            <form id = "login_form">
+
+                <label><p class ="gradient_Text">Email</p></label><br>
+                <input type="email" name="Email" id="Email" autocomplete="off"><br>
+                <label><p class ="gradient_Text">Name</p></label><br>
+                <input type="text" name="Name" id="Name" autocomplete="off"><br>
+                <label><p class ="gradient_Text">Password</p></label><br>
+                <input type="password" name="Password" id="Password" autocomplete="off"><br><br>
+                
+                <p id = "Error_Message"></p>
+
+                <input type="submit" value="Register" id = "submit">
+                <div id = "register">Log In</div>
+            </form>
+        </div>        
+
+    </main>
+    <footer>
+        <img id = "github" class="socialMediaIcon" src="../images/social_media/github.png" alt="Logo Small">
+        <p class="gradient_Text">© 2024 HeMa. All rights reserved.</p>
+        <img id = "uaic" class="socialMediaIcon" src="../images/social_media/uaic_logo_small.png" alt="Logo Small">
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../scripts/script.js"></script>
+    <script src="../scripts/footer.js"></script>
+</body>
+</html>

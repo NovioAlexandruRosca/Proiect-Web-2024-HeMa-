@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "node-cron": "^3.0.3",
+    "rss-generator": "^0.0.3"
+  },
+  "name": "proiect-web-2024-hema-",
+  "description": "March 25, 2024 - Present",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "scripts\\run-scripts.bat"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

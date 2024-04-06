@@ -1,0 +1,50 @@
+header {
+    display: block;
+    background-color: #496989e5;
+    color:#A8CD9F;
+}
+
+.left{
+    padding-left: 0px;
+}
+
+.left h1{
+    font-weight: bold;
+    font-size: max(5.5vmin, 15px);
+    padding-left: 10px;
+    margin-right: 60px;
+}
+
+.left #plant_Logo{
+    width: max(6vmin, 10px);
+    padding-bottom: 5px;
+}
+
+.right, .search_Bar{
+    display: none;
+}
+
+@media (max-width: 600px) {
+    header {
+        padding: 8px 0px 7px 0px; 
+        margin-bottom: 0px;
+    }
+    .left #plant_Logo{
+        width: 60px;
+        padding-top: 10px;
+    }
+    .left{
+        padding: 10px 20px 10px 20px;
+    }
+    .left h1{
+        padding-left: 15px;
+        font-size: max(5.5vmin, 30px);
+        margin-right: 0px;
+    }
+    .left #plant_Logo{
+        display: block;
+    }
+    .right{
+        display: none;
+    }
+}

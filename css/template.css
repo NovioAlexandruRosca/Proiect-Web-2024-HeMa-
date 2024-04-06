@@ -22,10 +22,6 @@ body {
 
     font-family: 'Playful', sans-serif;
 
-    /* font-family: 'Arial', sans-serif;  */
-    font-size: 16px; 
-    color: #333; 
-
     background-image: url('../images/background/background.jpg');
     background-size: cover; 
     background-position: center; 
@@ -135,124 +131,9 @@ main {
 }
 
 
+
+
 /*         ↑↑↑          MAIN          ↑↑↑         */
-/*         ↓↓↓      PROFILE MAIN      ↓↓↓         */
-
-
-
-.profile-main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: auto; 
-    padding-bottom: 50px; 
-}
-
-.profile-container {
-    width: 60%;
-    background-color: #58a399c2;
-    margin: 50px;
-    border-radius: 10%;
-    border: solid 2px #E2F4C5;
-    padding: 20px;
-}
-
-.profile-header {
-    text-align: center;
-}
-
-.profile-pic {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-bottom: 20px;
-}
-
-.profile-info h3 {
-    margin-top: 20px;
-}
-
-.plants-list {
-    list-style: none; 
-    padding-left: 0; 
-}
-
-.plants-list li a {
-    text-decoration: none;
-    color: #E2F4C5;
-    transition: color 0.3s ease;
-}
-
-.plants-list li a:hover {
-    color: #a0e090;
-}
-
-/*         ↑↑↑      PROFILE MAIN      ↑↑↑         */
-/*         ↓↓↓      PLANT PROFILE     ↓↓↓         */
-
-.plant-profile-main {
-    display: flex;
-    justify-content: center;
-    padding: 50px 0;
-    color: #333; 
-}
-
-.plant-profile-container {
-    width: 60%;
-    background-color: #fff; 
-    border: 1px solid #ccc; 
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-}
-
-.plant-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 20px; 
-    row-gap: 10px; 
-}
-
-.info-block {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #ccc; 
-}
-
-.info-title {
-    font-weight: bold;
-    margin-right: 10px; 
-}
-
-.info-detail {
-    flex-grow: 1; 
-    padding: 10px 0; 
-}
-
-.actions {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px; 
-}
-
-button {
-    background-color: #58a399; 
-    color: white;
-    font-family: 'Arial', sans-serif; 
-    background-color: #58a399; 
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #467a6e; 
-}
-
-
-/*         ↑↑↑       PLANT MAIN       ↑↑↑         */
 /*         ↓↓↓         FOOTER         ↓↓↓         */
 
 footer {
