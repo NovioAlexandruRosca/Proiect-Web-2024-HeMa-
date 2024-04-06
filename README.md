@@ -1,4 +1,4 @@
-# Project Title: HeMa (Herbal Web Manager)<img src="images/website_Icon/plant.png" alt="Logo">
+# Project Title: HeMa (Herbal Web Manager)<img src="images/website_Icon/plant.png" alt="Logo" width="200">
 
 ## Creation Interval.
 March 25, 2024 - Present
