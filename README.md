@@ -1,4 +1,4 @@
-# Project Title: <img src="images/website_Icon/plant.png" alt="Logo" width="35" margin-top:10px>HeMa (Herbal Web Manager)
+# Project Title: <img src="images/website_Icon/plant.png" alt="Logo" width="35" style="margin-top: 10px;">HeMa (Herbal Web Manager)
 
 ## Creation Interval.
 March 25, 2024 - Present
