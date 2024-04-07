@@ -47,13 +47,13 @@
             <form action="/sendEmail" method="post" id="contact_form">
               <div id="name">
                 <label for="name_input"></label>
-                <input type="text" placeholder="My name is" name="nume" id="name_input" autocomplete="off" required>
+                <input type="text" placeholder="My name is" name="nume" id="name_input" autocomplete="off">
               </div>
               <div class="telephone">
-                <input type="text" placeholder="My number is" name="telephone" pattern="07[0-9]{8}" id="telephone_input" required autocomplete="off" oninvalid="this.setCustomValidity('Please enter a valid phone number in the format 07XXXXXXXX')" oninput="this.setCustomValidity('')">
+                <input type="text" placeholder="My number is" name="telephone" pattern="07[0-9]{8}" id="telephone_input" autocomplete="off" oninvalid="this.setCustomValidity('Please enter a valid phone number in the format 07XXXXXXXX')" oninput="this.setCustomValidity('')">
               </div>
               <div class="dsa">
-                <input type="email" placeholder="My e‎-mail is" name="gmail" id="das" required autocomplete="off">
+                <input type="email" placeholder="My e‎-mail is" name="gmail" id="das" autocomplete="off">
               </div>
               <div class="subject">
                 <select placeholder="Subject line" name="subject" id="subject_input" required>
@@ -65,7 +65,7 @@
                 </select>
             </div>
               <div class="message">
-                <textarea name="message" placeholder="I'd like to chat about" id="message_input" cols="30" rows="5" required></textarea>
+                <textarea name="message" placeholder="I'd like to chat about" id="message_input" cols="30" rows="5"></textarea>
               </div>
               <div class="submit">
                 <input type="submit" value="Send Message" id="form_button" />
