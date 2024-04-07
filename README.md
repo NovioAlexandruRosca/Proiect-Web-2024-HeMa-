@@ -39,9 +39,21 @@ Various statistics will be generated and made available in open formats, includi
 - **dotenv** (Version 16.4.5)
 - **nodemon** (Version 3.1.0)
 - **nodemailer** (Version 6.9.13)
+- **mysql2** (Version 3.9.3)
 
 ## Contribution
 - You are welcome to create pull requests in order to report bugs or suggest further improvments of the app
+
+## Database(This is only for educational purposes)
+
+- The databases shape is at follows:
+
+CREATE TABLE clients (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL
+);
 
 ## Screenshots
 

@@ -139,6 +139,11 @@ main {
     transform: translate(-50%,-40%);
 }
 
+#login_form ::placeholder{
+    font-family: 'Dancing Script', sans-serif;
+}
+
+
 form p
 {
     text-align: center;
