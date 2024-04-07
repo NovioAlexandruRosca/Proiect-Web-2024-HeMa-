@@ -1,0 +1,145 @@
+
+/* Reset default margin and padding */
+body, h1, p {
+    margin: 0;
+    padding: 0;
+}
+
+/* Apply flexbox layout to the main container */
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+#adminPanel{
+    background-image: linear-gradient(#a0e0908c, #e2f4c57c, #a0e09080);
+    padding: 30px 20px 40px 20px;
+    border-radius: 1%;
+    border: 1px black solid;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 1); 
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    margin-top: 50px;
+}
+
+#controlPanel{
+    font-size: 50px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+#panelLine{
+    width: 60%;
+    height: 2px;
+    background-color: black;
+    margin-bottom: 30px;
+}
+
+header {
+    background-color: #496989cb;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid black;
+}
+
+header p{
+    font-weight: bold;
+    font-size: max(4vmin, 15px);
+    margin: 8px 10px;
+}
+
+@media (max-width: 600px) {
+    header p {
+        font-size: 15px;
+        margin: 8px 10px;
+    }
+
+}
+
+
+
+.scrollable-content {
+}
+
+section {
+    text-align: center;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); 
+    border: 2px solid #e0e0e0; 
+    width: auto; 
+    height: auto; 
+    /* max-width: 600px;  */
+}
+
+section p{
+    font-size: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate; 
+    border-spacing: 7px;
+}
+th, td {
+    text-align: left;
+    border: 1px solid black;
+    
+}
+th {
+    text-align: center;
+    background-color: #f2f2f2;
+}
+
+table h2{
+    padding: 0px 10px 0px 10px;
+    font-size: max(2.5vmin, 12px);
+}
+
+.emoji{
+    padding: 0;
+}
+.idcol{
+    padding-left: 1px;
+    padding-right: 1px;
+}
+
+.emoji:hover{
+    background-color: #A8CD9F;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+@media screen and (max-width: 768px) {
+
+    #controlPanel{
+        font-size:40px ;
+    }
+    #adminPanel{
+        width: 95%; 
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    section {
+        width: 99%; 
+        padding: 1px;
+    }
+    table{
+        border-spacing: 3px;
+    }
+    .emoji{
+        font-size: 8px;
+    }
+    .idcol{
+        font-size: 8px;
+    }
+}
