@@ -220,6 +220,7 @@ form p
     font-size: 20px;
     background-color: #e7eedb;  
     transition: width 0.1s ease-in-out;
+    font-family: 'Dancing Script', sans-serif;
 }
 
 #submit:hover
