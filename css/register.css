@@ -88,7 +88,7 @@ main {
 {
     position: absolute; 
     left:50%;
-    top: 88%;
+    top: 90%;
     transform: translate(-50%,0%);
     font-size: 22px;
     width:300px;
@@ -137,6 +137,10 @@ main {
     left:50%;
     top:50%;
     transform: translate(-50%,-40%);
+}
+
+#login_form ::placeholder{
+    font-family: 'Dancing Script', sans-serif;
 }
 
 form p

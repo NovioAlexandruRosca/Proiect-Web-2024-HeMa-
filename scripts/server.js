@@ -18,13 +18,13 @@ const pool = mysql.createPool({
     queueLimit: 0
 });
 
-let static = true;
+let headerNotModified = true;
 
 // WE CREATE THE BASE OF THE SERVER
 const server = http.createServer((req, res) => {
 
     if (req.url === '/data') {
-        static = false;
+        headerNotModified = false;
         // WE TRY TO USE THE DATABASE
         pool.getConnection((err, connection) => {
             if (err) {
@@ -47,8 +47,9 @@ const server = http.createServer((req, res) => {
         });
     }
 
+    // USED FOR LOGGING IN(TESTING THE CREDENTIALS)
     if (req.method === 'POST' && req.url === '/testCredentials') {
-        static = false;
+        headerNotModified = false;
         let body = '';
         req.on('data', (chunk) => {
             body += chunk.toString();
@@ -56,6 +57,7 @@ const server = http.createServer((req, res) => {
         req.on('end', () => {
             try {
                 const { Email, Password } = JSON.parse(body);
+
                 pool.getConnection((err, connection) => {
                     if (err) {
                         console.error('Error getting connection from pool:', err);
@@ -73,7 +75,7 @@ const server = http.createServer((req, res) => {
                         }
                         
                         if (results.length > 0) {
-                            console.log('User authenticated successfully:', results[0]);
+                            console.log('User authenticated successfully');
                             res.writeHead(200, { 'Content-Type': 'text/plain' });
                             res.end('OK');
                         } else {
@@ -93,9 +95,71 @@ const server = http.createServer((req, res) => {
         });
     }
 
+    // USED FOR REGISTERING
+    if (req.method === 'POST' && req.url === '/registerCredentials') {
+        headerNotModified = false;
+        let body = '';
+        req.on('data', (chunk) => {
+            body += chunk.toString();
+        });
+        req.on('end', () => {
+            try {
+                const { Email, Name, Password } = JSON.parse(body);
+                pool.getConnection((err, connection) => {
+                    if (err) {
+                        console.error('Error getting connection from pool:', err);
+                        res.writeHead(500, { 'Content-Type': 'text/plain' });
+                        res.end('Internal Server Error');
+                        return;
+                    }
+    
+                    // Check if the email already exists
+                    connection.query('SELECT * FROM clients WHERE email = ?', [Email], (err, results, fields) => {
+                        if (err) {
+                            console.error('Error executing query:', err);
+                            res.writeHead(500, { 'Content-Type': 'text/plain' });
+                            res.end('Internal Server Error');
+                            connection.release();
+                            return;
+                        }
+                        
+                        if (results.length > 0) {
+                            console.log('The email already exists');
+                            res.writeHead(401, { 'Content-Type': 'text/plain' });
+                            res.end('Unauthorized');
+                            connection.release();
+                            return;
+                        } 
+                        
+                        // Insert new user
+                        connection.query('INSERT INTO clients (email, name, password) VALUES (?, ?, ?)', [Email, Name, Password], (err, results, fields) => {
+                            if (err) {
+                                console.error('Error executing query:', err);
+                                res.writeHead(500, { 'Content-Type': 'text/plain' });
+                                res.end('Internal Server Error');
+                                connection.release();
+                                return;
+                            }
+                        
+                            console.log('New user registered successfully');
+                            res.writeHead(200, { 'Content-Type': 'text/plain' });
+                            res.end('OK');
+                        
+                            connection.release();
+                        });
+                    });
+                });
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+                res.writeHead(400, { 'Content-Type': 'text/plain' });
+                res.end('Bad Request');
+            }
+        });
+    }
+
     // IF THE CLIENTS SENT A CONTACT FORM
     if (req.method === 'POST' && req.url === '/sendEmail') {
-        static = false;
+        headerNotModified = false;
 
         let body = '';
         req.on('data', chunk => {
@@ -117,7 +181,7 @@ const server = http.createServer((req, res) => {
     }
 
     // OTHERWISE IF IT REQUESTED AN HTML,CSS,JS OR ANYTHING ELSE
-    if(static){
+    if(headerNotModified){
         let filePath = null;
 
         if(getContentType(req.url) == 'text/html'){
@@ -144,7 +208,7 @@ const server = http.createServer((req, res) => {
             }
         });
     }
-    static = true;
+    headerNotModified = true;
 });
 
 // WE MAKE THE SERVER LISTEN FOR REQUESTS
