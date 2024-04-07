@@ -1,15 +1,15 @@
-const form = document.getElementById('contact_form');
+// const form = document.getElementById('contact_form');
 
-form.addEventListener('submit', function(event) {
-    event.preventDefault(); 
+// form.addEventListener('submit', function(event) {
+//     event.preventDefault(); 
 
-    const formData = new FormData(this);
+//     const formData = new FormData(this);
 
-    const formDataObject = {};
+//     const formDataObject = {};
 
-    formData.forEach(function(value, key){
-        formDataObject[key] = value;
-    });
+//     formData.forEach(function(value, key){
+//         formDataObject[key] = value;
+//     });
 
-    console.log(formDataObject);
-});
+//     console.log(formDataObject);
+// });
