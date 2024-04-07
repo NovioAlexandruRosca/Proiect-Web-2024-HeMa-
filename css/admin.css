@@ -1,0 +1,98 @@
+
+/* Reset default margin and padding */
+body, h1, p {
+    margin: 0;
+    padding: 0;
+}
+
+/* Apply flexbox layout to the main container */
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+#adminPanel{
+    background-image: linear-gradient(#a0e0908c, #e2f4c57c, #a0e09080);
+    padding: 30px 20px 40px 20px;
+    border-radius: 4%;
+    border: 1px black solid;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 1); 
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#controlPanel{
+    font-size: 50px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+#panelLine{
+    width: 60%;
+    height: 2px;
+    background-color: black;
+    margin-bottom: 30px;
+}
+
+section {
+    text-align: center;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); 
+    border: 2px solid #e0e0e0; 
+    max-width: 600px; 
+}
+
+section:hover {
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3); 
+    background-color: #dfe6df;
+}
+
+section p{
+    font-size: 20px;
+}
+
+section:not(:last-child){
+    margin-bottom: 40px;
+}
+
+
+@media screen and (max-width: 768px) {
+
+    #adminPanel{
+        width: 85%; 
+    }
+    section {
+        width: 80%; 
+    }
+}
+
+header {
+    background-color: #496989cb;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid black;
+}
+
+header p{
+    font-weight: bold;
+    font-size: max(4vmin, 15px);
+    margin: 8px 10px;
+}
+
+@media (max-width: 600px) {
+    header p {
+        font-size: 15px;
+        margin: 8px 10px;
+    }
+
+}
