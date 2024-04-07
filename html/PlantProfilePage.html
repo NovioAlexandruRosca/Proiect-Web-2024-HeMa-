@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plant Profile | HeMa</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/template.css">
+    <link rel="stylesheet" href="../css/plant_profile.css">
     <link rel="icon" href="../images/website_Icon/plant.png" type="image/x-icon">
 </head>
 <body>
@@ -16,52 +17,92 @@
         <div class="right">
             <nav>
                 <ul>
-                    <li class="gradient_Text"><a href="#">Home</a></li>
-                    <li class="gradient_Text"><a href="#">About</a></li>
-                    <li class="gradient_Text"><a href="#">Contact</a></li>
+                    <li class="gradient_Text"><a href="index.html">Home</a></li>
+                    <li class="gradient_Text"><a href="about.html">About</a></li>
+                    <li class="gradient_Text"><a href="contact.html">Contact</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <main class="plant-profile-main">
-        <div class="plant-profile-container">
-            <div class="plant-info">
-                <div class="info-block">
-                    <span class="info-title">Common Name</span>
-                    <span class="info-detail">Some Common Name</span>
-                </div>
-                <div class="info-block">
-                    <span class="info-title">Scientific Name</span>
-                    <span class="info-detail">Some Scientific Name</span>
-                </div>
-                <div class="info-block">
-                    <span class="info-title">Family</span>
-                    <span class="info-detail">Some Family</span>
-                </div>
-                <div class="info-block">
-                    <span class="info-title">Genus</span>
-                    <span class="info-detail">Some Genus</span>
-                </div>
-                <div class="info-block">
-                    <span class="info-title">Species</span>
-                    <span class="info-detail">Some Species</span>
-                </div>
-                <div class="info-block">
-                    <span class="info-title">Place</span>
-                    <span class="info-detail">Some Place</span>
-                </div>
-                <div class="info-block">
-                    <span class="info-title">Colour</span>
-                    <span class="info-detail">Some Colour</span>
+    <main class="plant-profile-main image-background">
+        <main>
+            <div class="main-container image-background">
+                <div class="user-profile-card w-70">
+                    <div class="photo-profile w-100">
+                        <!-- Plant Image -->
+                        <div class="logo-image" id="plant-image">
+                            <img src="../Images/PlantProfileImages/plant-image.jpg" alt="Plant Image" style="width: 100%; border-radius: var(--border-radius);">
+                        </div>
+        
+                        <!-- Hashtags, Collection Name, etc. -->
+                        <div class="form-group w-100">
+                            <label class="label">Hashtags</label>
+                            <p id="hashtags" class="form-control">#Green #Herb #Healthy</p>
+                        </div>
+                        <div class="form-group w-100">
+                            <label class="label">Collection Name</label>
+                            <p id="collection-name" class="form-control">Herbal Garden 2024</p>
+                        </div>
+                        <div class="form-group w-100">
+                            <label class="label">Date Of Collection</label>
+                            <p id="date-collection" class="form-control">April 10, 2024</p>
+                        </div>
+                        <div class="form-group w-100">
+                            <label class="label">Collector Name</label>
+                            <p id="collector" class="form-control">Jane Doe</p>
+                        </div>
+                    </div>
+        
+                    <div class="info-profile w-100">
+                        <!-- Plant Details -->
+                        <div class="form-group w-100">
+                            <label class="label">Common Name</label>
+                            <p id="common-name" class="form-control">Lavender</p>
+                        </div>
+                        <div class="form-group w-100">
+                            <label class="label">Scientific Name</label>
+                            <p id="scientific-name" class="form-control">Lavandula</p>
+                        </div>
+                        <div class="form-group w-100">
+                            <label class="label">Family</label>
+                            <p id="family" class="form-control">Lamiaceae</p>
+                        </div>
+                        <div class="form-group w-100">
+                            <label class="label">Genus</label>
+                            <p id="genus" class="form-control">Lavandula</p>
+                        </div>
+                        <div class="form-group w-100">
+                            <label class="label">Species</label>
+                            <p id="species" class="form-control">L. angustifolia</p>
+                        </div>
+                        <div class="form-group w-100">
+                            <label class="label">Place</label>
+                            <p id="place" class="form-control">Mediterranean</p>
+                        </div>
+                        <div class="form-group w-100">
+                            <label class="label">Color</label>
+                            <p id="color-plant" class="form-control">Violet</p>
+                        </div>
+        
+                        <!-- Action Buttons -->
+                        <div class="container-buttons w-100">
+                            <div class="form-group w-100">
+                                <button class="button button1" onclick="location.href = '../HTML_Pages/MyGarden.html'">View My Garden</button>
+                            </div>
+                            <div class="form-group w-100">
+                                <button class="button button2" id="edit-plant-button">Edit Plant</button>
+                            </div>
+                            <div class="form-group w-100">
+                                <button class="button button2" id="delete-plant-button">Delete Plant</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- <div class="actions">
-                <button onclick="location.href='user-garden.html'">View My Garden</button>
-                <button onclick="location.href='edit-plant.html'">Edit Plant</button>
-                <button onclick="deletePlant()">Delete Plant</button>
-            </div> -->
-        </div>
+        </main>
+        
+        
     </main>
     <footer>
         <img id = "github" class="socialMediaIcon" src="../images/social_media/github.png" alt="Logo Small">

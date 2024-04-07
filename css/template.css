@@ -103,6 +103,80 @@ header a:hover{
         display: none;
     }
 }
+
+/* Search bar*/
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #496989;
+    color: #A8CD9F;
+}
+
+/* Make the left and right sections of the header take up necessary space */
+.left, .right {
+    flex: 1;
+}
+
+.search_Bar {
+    position: relative;
+    display: flex;
+    flex-grow: 2; 
+    margin: 0 15px;
+    align-items: stretch; /* Align children vertically */
+}
+
+.search_Bar input[type="text"] {
+    flex-grow: 1;
+    border: 2px solid #A8CD9F;
+    padding: 10px 15px;
+    font-size: 1rem;
+    outline: none;
+    border-radius: 20px 0 0 20px;
+    border-right: none; /* Remove right border */
+}
+
+.search_Bar button {
+    background-color: #A8CD9F;
+    border: 2px solid #A8CD9F;
+    border-left: none; /* Remove left border to seamlessly connect with input */
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 20px 20px 0;
+    cursor: pointer;
+}
+
+.search_Bar button img {
+    height: 100%;
+    width: auto;
+    display: block;
+}
+
+/* Adjust the font size of the input placeholder */
+.search_Bar input[type="text"]::placeholder {
+    font-size: 1rem; /* Match font size with input text */
+    vertical-align: middle;
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 600px) {
+    .search_Bar {
+        margin: 0;
+        flex-grow: 1;
+    }
+    .search_Bar input[type="text"], .search_Bar button {
+        height: auto; /* Reset the height for smaller devices */
+        padding: 8px 10px; /* Adjust padding */
+    }
+    .left, .right {
+        flex: 0; /* Don't let these flex on smaller screens */
+    }
+}
+
+
 /*         ↑↑↑         HEADER         ↑↑↑         */
 /*         ↓↓↓          MAIN          ↓↓↓         */
 

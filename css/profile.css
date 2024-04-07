@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+.profile-header {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    background: #ffffff; /* White background */
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    /*margin-bottom: 1rem; /* Space below the header */
+    margin-bottom: 30px; /* More space below the header */
+}
+
+.profile-pic {
+    width: 120px; /* Fixed size */
+    height: 120px; /* Fixed size */
+    border-radius: 50%; /* Circular image */
+    margin-right: 20px; /* Space after the image */
+    object-fit: cover; /* Ensures the image covers the area */
+    border: 3px solid #a0e090; /* Border color from your scheme */
+}
+
+.user-details h2 {
+    font-size: 2rem; /* Larger font size */
+    margin-bottom: 0.5rem;
+    color: #333; /* Darker text for better readability */
+    font-weight: 700; /* Bold font weight */
+}
+
+.user-details p {
+    font-size: 1rem;
+    color: #666; /* Lighter color for less important info */
+    line-height: 1.5; /* More line height for readability */
+}
+
+.user-info {
+    margin: 5px 0; /* Uniform margin for p tags */
+}
+
+.profile-container {
+    background-color: #fff;
+    padding: 40px; /* Increase for more internal space */
+    margin: 0 auto; /* Centers the container */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Adjust for a subtle fading effect */
+    border-radius: 8px; /* Rounded corners */
+    width: 80%; /* Adjust the width as necessary */
+    box-sizing: border-box;
+    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out; /* Smooth transitions for any changes */
+}
+
+@media (max-width: 768px) {
+    .profile-container {
+        width: 95%; /* More width for small screens */
+        margin: 20px auto; /* More vertical space on small screens */
+        padding: 20px; /* Less padding on small screens */
+    }
+}
+
+
+/* .profile-container::before {
+    content: '';
+    position: absolute;
+    top: -10px; 
+    right: -10px; 
+    bottom: -10px; 
+    left: -10px; 
+    z-index: -1;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 20%, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0));
+    border-radius: inherit; 
+} */
+
+
+
+.plant-cards-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows cards to wrap to the next line on small screens */
+    justify-content: space-between; /* Even spacing between the cards */
+    align-items: stretch; /* Stretches cards to fill available vertical space */
+    gap: 20px; /* Space between the cards */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.card {
+    flex: 1; /* Allows cards to grow and take up available space */
+    min-width: calc(50% - 20px); /* Sets a minimum width for cards to take up half the container width minus the gap */
+    max-width: calc(50% - 20px); /* Sets a maximum width to prevent cards from growing too large */
+    box-sizing: border-box;
+}
+
+@media (min-width: 800px) {
+    .card {
+        min-width: calc(50% - 20px); /* Adjust the card size for three columns */
+        max-width: calc(50% - 20px);
+    }
+}
+
+/* @media (min-width: 768px) {
+    .plant-cards-container {
+        flex-direction: row; 
+        flex-wrap: wrap; 
+        justify-content: space-around; 
+    }
+    
+    .card {
+        width: 45%; 
+        margin-bottom: 20px;
+    }
+} */
+
+
+
+/* .plant-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; 
+    padding: 20px;
+    background-image: url('../images/plant.png');
+    background-size: cover;
+    margin: 20px auto;
+    max-width: 800px;
+    border-radius: 8px;
+} */
+
+/* Reset default margin and padding */
+html, body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+/* Ensure the main element takes full width */
+.profile-main {
+    display: block; /* This ensures it's a block-level element, taking full width */
+    width: 100%; /* Takes full width of its parent */
+    margin: 0 auto; /* Centers the content if necessary, remove if not needed */
+}
+
+/* If .profile-main is directly inside the body and you want no space around it */
+body {
+    margin: 0;
+    padding: 0;
+}
