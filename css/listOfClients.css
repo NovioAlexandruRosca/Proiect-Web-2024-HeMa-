@@ -119,6 +119,19 @@ table h2{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
+#textInput{
+    font-family: 'Dancing Script', sans-serif;
+    font-size: 20px;
+    color: black;
+    width: 75%;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+#textInput::placeholder{
+    color: black;
+}
+
 @media screen and (max-width: 768px) {
 
     #controlPanel{
@@ -143,3 +156,57 @@ table h2{
         font-size: 8px;
     }
 }
+
+@media (max-width: 600px) {
+    header p {
+        font-size: 35px;
+        margin: 8px 10px;
+    }
+
+}
+
+/* FLOWER POSITION */
+
+
+.f-wrapper--1 {
+    top: 96%;
+    left: 90%;
+}
+
+.f-wrapper--2 {
+    top: 95.6%;
+    left:5%;
+}
+
+.f-wrapper--3 {
+    top: 6%;
+    left: 98%;
+}
+
+.f-wrapper--2 .flower__leaf--1{
+    background-color: #b0cc12;
+}
+
+.f-wrapper--2 .f .flower__leaf--8{
+    transform: rotate(-50deg);
+    background-image: linear-gradient(to left bottom, #d9ff00fd ,#3f082a);
+}
+
+
+.f-wrapper--2 .flower__leaf:not(:first-child){
+    background-image: linear-gradient(to bottom,#c8ff00 , #952a99 ,#a82476 99%);
+}
+
+
+.f-wrapper--3 .flower__leaf--1{
+    background-color: #1ba9c2;
+}
+
+.f-wrapper--3 .f .flower__leaf--8{
+    background-image: linear-gradient(to left bottom, #2bc5e0 ,#712291);
+}
+
+.f-wrapper--3 .flower__leaf:not(:first-child){
+    background-image: linear-gradient(to bottom, #2bc5e0 ,#712291, #1a2e5f 99%);
+}
+

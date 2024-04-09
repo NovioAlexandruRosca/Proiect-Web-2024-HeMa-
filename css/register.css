@@ -32,7 +32,7 @@ main {
 	justify-content: space-evenly;
 	
     width: 65vmin;
-	height: 70vmin;
+	height: 65vmin;
 	margin: 2rem 3rem auto;
     
     background-image: linear-gradient(to bottom, #496989,#3f867d,#496989);
@@ -42,11 +42,26 @@ main {
 }
 
 @media (max-width: 850px) {
-    .login{
+    #login2{
         position: relative;
         
         width:90%;
-        height: 500px;
+        height: 600px;
+    
+        background-image: linear-gradient(to bottom, #496989,#3f867d,#496989);
+        
+        border-radius: 13%;
+        border: #E2F4C5 2px solid;
+    
+        top:50%;
+        transform: translate(0%,0%);
+        opacity: 90%;
+    }
+    #login1{
+        position: relative;
+        
+        width:90%;
+        height: 400px;
     
         background-image: linear-gradient(to bottom, #496989,#3f867d,#496989);
         
@@ -59,7 +74,7 @@ main {
     }
 }
 
-#header
+#headerText
 {
     font-size: max(9vmin, 80px);
     position: relative;
@@ -68,9 +83,9 @@ main {
     opacity: 100%;
 }
 
-#line{
+.line{
     position: absolute;
-    top:29%;
+    top:24%;
     left:50%;
     transform: translate(-50%,-50%);
 
@@ -106,7 +121,7 @@ main {
     justify-content: space-evenly;
 }
 
-#login1 #header{
+#login1 #headerText{
     padding-bottom: 100px;
 }
 
@@ -117,7 +132,7 @@ main {
 }
 
 @media (max-width: 850px) {
-    #login1 #header{
+    #login1 #headerText{
         font-size: 60px;
     }
     #textBox{
@@ -135,7 +150,7 @@ main {
 {
     position: absolute;
     left:50%;
-    top:50%;
+    top:48%;
     transform: translate(-50%,-40%);
 }
 
@@ -318,3 +333,78 @@ form p
 footer {
     margin-top: 70px;
 }
+
+#line2{
+    top:30%;
+}
+
+@media (max-width: 850px) {
+    #headerText{
+        font-size: 60px;
+    }
+    #line1{
+        top:20%;
+    }
+}
+
+
+
+
+
+.f-wrapper--2 .flower__leaf--1{
+    background-color: #5f0f40;
+}
+
+.f-wrapper--2 .f .flower__leaf--8{
+    transform: rotate(-50deg);
+    background-image: linear-gradient(to left bottom, #ffbe0b   ,#4e4e4e);
+}
+
+
+.f-wrapper--2 .flower__leaf:not(:first-child){
+    background-image: linear-gradient(to bottom,#ff6b6b   , #ffb5b5   ,#ffd8d8 99%);
+}
+
+
+.f-wrapper--3 .flower__leaf--1{
+    background-color: #1a2e5f;
+}
+
+.f-wrapper--3 .f .flower__leaf--8{
+    background-image: linear-gradient(to left bottom, #f7cac9   ,#4e4e4e);
+}
+
+.f-wrapper--3 .flower__leaf:not(:first-child){
+    background-image: linear-gradient(to bottom, #feb236   ,#d64161  , #ff7b25 99%);
+}
+
+.f-wrapper--1 .flower__leaf--1{
+    background-color: #1ba9c2;
+  }
+  
+  .f-wrapper--1 .f .flower__leaf--8{
+      background-image: linear-gradient(to left bottom, #2bc5e0 ,#712291);
+  }
+  
+  .f-wrapper--1 .flower__leaf:not(:first-child){
+      background-image: linear-gradient(to bottom, #2bc5e0   ,#712291 , #1a2e5f 99%);
+  }
+
+  @media only screen and (max-width: 1420px) {
+
+    .f-wrapper--1 {
+      top: 96%;
+      left: 90%;
+    }
+  
+    .f-wrapper--2 {
+      top: 95.6%;
+      left:5%;
+    }
+  
+    .f-wrapper--3 {
+      top: 5%;
+      left: 98%;
+    }
+  
+  }

@@ -284,3 +284,59 @@ header h1{
       width: 20%;
     }
   }
+
+
+
+
+.flower__leaf{
+  background-image: linear-gradient(to bottom, #ff9f80  ,#ff725e , #ff5349 99%);
+}
+
+.flower__leaf--1{
+    background-color: #f984ef;
+}
+
+
+.f-wrapper--3 .flower__leaf--1{
+  background-color: #b19cd9;
+}
+
+.f-wrapper--3 .f .flower__leaf--8{
+    background-image: linear-gradient(to left bottom, #ffef96 ,#4e4e4e);
+}
+
+.f-wrapper--3 .flower__leaf:not(:first-child){
+    background-image: linear-gradient(to bottom, #a9a9a9   ,#696969 , #808080 99%);
+}
+
+
+.f-wrapper--2 .flower__leaf--1{
+  background-color: #c3aed6;
+}
+
+.f-wrapper--2 .f .flower__leaf--8{
+  background-image: linear-gradient(to left bottom, #f8b195  ,#4e4e4e);
+}
+
+.f-wrapper--2 .flower__leaf:not(:first-child){
+  background-image: linear-gradient(to bottom, #90afc5  ,#336b87 , #2a3132 99%);
+}
+
+@media only screen and (max-width: 1650px) {
+
+  .f-wrapper--1 {
+    top: 96%;
+    left: 90%;
+  }
+
+  .f-wrapper--2 {
+    top: 95.6%;
+    left:5%;
+  }
+
+  .f-wrapper--3 {
+    top: 5%;
+    left: 98%;
+  }
+
+}

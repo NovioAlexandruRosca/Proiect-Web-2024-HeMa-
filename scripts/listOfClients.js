@@ -39,3 +39,40 @@ deleteButtons.forEach(button => {
         row.remove();
     });
 });
+
+
+const hiddenRow = document.getElementById('hidden');
+hiddenRow.style.display = 'none';
+
+const textInput = document.getElementById('textInput');
+const tableRows = document.querySelectorAll('#clientsTableBody tr');
+
+textInput.addEventListener('input', function(event) {
+    const inputText = event.target.value.trim().toLowerCase();
+
+    let numberOfFound = 0;
+    let count = 0;
+
+    tableRows.forEach(row => {
+        count++;
+        if(count > 1){
+            const emailCell = row.querySelector('th:nth-child(3) h2');
+            const email = emailCell.textContent.trim().toLowerCase();
+            
+            if (email.includes(inputText)) {
+                row.style.display = '';
+                numberOfFound++;
+            } else {
+                row.style.display = 'none';
+            }
+        }
+    });
+
+    const hiddenRow = document.getElementById('hidden');
+    if (numberOfFound == 0) {
+        hiddenRow.style.display = '';
+    } else {
+        hiddenRow.style.display = 'none';
+    }
+
+});
