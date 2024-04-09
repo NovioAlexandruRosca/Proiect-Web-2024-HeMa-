@@ -220,3 +220,13 @@ textarea {
 footer {
     margin-top: 0px;
 }
+
+
+.f-wrapper--3 {
+  top: 9%;
+  left: 96%;
+}
+
+.f-wrapper--3 .f{
+  transform: translate(-350%,-50%) rotate(-160deg);
+}

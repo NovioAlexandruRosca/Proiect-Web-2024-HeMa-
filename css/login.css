@@ -9,6 +9,7 @@ main {
 /*     LOGIN BOX   ↧   */
 
 .login{
+    box-shadow: 0 0 20px rgba(0, 0, 0, 1);
     /* position: absolute; */
     
     /* width:90%; */
@@ -291,3 +292,64 @@ form p
 footer {
     margin-top: 100px;
 }
+
+
+
+
+.f-wrapper--2 .flower__leaf--1{
+    background-color: #ff847c;
+}
+
+.f-wrapper--2 .f .flower__leaf--8{
+    transform: rotate(-50deg);
+    background-image: linear-gradient(to left bottom, #feceab  ,#4e4e4e);
+}
+
+
+.f-wrapper--2 .flower__leaf:not(:first-child){
+    background-image: linear-gradient(to bottom,#669bbc  , #8fbfbf  ,#cad2c5 99%);
+}
+
+
+.f-wrapper--3 .flower__leaf--1{
+    background-color: #8be9fd;
+}
+
+.f-wrapper--3 .f .flower__leaf--8{
+    background-image: linear-gradient(to left bottom, #ffbe0b  ,#4e4e4e);
+}
+
+.f-wrapper--3 .flower__leaf:not(:first-child){
+    background-image: linear-gradient(to bottom, #fb5607  ,#ff006e , #8338ec 99%);
+}
+
+.f-wrapper--1 .flower__leaf--1{
+    background-color: #b19cd9;
+  }
+  
+  .f-wrapper--1 .f .flower__leaf--8{
+      background-image: linear-gradient(to left bottom, #ffef96 ,#4e4e4e);
+  }
+  
+  .f-wrapper--1 .flower__leaf:not(:first-child){
+      background-image: linear-gradient(to bottom, #a9a9a9   ,#696969 , #808080 99%);
+  }
+
+  @media only screen and (max-width: 1420px) {
+
+    .f-wrapper--1 {
+      top: 96%;
+      left: 90%;
+    }
+  
+    .f-wrapper--2 {
+      top: 95.6%;
+      left:5%;
+    }
+  
+    .f-wrapper--3 {
+      top: 5%;
+      left: 98%;
+    }
+  
+  }
