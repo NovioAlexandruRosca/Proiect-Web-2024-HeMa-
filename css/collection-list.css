@@ -1,0 +1,85 @@
+.collections-container {
+    text-align: center; 
+    margin: 20px 0; 
+}
+
+.collections-card {
+    background-color: #fff; 
+    border-radius: 0.25rem; 
+    padding: 20px; 
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06); 
+    text-align: center;
+    margin: auto;
+    max-width: 75%; 
+}
+
+
+.collections-title {
+    font-size: 24px;
+    color: #3a3a3a; 
+    margin-bottom: 15px; 
+    text-transform: uppercase; 
+}
+
+.collections {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; 
+    align-items: center;
+    gap: 10px;
+    padding: 0%;
+}
+
+.collection-button {
+    width: calc(33.333% - 20px); 
+    margin: 10px; 
+}
+
+.collection-button button {
+    width: 100%; 
+    padding: 10px 15px; 
+    font-size: 16px; 
+    font-weight: bold; 
+    color: white; 
+    background-color: #4CAF50; 
+    border: none;
+    border-radius: 5px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
+    margin: 5px;
+}
+
+.collection-button button:hover {
+    background-color: #367c39; 
+}
+
+.collection-item {
+    width: calc(25% - 20px);
+    margin: 5px;
+    flex: 1 0 21%;
+}
+
+
+
+.socialMediaIcon{
+    width: calc(25% - 10px);
+    padding: 10%;
+    border: none;
+    background-color: transparent;
+
+    width: max(3vmin, 25px); 
+    height: max(3vmin, 25px); 
+    margin: auto; 
+    opacity: 0.6; 
+
+    display: inline-block;
+    position: relative;
+    width: auto;
+    height: auto;
+    transition: opacity 0.3s ease;
+}
+
+.socialMediaIcon:hover{
+    opacity: 100%;
+}
