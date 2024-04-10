@@ -93,7 +93,7 @@ section {
     border: 2px solid #e0e0e0; 
     width: auto; 
     height: auto; 
-    /* max-width: 600px;  */
+    max-width: 800px; 
 }
 
 section p{
@@ -101,10 +101,12 @@ section p{
 }
 
 table {
+    position: relative;
     width: 100%;
     border-collapse: separate; 
     border-spacing: 4px;
 }
+
 th, td {
     text-align: left;
     border: 1px solid black;
@@ -174,17 +176,25 @@ table h2{
     margin-right: 4px;
 }
 
-#order_input{
+#order_input, #display_input{
     font-size: 20px;
     font-weight: bold;
     font-family: 'Dancing Script', sans-serif;
-    width:93%;
+    width:40%;
     text-align: center;
     margin-bottom: 10px;
     border-radius: 2%;
 }
 
-#order_input:hover{
+#order_input{
+    margin-right: 10px;
+}
+
+#display_input{
+    margin-left: 10px;
+}
+
+#order_input:hover, #display_input:hover{
     background-color: rgb(219, 217, 217);
     border: 1px solid #496989cb;
 }
@@ -195,13 +205,24 @@ select {
     appearance: none;
   }
 
+#postLine{
+    width: 80%;
+    height: 2px;
+    margin-bottom: 10px;
+    background-color: black;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%,0%);
+    
+}
+
 @media screen and (max-width: 768px) {
     .textInput{
         font-size: 10px;
         margin-top: 10px;
         padding: 5px;
     }
-    #order_input{
+    #order_input , #display_input{
         font-size: 10px;
     }
 }
@@ -276,3 +297,92 @@ select {
 .f-wrapper--2 .flower__leaf:not(:first-child){
     background-image: linear-gradient(to bottom, #ff43b6 ,#c22887, #1a233a 99%);
 }
+
+/* #switch1{
+    display: none;
+} */
+
+#switch2{
+    margin-top: 15px;
+    display: none;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+    background-color: rgb(238, 237, 237);
+    padding-top:10px;
+    border-radius: 2%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1); 
+}
+
+#switch2 table{
+    border-spacing: 0px;
+}
+
+#switch2 table th{
+    border : 0px;
+    border-bottom: 2px solid black;
+}
+
+#switch2 table td{
+    border : 0px;
+    border-bottom: 2px solid black;
+}
+
+.flip-card {
+    
+    background-color: transparent;
+    width: 47%;
+    min-width: 45%;
+    height: 200px;
+    perspective: 1000px; 
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+  }
+
+  .flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+  }
+  
+  .flip-card-front {
+    background-color: rgb(56, 77, 57);
+    height: auto;
+  }
+  
+  .flip-card-back {
+    transform: rotateX(180deg);
+    background-color: rgb(49, 65, 99);
+    height: auto;
+  }
+  
+ #switch2 .like{
+    width: 33%;
+ }
+
+ #switch2 .dislike{
+    width: 33%;
+ }
+
+ #switch2 .visit{
+    width: 33%;
+ }
+
+ .nothingText{
+    color:#E2F4C5;
+ }
+
+ #hideFlip{
+    display: none;
+ }
