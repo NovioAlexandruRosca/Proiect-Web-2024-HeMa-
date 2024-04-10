@@ -1,3 +1,5 @@
+let isTextDisplayOn = true;
+
 document.querySelectorAll('.like, .dislike, .visit').forEach(th => {
 
     th.addEventListener('click', function() {
@@ -42,42 +44,126 @@ inputs.forEach((input, index) => {
 });
 
 function filterTable(nameInputText, clientInputText, dateInputText) {
-    const tables = document.querySelectorAll('.clientsTable');
 
     let numberOfShowedTables = 0;
 
-    tables.forEach(table => {
-        const tableRows = table.querySelectorAll('.clientsTableBody');
-        const firstRow = tableRows[0];
+    if(isTextDisplayOn == true){
 
-        const firstCell = firstRow.querySelector(`td:nth-child(1)`);
-        const secondCell = firstRow.querySelector(`td:nth-child(2)`);
-        const thirdCell = firstRow.querySelector(`td:nth-child(3)`);
+        const tables = document.querySelectorAll('#switch1 .clientsTable');
 
-        const firstCellText = firstCell.textContent.trim().toLowerCase();
-        const secondCellText = secondCell.textContent.trim().toLowerCase();
-        const thirdCellText = thirdCell.textContent.trim().toLowerCase();
+        tables.forEach(table => {
+            const tableRows = table.querySelectorAll('.clientsTableBody');
+            const firstRow = tableRows[0];
 
-        if (firstCellText.includes(nameInputText) && secondCellText.includes(clientInputText) && thirdCellText.includes(dateInputText)) {
-            table.style.display = '';
-            numberOfShowedTables++;
-        } else {
-            table.style.display = 'none';
-        }
-    });
+            const firstCell = firstRow.querySelector(`td:nth-child(1)`);
+            const secondCell = firstRow.querySelector(`td:nth-child(2)`);
+            const thirdCell = firstRow.querySelector(`td:nth-child(3)`);
 
-    console.log(numberOfShowedTables);
+            const firstCellText = firstCell.textContent.trim().toLowerCase();
+            const secondCellText = secondCell.textContent.trim().toLowerCase();
+            const thirdCellText = thirdCell.textContent.trim().toLowerCase();
+
+            if (firstCellText.includes(nameInputText) && secondCellText.includes(clientInputText) && thirdCellText.includes(dateInputText)) {
+                table.style.display = '';
+                numberOfShowedTables++;
+            } else {
+                table.style.display = 'none';
+            }
+        });
+    }else{
+
+        const flip_cards = document.querySelectorAll('.flip-card:not(#hideFlip)');
+
+        flip_cards.forEach(flip_card => {
+
+            const table = flip_card.querySelector(`table:nth-child(1)`);
+            const tableRows = table.querySelectorAll('.scrollable-content');
+
+            const firstCellText = tableRows[0].textContent.trim().toLowerCase();
+            const secondCellText = tableRows[1].textContent.trim().toLowerCase();
+            const thirdCellText = tableRows[2].textContent.trim().toLowerCase();
+
+            if (firstCellText.includes(nameInputText) && secondCellText.includes(clientInputText) && thirdCellText.includes(dateInputText)) {
+                flip_card.style.display = 'flex';
+                numberOfShowedTables++;
+            } else {
+                flip_card.style.display = 'none';
+            }
+        });
+
+    }
 
     if(numberOfShowedTables > 0){
+        document.getElementById('hideFlip').style.display = 'none';
         document.getElementById('hiddenTable').style.display = 'none';
     }else{
+        document.getElementById('hideFlip').style.display = 'flex';
         document.getElementById('hiddenTable').style.display = '';
     }
 }
+
+
+
+
+
+const modifyButtons = document.querySelectorAll('.flip-card-front');
+const elementsToModify = document.querySelectorAll('.flip-card-inner');
+
+modifyButtons.forEach((button, index) => {
+    button.addEventListener('click', function() {
+        elementsToModify[index].style.transform = "rotateX(180deg)";
+    });
+
+});
+
+const modi = document.querySelectorAll('.flip-card-back');
+
+modi.forEach((button, index) => {
+    button.addEventListener('click', function(event) {
+        const clickedElement = event.target;
+        if (!clickedElement.closest('tfoot')) {
+            elementsToModify[index].style.transform = "rotateX(0deg)";
+        }
+    });
+
+});
+
+const selectElement = document.getElementById('display_input');
+
+selectElement.addEventListener('change', function(event) {
+    const selectedIndex = selectElement.selectedIndex;
+    const selectedText = selectElement.options[selectedIndex].text;
+
+    if(selectedText === 'Text'){
+        document.getElementById('switch1').style.display = '';
+        document.getElementById('switch2').style.display = 'none';
+        isTextDisplayOn = true;
+    }else if(selectedText === 'Visual Spoiler'){
+        document.getElementById('switch1').style.display = 'none';
+        document.getElementById('switch2').style.display = 'flex';
+        isTextDisplayOn = false
+    }
+
+    const nameInputText = inputs[0].value.trim().toLowerCase();
+    const clientInputText = inputs[1].value.trim().toLowerCase();
+    const dateInputText = inputs[2].value.trim().toLowerCase();
+    filterTable(nameInputText, clientInputText, dateInputText);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const nameInputText = inputs[0].value.trim().toLowerCase();
 const clientInputText = inputs[1].value.trim().toLowerCase();
 const dateInputText = inputs[2].value.trim().toLowerCase();
 filterTable(nameInputText, clientInputText, dateInputText);
-
-
