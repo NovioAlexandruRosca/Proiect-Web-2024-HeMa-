@@ -1,6 +1,7 @@
 .about-main {
     width: 100%;
     display: flex;
+    justify-content:space-evenly;
     padding: 20px;
 }
 
@@ -11,32 +12,7 @@
 }
 
 .fact-item {
-    flex-basis: calc(33.333% - 20px);
-    margin: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: auto; 
-    flex-grow: 0;
-    flex-shrink: 0;
-}
-
-@media (max-width: 768px) {
-    .fact-item {
-        flex-basis: calc(50% - 20px);     
-    }
-}
-
-@media (max-width: 480px) {
-    .fact-item {
-        flex-basis: 100%; 
-    }
-} 
-
-/* .fact-item {
     flex-basis: calc(33.333% - 20px); 
-    flex-wrap: wrap;
-    flex-direction: column;
     height: 300px; 
     background-size: cover;
     background-position: center;

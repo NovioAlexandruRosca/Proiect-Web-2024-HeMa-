@@ -1,0 +1,342 @@
+
+/* Reset default margin and padding */
+body, h1, p {
+    margin: 0;
+    padding: 0;
+}
+
+/* Apply flexbox layout to the main container */
+main {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100vh;
+}
+
+@media only screen and (max-width: 1650px) {
+    main{
+        justify-content: center;
+        flex-direction: column;
+    }
+    #container{
+        margin-top: 30px;
+    }
+    #adminPanel{
+        margin-top: 30px;
+    }
+  }
+
+#plant_Logo{
+    width:40px;
+    padding-bottom: 5px;
+}
+
+#adminPanel{
+    background-image: linear-gradient(#a0e0908c, #e2f4c57c, #a0e09080);
+    padding: 30px 20px 40px 20px;
+    border-radius: 4%;
+    border: 1px black solid;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 1); 
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#controlPanel{
+    font-size: 50px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+#panelLine{
+    width: 60%;
+    height: 2px;
+    background-color: black;
+    margin-bottom: 30px;
+}
+
+section {
+    text-align: center;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); 
+    border: 2px solid #e0e0e0; 
+    max-width: 600px; 
+}
+
+section:hover {
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3); 
+    background-color: #dfe6df;
+}
+
+section p{
+    font-size: 20px;
+}
+
+section:not(:last-child){
+    margin-bottom: 20px;
+}
+
+
+@media screen and (max-width: 768px) {
+
+    #adminPanel{
+        width: 85%; 
+    }
+    section {
+        width: 80%; 
+    }
+    #plant_Logo{
+        width: 50px;
+    }
+    #controlPanel{
+        font-size: 40px;
+    }
+    #textPresentation{
+        margin-top: 10px;
+    }
+}
+
+header {
+    background-color: #496989cb;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid black;
+}
+
+header h1{
+    font-weight: bold;
+    font-size: max(4vmin, 25px);
+    margin: 8px 10px;
+}
+
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 27px;
+        margin: 8px 10px;
+    }
+
+}
+/*   PICTURES SLIDESHOW     */
+  
+  #textPresentation{
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+    
+    background-image: linear-gradient(#a0e09063, #e2f4c556, #a0e09052);
+    border: 1px black solid;
+    border-radius: 10%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 1); 
+  }
+
+  #container {
+    max-width: 1200px;
+    width: 95%;
+
+    background-image: linear-gradient(#a0e0908c, #e2f4c57c, #a0e09080);
+    border: 1px black solid;
+    border-radius: 4%;
+    padding: 20px 30px 20px 30px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 1); 
+  }
+  
+  .slider-wrapper {
+    position: relative;
+  }
+  
+  .slider-wrapper .slide-button {
+    position: absolute;
+    top: 50%;
+    outline: none;
+    border: none;
+    height: 50px;
+    width: 50px;
+    z-index: 5;
+    color: #fff;
+    display: flex;
+    cursor: pointer;
+    font-size: 2.2rem;
+    background: #000;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .slider-wrapper .slide-button:hover {
+    background: #404040;
+  }
+  
+  .slider-wrapper .slide-button#prev-slide {
+    left: -25px;
+    display: none;
+  }
+  
+  .slider-wrapper .slide-button#next-slide {
+    right: -25px;
+  }
+  
+  .slider-wrapper .image-list {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 18px;
+    font-size: 0;
+    list-style: none;
+    margin-bottom: 30px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  
+  .slider-wrapper .image-list::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .slider-wrapper .image-list .image-item {
+    width: 325px;
+    height: 400px;
+    object-fit: cover;
+  }
+  
+  #container .slider-scrollbar {
+    height: 24px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  
+  .slider-scrollbar .scrollbar-track {
+    background: #ccc;
+    width: 100%;
+    height: 2px;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    position: relative;
+  }
+  
+  .slider-scrollbar:hover .scrollbar-track {
+    height: 4px;
+  }
+  
+  .slider-scrollbar .scrollbar-thumb {
+    position: absolute;
+    background: #000;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    height: 100%;
+    cursor: grab;
+    border-radius: inherit;
+  }
+  
+  .slider-scrollbar .scrollbar-thumb:active {
+    cursor: grabbing;
+    height: 8px;
+    top: -2px;
+  }
+  
+  .slider-scrollbar .scrollbar-thumb::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -10px;
+    bottom: -10px;
+  }
+
+  .image-item{
+    border: 2px solid #A8CD9F;
+    border-radius: 2%;
+  }
+  
+  /* Styles for mobile and tablets */
+  @media only screen and (max-width: 1023px) {
+
+    #container{
+        padding: 5px 10px 5px 10px;
+    }
+    #textPresentation{
+        font-size: 30px;
+    }
+    .slider-wrapper .slide-button {
+      display: none !important;
+    }
+  
+    .slider-wrapper .image-list {
+      gap: 10px;
+      margin-bottom: 15px;
+      scroll-snap-type: x mandatory;
+    }
+  
+    .slider-wrapper .image-list .image-item {
+      width: 280px;
+      height: 380px;
+    }
+  
+    .slider-scrollbar .scrollbar-thumb {
+      width: 20%;
+    }
+  }
+
+
+
+
+.flower__leaf{
+  background-image: linear-gradient(to bottom, #ff9f80  ,#ff725e , #ff5349 99%);
+}
+
+.flower__leaf--1{
+    background-color: #f984ef;
+}
+
+
+.f-wrapper--3 .flower__leaf--1{
+  background-color: #b19cd9;
+}
+
+.f-wrapper--3 .f .flower__leaf--8{
+    background-image: linear-gradient(to left bottom, #ffef96 ,#4e4e4e);
+}
+
+.f-wrapper--3 .flower__leaf:not(:first-child){
+    background-image: linear-gradient(to bottom, #a9a9a9   ,#696969 , #808080 99%);
+}
+
+
+.f-wrapper--2 .flower__leaf--1{
+  background-color: #c3aed6;
+}
+
+.f-wrapper--2 .f .flower__leaf--8{
+  background-image: linear-gradient(to left bottom, #f8b195  ,#4e4e4e);
+}
+
+.f-wrapper--2 .flower__leaf:not(:first-child){
+  background-image: linear-gradient(to bottom, #90afc5  ,#336b87 , #2a3132 99%);
+}
+
+@media only screen and (max-width: 1650px) {
+
+  .f-wrapper--1 {
+    top: 96%;
+    left: 90%;
+  }
+
+  .f-wrapper--2 {
+    top: 95.6%;
+    left:5%;
+  }
+
+  .f-wrapper--3 {
+    top: 5%;
+    left: 98%;
+  }
+
+}

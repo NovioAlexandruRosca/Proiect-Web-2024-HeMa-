@@ -15,6 +15,11 @@ main {
 }
 
 #adminPanel{
+
+    position: relative;
+    left:50%;
+    transform: translate(-50%,0%);
+
     background-image: linear-gradient(#a0e0908c, #e2f4c57c, #a0e09080);
     padding: 30px 20px 40px 20px;
     border-radius: 1%;
@@ -26,7 +31,16 @@ main {
     align-items: center;
     flex-direction: column;
 
+    width: 50%; 
+
     margin-top: 50px;
+}
+
+
+@media screen and (max-width: 1620px) {
+    #adminPanel{
+        width: 80%; 
+    }
 }
 
 #controlPanel{
@@ -89,7 +103,7 @@ section p{
 table {
     width: 100%;
     border-collapse: separate; 
-    border-spacing: 7px;
+    border-spacing: 4px;
 }
 th, td {
     text-align: left;
@@ -107,37 +121,98 @@ table h2{
 }
 
 .emoji{
-    padding: 0;
-}
-.idcol{
-    padding-left: 1px;
-    padding-right: 1px;
+    font-size: 20px;
+    padding: 0px;
+    font-weight: bold;
 }
 
 .emoji:hover{
-    background-color: #A8CD9F;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-#textInput{
-    font-family: 'Dancing Script', sans-serif;
-    font-size: 20px;
-    color: black;
-    width: 75%;
-    margin-bottom: 10px;
-    padding: 10px;
+.like:hover{
+    background-color: #496989cb;
 }
 
+.dislike:hover{
+    background-color: #8f2525cb;
+}
+
+.visit:hover{
+    background-color: #A8CD9F;
+}
+
+.clientsTableBody td{
+    text-align: center;
+    background-color: #f2f2f2;
+}
+
+.textInput{
+    font-family: 'Dancing Script', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+    width: 30%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5%;
+    border: 1px solid black;
+    text-align: center;
+}
+
+.textInput:focus{
+    background-color: rgb(219, 217, 217);
+    border: 1px solid #496989cb;
+}
+
+.textInput::placeholder{
+    color: black;
+}
+
+.textInput:not(:last-child){
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+#order_input{
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Dancing Script', sans-serif;
+    width:93%;
+    text-align: center;
+    margin-bottom: 10px;
+    border-radius: 2%;
+}
+
+#order_input:hover{
+    background-color: rgb(219, 217, 217);
+    border: 1px solid #496989cb;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
 
 @media screen and (max-width: 768px) {
-    #textInput{
+    .textInput{
         font-size: 10px;
         margin-top: 10px;
+        padding: 5px;
+    }
+    #order_input{
+        font-size: 10px;
     }
 }
 
 #textInput::placeholder{
     color: black;
+}
+
+.clientsTable{
+    margin-bottom: 10px;
+      
 }
 
 @media screen and (max-width: 768px) {
@@ -160,9 +235,6 @@ table h2{
     .emoji{
         font-size: 8px;
     }
-    .idcol{
-        font-size: 8px;
-    }
 }
 
 @media (max-width: 600px) {
@@ -175,46 +247,32 @@ table h2{
 
 /* FLOWER POSITION */
 
-
 .f-wrapper--1 {
-    top: 96%;
-    left: 90%;
+    top: 80px;
+    right: 100px;
 }
 
 .f-wrapper--2 {
-    top: 95.6%;
-    left:5%;
+    top: 80px;
+    left: 100px;
 }
 
-.f-wrapper--3 {
-    top: 6%;
-    left: 98%;
+.f-wrapper--1 .f{
+    transform: translateX(-50%) rotate(-150deg);
+}
+
+.f-wrapper--2 .f{
+    transform: translateX(-50%) rotate(160deg);
 }
 
 .f-wrapper--2 .flower__leaf--1{
-    background-color: #b0cc12;
+    background-color: #de118b;
 }
 
 .f-wrapper--2 .f .flower__leaf--8{
-    transform: rotate(-50deg);
-    background-image: linear-gradient(to left bottom, #d9ff00fd ,#3f082a);
+    background-image: linear-gradient(to left bottom, #ff43b6 ,#4d1337);;
 }
-
 
 .f-wrapper--2 .flower__leaf:not(:first-child){
-    background-image: linear-gradient(to bottom,#c8ff00 , #952a99 ,#a82476 99%);
+    background-image: linear-gradient(to bottom, #ff43b6 ,#c22887, #1a233a 99%);
 }
-
-
-.f-wrapper--3 .flower__leaf--1{
-    background-color: #1ba9c2;
-}
-
-.f-wrapper--3 .f .flower__leaf--8{
-    background-image: linear-gradient(to left bottom, #2bc5e0 ,#712291);
-}
-
-.f-wrapper--3 .flower__leaf:not(:first-child){
-    background-image: linear-gradient(to bottom, #2bc5e0 ,#712291, #1a2e5f 99%);
-}
-

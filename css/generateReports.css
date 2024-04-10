@@ -64,3 +64,42 @@ section:hover{
     }
     
 }
+
+@media (max-width: 600px) {
+    header p {
+        font-size: 35px;
+        margin: 8px 10px;
+    }
+
+}
+
+
+/* FLOWER POSITION */
+
+.f-wrapper--2 .flower__leaf--1{
+    background-color: #fdbcb4;
+}
+
+.f-wrapper--2 .f .flower__leaf--8{
+    transform: rotate(-50deg);
+    background-image: linear-gradient(to left bottom, #ffe119   ,#4e4e4e);
+}
+
+
+.f-wrapper--2 .flower__leaf:not(:first-child){
+    background-image: linear-gradient(to bottom,#f58231  , #ffab40  ,#ffd8b1 99%);
+}
+
+
+.f-wrapper--3 .flower__leaf--1{
+    background-color: #e6e6e6;
+}
+
+.f-wrapper--3 .f .flower__leaf--8{
+    background-image: linear-gradient(to left bottom, #77dd77  ,#4e4e4e);
+}
+
+.f-wrapper--3 .flower__leaf:not(:first-child){
+    background-image: linear-gradient(to bottom, #add8e6  ,#6495ed , #4682b4 99%);
+}
+

@@ -1,0 +1,153 @@
+.f-wrapper {
+    position: absolute;
+}
+
+.f-wrapper--1 {
+    top: 95%;
+    left: 90%;
+}
+
+.f-wrapper--2 {
+    top: 93.6%;
+    left:5%;
+}
+
+.f-wrapper--3 {
+    top: 8%;
+    left: 98%;
+}
+
+
+@media (max-width: 1000px) {
+
+    .f-wrapper {
+        display: none;
+    }
+}
+
+
+.f-wrapper--2 .f{
+    transform: translateX(-50%) rotate(20deg);
+}
+
+.f-wrapper--2 .flower__leaf--1{
+    width: 8vmin;
+    height: 10vmin;
+    bottom: 2vmin;
+    background-color: #de118b;
+}
+
+.f-wrapper--2 .f .flower__leaf--8{
+    width: 10vmin;
+    height: 9vmin;
+    bottom: 3vmin;
+    left: -30%;
+    transform: rotate(-50deg);
+    background-image: linear-gradient(to left bottom, #ff43b6 ,#4d1337);;
+}
+
+.f-wrapper--2 .flower__leaf:not(:first-child){
+    width: 3.8vmin;
+    height: 10vmin;
+    background-image: linear-gradient(to bottom, #ff43b6 ,#c22887, #1a233a 99%);
+}
+
+.f-wrapper--3 .f{
+    transform: translate(-350%,-50%) rotate(-140deg);
+}
+
+.f-wrapper--3 .flower__leaf--1{
+    width: 8vmin;
+    height: 10vmin;
+    bottom: 2vmin;
+    background-color: #ad2be0;
+}
+
+.f-wrapper--3 .f .flower__leaf--8{
+    width: 10vmin;
+    height: 9vmin;
+    left: -10% !important;
+    background-image: linear-gradient(to left bottom, #ad2be0 ,#712291);
+}
+
+.f-wrapper--3 .flower__leaf:not(:first-child){
+    width: 3.8vmin;
+    height: 10vmin;
+    background-image: linear-gradient(to bottom, #ad2be0 ,#712291, #1a233a 99%);
+}
+
+
+
+
+
+
+
+
+.f{
+    position: absolute;
+    top: 1vmin;
+    left: 50%;
+    transform: translateX(-50%) rotate(-10deg);
+    width: 2vmin;
+    height: 2vmin;
+}
+
+
+.flower__leaf{
+    position: absolute;
+    left: 50%;
+    bottom: 2vmin;
+    transform: translateX(-50%);
+    width: 3vmin;
+    height: 8.4vmin;
+    background-image: linear-gradient(to bottom, #ffa085 ,#fa7373, #1a233a 99%);
+
+    clip-path: ellipse(50% 50% at 50% 50%);
+    transform-origin: center bottom;
+    animation: open-flower 2s 1s backwards;
+}
+
+.flower__leaf--1{
+    width: 6vmin;
+    height: 7.2vmin;
+    bottom: 3vmin;
+    border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%;
+    background-color: #e24f5f;
+    background-image: none;
+    animation: open-flowe--middle  1.4s 1s backwards;
+}
+
+.flower__leaf--2{
+    transform: translateX(-50%) rotate(-30deg);
+}
+.flower__leaf--3{
+    transform: translateX(-50%) rotate(-50deg);
+}
+.flower__leaf--4{
+    transform: translateX(-50%) rotate(-70deg);
+}
+
+.flower__leaf--5{
+    transform: translateX(-50%) rotate(30deg);
+}
+
+.flower__leaf--6{
+    transform: translateX(-50%) rotate(50deg);
+}
+
+.flower__leaf--7{
+    transform: translateX(-50%) rotate(70deg);
+}
+
+@keyframes open-flower{
+        0%{
+            transform:  translateX(-50%) rotate(0);
+        }
+}
+
+@keyframes open-flowe--middle {
+    0%{
+        opacity: 0;
+        transform: translateX(-50%) scale(0);
+    }
+}

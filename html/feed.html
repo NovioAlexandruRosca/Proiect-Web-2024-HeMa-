@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Search</title>
+    <link rel="stylesheet" href="../css/template.css">
+    <link rel="stylesheet" href="../css/cards.css"> 
+    <link rel="stylesheet" href="../css/flower.css"> 
+    <link rel="stylesheet" href="../css/feed.css"> 
+    <link rel="icon" href="../images/website_Icon/plant.png" type="image/x-icon">
+</head>
+
+<body>    
+    <div class="nav">
+        <input type="checkbox" id="nav-check">
+        <div class="nav-header">
+          <div class="nav-title">
+            <div class="left">
+                <img id="plant_Logo" src="../images/website_Icon/plant.png" alt="Logo Small">
+                <h3 class="gradient_Text">HeMa (Herbal Web Manager)</h3>
+            </div>
+          </div>
+        </div>
+        <div class="nav-btn">
+          <label for="nav-check">
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
+        </div>
+        
+        <div class="nav-links">
+          <a href="index.html" >Home</a>
+          <a href="about.html" >About</a>
+          <a href="contact.html" >Contact</a>
+          <a href="landingPage.html">Logout</a>
+        </div>
+      </div>
+
+
+      <div id="adminPanel" >
+
+        <p id="controlPanel">Posts Feed</p>
+
+        <div id="panelLine"></div>
+
+        <section>
+
+            <input class="textInput" id="nameInput" placeholder="Search by name"></input>
+            <input class="textInput" id="clientInput" placeholder="Search by sharer"></input>
+            <input class="textInput" id="dateInput" placeholder="Search by date(dd/mm/yyyy)"></input>
+
+            <select placeholder="Order By" name="order" id="order_input" required>
+              <option disabled hidden selected> 🡦 Order By 🡧</option>
+              <option id="option1">The collection's name</option>
+              <option id="option2">The collection's owner</option>
+              <option id="option3">The posting date</option>
+          </select>
+
+
+            <table id="hiddenTable">
+              <thead>
+                  <tr>
+                      <th><h2>No posts could be found!</h2></th>
+                  </tr>
+              </thead>
+          </table>
+
+
+
+            <table class="clientsTable">
+              <thead>
+                  <tr>
+                      <th><h2>Collection Name</h2></th>
+                      <th><h2>Shared by</h2></th>
+                      <th><h2>Posting Date</h2></th>
+                  </tr>
+              </thead>
+              <tbody class="clientsTableBody">
+                  <tr>
+                      <td class="scrollable-content"><h2>Mountain Plants Collection</h2></td>
+                      <td class="scrollable-content"><h2>Rosca Alexandru David</h2></td>
+                      <td class="scrollable-content"><h2>4/10/2024</h2></td>
+                  </tr>
+              </tbody>
+          
+              <thead>
+                  <tr>
+                      <th colspan="3"><h2>Collection Description</h2></th>
+                  </tr>
+              </thead>
+              <tbody class="clientsTableBody">
+                  <tr>
+                      <td colspan="3"><h2>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</h2></td>
+                  </tr>
+              </tbody>
+              <tfoot>
+                  <tr>
+                      <th class="like"><h2 class="emoji">👍🏻</h2></th>
+                      <th class="dislike"><h2 class="emoji">👎🏻</h2></th>
+                      <th class="visit"><h2 class="emoji">🌱</h2></th>
+                  </tr>
+              </tfoot>
+          </table>
+          
+          <table class="clientsTable">
+            <thead>
+                <tr>
+                    <th><h2>Collection Name</h2></th>
+                    <th><h2>Shared by</h2></th>
+                    <th><h2>Date</h2></th>
+                </tr>
+            </thead>
+            <tbody class="clientsTableBody">
+                <tr>
+                    <td class="scrollable-content"><h2>Random</h2></td>
+                    <td class="scrollable-content"><h2>Popa Andrei</h2></td>
+                    <td class="scrollable-content"><h2>4/10/2024</h2></td>
+                </tr>
+            </tbody>
+        
+            <thead>
+                <tr>
+                    <th colspan="3"><h2>Collection Description</h2></th>
+                </tr>
+            </thead>
+            <tbody class="clientsTableBody">
+                <tr>
+                    <td colspan="3"><h2>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</h2></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th class="like"><h2 class="emoji">👍🏻</h2></th>
+                    <th class="dislike"><h2 class="emoji">👎🏻</h2></th>
+                    <th class="visit"><h2 class="emoji">🌱</h2></th>
+                </tr>
+            </tfoot>
+        </table>
+
+        <table class="clientsTable">
+          <thead>
+              <tr>
+                  <th><h2>Collection Name</h2></th>
+                  <th><h2>Shared by</h2></th>
+                  <th><h2>Date</h2></th>
+              </tr>
+          </thead>
+          <tbody class="clientsTableBody">
+              <tr>
+                  <td class="scrollable-content"><h2>Hehe</h2></td>
+                  <td class="scrollable-content"><h2>Rosca Alexandru David</h2></td>
+                  <td class="scrollable-content"><h2>4/10/2024</h2></td>
+              </tr>
+          </tbody>
+      
+          <thead>
+              <tr>
+                  <th colspan="3"><h2>Collection Description</h2></th>
+              </tr>
+          </thead>
+          <tbody class="clientsTableBody">
+              <tr>
+                  <td colspan="3"><h2>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</h2></td>
+              </tr>
+          </tbody>
+          <tfoot>
+              <tr>
+                  <th class="like"><h2 class="emoji">👍🏻</h2></th>
+                  <th class="dislike"><h2 class="emoji">👎🏻</h2></th>
+                  <th class="visit"><h2 class="emoji">🌱</h2></th>
+              </tr>
+          </tfoot>
+      </table>
+
+      <table class="clientsTable">
+        <thead>
+            <tr>
+                <th><h2>Collection Name</h2></th>
+                <th><h2>Shared by</h2></th>
+                <th><h2>Date</h2></th>
+            </tr>
+        </thead>
+        <tbody class="clientsTableBody">
+            <tr>
+                <td class="scrollable-content"><h2>Medicine Plants</h2></td>
+                <td class="scrollable-content"><h2>Popa Andrei</h2></td>
+                <td class="scrollable-content"><h2>4/10/2024</h2></td>
+            </tr>
+        </tbody>
+    
+        <thead>
+            <tr>
+                <th colspan="3"><h2>Collection Description</h2></th>
+            </tr>
+        </thead>
+        <tbody class="clientsTableBody">
+            <tr>
+                <td colspan="3"><h2>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</h2></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th class="like"><h2 class="emoji">👍🏻</h2></th>
+                <th class="dislike"><h2 class="emoji">👎🏻</h2></th>
+                <th class="visit"><h2 class="emoji">🌱</h2></th>
+            </tr>
+        </tfoot>
+    </table>
+
+    <table class="clientsTable">
+      <thead>
+          <tr>
+              <th><h2>Collection Name</h2></th>
+              <th><h2>Shared by</h2></th>
+              <th><h2>Date</h2></th>
+          </tr>
+      </thead>
+      <tbody class="clientsTableBody">
+          <tr>
+              <td class="scrollable-content"><h2>Medicine Plants</h2></td>
+              <td class="scrollable-content"><h2>Popa Andrei</h2></td>
+              <td class="scrollable-content"><h2>4/10/2024</h2></td>
+          </tr>
+      </tbody>
+  
+      <thead>
+          <tr>
+              <th colspan="3"><h2>Collection Description</h2></th>
+          </tr>
+      </thead>
+      <tbody class="clientsTableBody">
+          <tr>
+              <td colspan="3"><h2>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</h2></td>
+          </tr>
+      </tbody>
+      <tfoot>
+          <tr>
+              <th class="like"><h2 class="emoji">👍🏻</h2></th>
+              <th class="dislike"><h2 class="emoji">👎🏻</h2></th>
+              <th class="visit"><h2 class="emoji">🌱</h2></th>
+          </tr>
+      </tfoot>
+  </table>
+
+
+  <table class="clientsTable">
+    <thead>
+        <tr>
+            <th><h2>Collection Name</h2></th>
+            <th><h2>Shared by</h2></th>
+            <th><h2>Date</h2></th>
+        </tr>
+    </thead>
+    <tbody class="clientsTableBody">
+        <tr>
+            <td class="scrollable-content"><h2>Medicine Plants</h2></td>
+            <td class="scrollable-content"><h2>Popa Andrei</h2></td>
+            <td class="scrollable-content"><h2>4/10/2024</h2></td>
+        </tr>
+    </tbody>
+
+    <thead>
+        <tr>
+            <th colspan="3"><h2>Collection Description</h2></th>
+        </tr>
+    </thead>
+    <tbody class="clientsTableBody">
+        <tr>
+            <td colspan="3"><h2>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</h2></td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th class="like"><h2 class="emoji">👍🏻</h2></th>
+            <th class="dislike"><h2 class="emoji">👎🏻</h2></th>
+            <th class="visit"><h2 class="emoji">🌱</h2></th>
+        </tr>
+    </tfoot>
+</table>
+
+
+<table class="clientsTable">
+  <thead>
+      <tr>
+          <th><h2>Collection Name</h2></th>
+          <th><h2>Shared by</h2></th>
+          <th><h2>Date</h2></th>
+      </tr>
+  </thead>
+  <tbody class="clientsTableBody">
+      <tr>
+          <td class="scrollable-content"><h2>Medicine Plants</h2></td>
+          <td class="scrollable-content"><h2>Popa Andrei</h2></td>
+          <td class="scrollable-content"><h2>4/10/2024</h2></td>
+      </tr>
+  </tbody>
+
+  <thead>
+      <tr>
+          <th colspan="3"><h2>Collection Description</h2></th>
+      </tr>
+  </thead>
+  <tbody class="clientsTableBody">
+      <tr>
+          <td colspan="3"><h2>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</h2></td>
+      </tr>
+  </tbody>
+  <tfoot>
+      <tr>
+          <th class="like"><h2 class="emoji">👍🏻</h2></th>
+          <th class="dislike"><h2 class="emoji">👎🏻</h2></th>
+          <th class="visit"><h2 class="emoji">🌱</h2></th>
+      </tr>
+  </tfoot>
+</table>
+
+
+<table class="clientsTable">
+  <thead>
+      <tr>
+          <th><h2>Collection Name</h2></th>
+          <th><h2>Shared by</h2></th>
+          <th><h2>Date</h2></th>
+      </tr>
+  </thead>
+  <tbody class="clientsTableBody">
+      <tr>
+          <td class="scrollable-content"><h2>Medicine Plants</h2></td>
+          <td class="scrollable-content"><h2>Popa Andrei</h2></td>
+          <td class="scrollable-content"><h2>4/10/2024</h2></td>
+      </tr>
+  </tbody>
+
+  <thead>
+      <tr>
+          <th colspan="3"><h2>Collection Description</h2></th>
+      </tr>
+  </thead>
+  <tbody class="clientsTableBody">
+      <tr>
+          <td colspan="3"><h2>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</h2></td>
+      </tr>
+  </tbody>
+  <tfoot>
+      <tr>
+          <th class="like"><h2 class="emoji">👍🏻</h2></th>
+          <th class="dislike"><h2 class="emoji">👎🏻</h2></th>
+          <th class="visit"><h2 class="emoji">🌱</h2></th>
+      </tr>
+  </tfoot>
+</table>
+
+
+<table class="clientsTable">
+  <thead>
+      <tr>
+          <th><h2>Collection Name</h2></th>
+          <th><h2>Shared by</h2></th>
+          <th><h2>Date</h2></th>
+      </tr>
+  </thead>
+  <tbody class="clientsTableBody">
+      <tr>
+          <td class="scrollable-content"><h2>Medicine Plants</h2></td>
+          <td class="scrollable-content"><h2>Popa Andrei</h2></td>
+          <td class="scrollable-content"><h2>4/10/2024</h2></td>
+      </tr>
+  </tbody>
+
+  <thead>
+      <tr>
+          <th colspan="3"><h2>Collection Description</h2></th>
+      </tr>
+  </thead>
+  <tbody class="clientsTableBody">
+      <tr>
+          <td colspan="3"><h2>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</h2></td>
+      </tr>
+  </tbody>
+  <tfoot>
+      <tr>
+          <th class="like"><h2 class="emoji">👍🏻</h2></th>
+          <th class="dislike"><h2 class="emoji">👎🏻</h2></th>
+          <th class="visit"><h2 class="emoji">🌱</h2></th>
+      </tr>
+  </tfoot>
+</table>
+
+
+<table class="clientsTable">
+  <thead>
+      <tr>
+          <th><h2>Collection Name</h2></th>
+          <th><h2>Shared by</h2></th>
+          <th><h2>Date</h2></th>
+      </tr>
+  </thead>
+  <tbody class="clientsTableBody">
+      <tr>
+          <td class="scrollable-content"><h2>Medicine Plants</h2></td>
+          <td class="scrollable-content"><h2>Popa Andrei</h2></td>
+          <td class="scrollable-content"><h2>4/10/2024</h2></td>
+      </tr>
+  </tbody>
+
+  <thead>
+      <tr>
+          <th colspan="3"><h2>Collection Description</h2></th>
+      </tr>
+  </thead>
+  <tbody class="clientsTableBody">
+      <tr>
+          <td colspan="3"><h2>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</h2></td>
+      </tr>
+  </tbody>
+  <tfoot>
+      <tr>
+          <th class="like"><h2 class="emoji">👍🏻</h2></th>
+          <th class="dislike"><h2 class="emoji">👎🏻</h2></th>
+          <th class="visit"><h2 class="emoji">🌱</h2></th>
+      </tr>
+  </tfoot>
+</table>
+
+
+<table class="clientsTable">
+  <thead>
+      <tr>
+          <th><h2>Collection Name</h2></th>
+          <th><h2>Shared by</h2></th>
+          <th><h2>Date</h2></th>
+      </tr>
+  </thead>
+  <tbody class="clientsTableBody">
+      <tr>
+          <td class="scrollable-content"><h2>Medicine Plants</h2></td>
+          <td class="scrollable-content"><h2>Popa Andrei</h2></td>
+          <td class="scrollable-content"><h2>4/10/2024</h2></td>
+      </tr>
+  </tbody>
+
+  <thead>
+      <tr>
+          <th colspan="3"><h2>Collection Description</h2></th>
+      </tr>
+  </thead>
+  <tbody class="clientsTableBody">
+      <tr>
+          <td colspan="3"><h2>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</h2></td>
+      </tr>
+  </tbody>
+  <tfoot>
+      <tr>
+          <th class="like"><h2 class="emoji">👍🏻</h2></th>
+          <th class="dislike"><h2 class="emoji">👎🏻</h2></th>
+          <th class="visit"><h2 class="emoji">🌱</h2></th>
+      </tr>
+  </tfoot>
+</table>
+
+<table class="clientsTable">
+  <thead>
+      <tr>
+          <th><h2>Collection Name</h2></th>
+          <th><h2>Shared by</h2></th>
+          <th><h2>Date</h2></th>
+      </tr>
+  </thead>
+  <tbody class="clientsTableBody">
+      <tr>
+          <td class="scrollable-content"><h2>Medicine Plants</h2></td>
+          <td class="scrollable-content"><h2>Popa Andrei</h2></td>
+          <td class="scrollable-content"><h2>4/10/2024</h2></td>
+      </tr>
+  </tbody>
+
+  <thead>
+      <tr>
+          <th colspan="3"><h2>Collection Description</h2></th>
+      </tr>
+  </thead>
+  <tbody class="clientsTableBody">
+      <tr>
+          <td colspan="3"><h2>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</h2></td>
+      </tr>
+  </tbody>
+  <tfoot>
+      <tr>
+          <th class="like"><h2 class="emoji">👍🏻</h2></th>
+          <th class="dislike"><h2 class="emoji">👎🏻</h2></th>
+          <th class="visit"><h2 class="emoji">🌱</h2></th>
+      </tr>
+  </tfoot>
+</table>
+
+<table class="clientsTable">
+  <thead>
+      <tr>
+          <th><h2>Collection Name</h2></th>
+          <th><h2>Shared by</h2></th>
+          <th><h2>Date</h2></th>
+      </tr>
+  </thead>
+  <tbody class="clientsTableBody">
+      <tr>
+          <td class="scrollable-content"><h2>Medicine Plants</h2></td>
+          <td class="scrollable-content"><h2>Popa Andrei</h2></td>
+          <td class="scrollable-content"><h2>4/10/2024</h2></td>
+      </tr>
+  </tbody>
+
+  <thead>
+      <tr>
+          <th colspan="3"><h2>Collection Description</h2></th>
+      </tr>
+  </thead>
+  <tbody class="clientsTableBody">
+      <tr>
+          <td colspan="3"><h2>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</h2></td>
+      </tr>
+  </tbody>
+  <tfoot>
+      <tr>
+          <th class="like"><h2 class="emoji">👍🏻</h2></th>
+          <th class="dislike"><h2 class="emoji">👎🏻</h2></th>
+          <th class="visit"><h2 class="emoji">🌱</h2></th>
+      </tr>
+  </tfoot>
+</table>
+           
+        </section>
+    
+    </div>
+
+    <div class="f-wrapper f-wrapper--1">
+        <div class="f">
+            <div class="flower__leaf flower__leaf--1"></div>
+            <div class="flower__leaf flower__leaf--2"></div>
+            <div class="flower__leaf flower__leaf--3"></div>
+            <div class="flower__leaf flower__leaf--4"></div>
+            <div class="flower__leaf flower__leaf--5"></div>
+            <div class="flower__leaf flower__leaf--6"></div>
+            <div class="flower__leaf flower__leaf--7"></div>
+        </div>
+    </div>
+
+    <div class="f-wrapper f-wrapper--2">
+        <div class="f">
+            <div class="flower__leaf flower__leaf--1"></div>
+            <div class="flower__leaf flower__leaf--2"></div>
+            <div class="flower__leaf flower__leaf--3"></div>
+            <div class="flower__leaf flower__leaf--4"></div>
+            <div class="flower__leaf flower__leaf--5"></div>
+            <div class="flower__leaf flower__leaf--6"></div>
+            <div class="flower__leaf flower__leaf--7"></div>
+        </div>
+    </div>
+
+    <main>
+
+    </main>
+    <footer>
+        <img id = "github" class="socialMediaIcon" src="../images/social_media/github.png" alt="Logo Small">
+        <p class="gradient_Text">© 2024 HeMa. All rights reserved.</p>
+        <img id = "uaic" class="socialMediaIcon" src="../images/social_media/uaic_logo_small.png" alt="Logo Small">
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../scripts/footer.js"></script>
+    <script src="../scripts/feed.js"></script>
+</body>
+</html>

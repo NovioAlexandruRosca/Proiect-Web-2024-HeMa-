@@ -22,4 +22,3 @@ github_general.addEventListener("click", function(){
 uaic_general.addEventListener("click", function(){
     window.open('https://www.info.uaic.ro',"_blank");
 });
-

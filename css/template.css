@@ -55,6 +55,115 @@ body::-webkit-scrollbar-thumb:hover{
 }
 /*         ↓↓↓         HEADER         ↓↓↓         */
 
+.nav {
+  /* height: 50px; */
+  width: 100%;
+  position: relative;
+  background-color: #496989e5;
+  color:#A8CD9F;
+  margin-bottom: 0px;
+}
+
+.nav > .nav-header {
+  display: inline;
+}
+
+.nav > .nav-header > .nav-title {
+  display: inline-block;
+  font-size: 22px;
+  color: #fff;
+  padding: 10px 10px 10px 10px;
+}
+
+.nav > .nav-btn {
+  display: none;
+}
+
+.nav > .nav-links {
+    display: inline;
+    float: right;
+    font-size: 3vmin;
+    margin-top: 20px;
+    margin-right: 100px;
+}
+
+.nav > .nav-links > a {
+  display: inline-block;
+  padding: 13px 20px 13px 20px;
+  text-decoration: none;
+  color: #A8CD9F;
+  border-radius: 10%;
+  transition: text-shadow 0.2s ease;
+    cursor: url(../images/cursors/PottedPlantNS.cur),auto;
+}
+
+.nav > .nav-links > a:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+  text-shadow: 2px 2px 4px #E2F4C5;
+}
+
+.nav > #nav-check {
+  display: none;
+}
+
+@media (max-width:600px) {
+  .nav > .nav-btn {
+    display: inline-block;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+  }
+  .nav > .nav-btn > label {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    padding: 13px;
+  }
+  .nav > .nav-btn > label:hover,.nav  #nav-check:checked ~ .nav-btn > label {
+    background-color: #496989e5;
+  }
+  .nav > .nav-btn > label > span {
+    display: block;
+    width: 25px;
+    height: 10px;
+    border-top: 2px solid #eee;
+  }
+  .nav > .nav-links {
+    position: absolute;
+    display: block;
+    width: 100%;
+    background-color: #496989;
+    transition: all 0.3s ease-in;
+    overflow-y: hidden;
+    top: 69px;
+    left: 0px;
+    z-index: 2;
+  }
+  .nav > .nav-links > a {
+    display: block;
+    width: 100%;
+  }
+  .nav > #nav-check:not(:checked) ~ .nav-links {
+    height: 0px;
+  }
+  .nav > #nav-check:checked ~ .nav-links {
+    height: calc(100vh - 50px);
+    overflow-y: auto;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 header {
     display: flex;
     justify-content: space-between;
@@ -154,14 +263,13 @@ header a:hover{
     padding-bottom: 12px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1000px) {
     header {
         padding: 8px 0px 7px 0px; 
         margin-bottom: 0px;
     }
     .left{
         padding-left: 20px;
-        padding-right: 150px;
     }
     .left h1{
         font-weight: bold;
@@ -172,6 +280,13 @@ header a:hover{
     }
     .right{
         display: none;
+    }
+    .nav > .nav-links {
+        margin-top: 6px;
+        margin-right: 20px;
+    }
+    .nav-btn{
+      margin-top: 12px;
     }
 }
 

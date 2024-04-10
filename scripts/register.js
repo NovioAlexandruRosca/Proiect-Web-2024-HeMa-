@@ -1,7 +1,7 @@
 const login_button = document.getElementById("register");
 
 login_button.addEventListener("click",() => {
-    window.location.href = "/";
+    window.location.href = "../html/login.html";
 });
 
 document.getElementById("Email").addEventListener("click", () => {
