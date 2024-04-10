@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile | HeMa</title>
+    <title>User Profile</title>
     <link rel="stylesheet" href="../css/template.css">
-    <link rel="stylesheet" href="../css/cards.css">
-    <link rel="stylesheet" href="../css/test.css">
-    <link rel="stylesheet" href="../css/profile.css">
+    <link rel="stylesheet" href="../css/hover-cards.css">
+    <!-- <link rel="stylesheet" href="../css/profile.css"> -->
+    <link rel="stylesheet" href="../css/collection-list.css">
     <link rel="icon" href="../images/website_Icon/plant.png" type="image/x-icon">
 </head>
+
 
 <body>
     <header>
@@ -18,6 +19,12 @@
             <img id="plant_Logo" src="../images/website_Icon/plant.png" alt="Logo Small">
             <h1 class="gradient_Text">HeMa (Herbal Web Manager)</h1>
         </div>
+        
+        <form action="" class="search_Bar">
+            <input type="text" placeholder="search plant" name="q" autocomplete="off">
+            <button type="submit"><img src="../images/website_Icon/search.png" alt=""></button>
+        </form>
+
         <div class="right">
             <nav>
                 <ul>
@@ -28,112 +35,194 @@
             </nav>
         </div>
     </header>
-
-    <main class="profile-main">
-
-        <div class="profile-header gradient_Text">
-            <img src="../images/profile/user.png" alt="Profile Picture" class="profile-pic">
-            <div class="user-details">
-                <h2>JohnDoe123</h2>
-                <p class="user-info">123 Green Street, Herbville, Earth</p>
-                <p class="user-info">johndoe123@gmail.com</p>
+    <main>
+        <div class="container">
+            <div class="main-body">
+                <div class="gutters-sm">
+                    <div class="mb-3">
+                        <div class="collections-card">
+                            <div>
+                                <div class="d-flex flex-column align-items-center text-center">
+                                    <h2 class="collections-title">PROFILE</h2>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" width="150">
+                                    <div class="collections  collection-particularity">
+                                        <h4>John Doe</h4>
+                                        <p>Full Stack Developer</p>
+                                        <p>Bay Area, San Francisco, CA</p>
+                                        <div class="button-div">
+                                            <button class="format-btn">Follow</button>
+                                            <button class="format-btn">Message</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="card collections-card">
+                            <h2 class="collections-title">SOCIAL MEDIA</h2>
+                            <div class="collections">
+                                <div class="collection-item">
+                                    <button class="socialMediaIcon2"><img src="../images/social_media/icons8-facebook-100.png" alt="Facebook"></button>
+                                </div>
+                                <div class="collection-item">
+                                    <button class="socialMediaIcon2"><img src="../images/social_media/icons8-github-100.png" alt="Twitter"></button>
+                                </div>
+                                <div class="collection-item">
+                                    <button class="socialMediaIcon2"><img src="../images/social_media/icons8-instagram-100.png" alt="Instagram"></button>
+                                </div>
+                                <div class="collection-item">
+                                    <button class="socialMediaIcon2"><img src="../images/social_media/icons8-twitter-100.png" alt="LinkedIn"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="card collections-card">
+                            <h2 class="collections-title">My Collections</h2>
+                            <div class="collections">
+                                <figure>
+                                    <img src="https://picsum.photos/id/287/250/300" alt="Mountains">
+                                    <figcaption>Collection1</figcaption>
+                                </figure>
+                                <figure style="--c:#fff5">
+                                    <img src="https://picsum.photos/id/475/250/300" alt="Mountains">
+                                    <figcaption>Collection2</figcaption>
+                                </figure>
+                                <figure>
+                                    <img src="https://picsum.photos/id/287/250/300" alt="Mountains">
+                                    <figcaption>Collection3</figcaption>
+                                </figure>
+                                <figure style="--c:#fff5">
+                                    <img src="https://picsum.photos/id/475/250/300" alt="Mountains">
+                                    <figcaption>Collection4</figcaption>
+                                </figure>
+                                <figure>
+                                    <img src="https://picsum.photos/id/287/250/300" alt="Mountains">
+                                    <figcaption>Collection5</figcaption>
+                                </figure>
+                                <figure style="--c:#fff5">
+                                    <img src="https://picsum.photos/id/475/250/300" alt="Mountains">
+                                    <figcaption>Collection6</figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="plant-cards-container">
-            <div class="card">
-                <div class="wrap animate pop">
-                    <div class="overlay">
-                        <div class="overlay-content animate slide-left delay-2">
-                            <h1 class="animate slide-left pop delay-4">Plant1</h1>
-                            <p class="animate slide-left pop delay-5" style="color: white; margin-bottom: 2rem;">Kingdom: <em>Plantae</em></p>
+        
+        <!-- <div class="profile-container">
+            <div id="big-container">
+                <div id="container">
+                    <h2 style="text-align:center">User Profile Card</h2>
+                        <div class="card">
+                        <img src="../images/background/team2.jpg" alt="John" style="width:100%">
+                        <h1>John Doe</h1>
+                        <p class="title">CEO & Founder, Example</p>
+                        <p>Harvard University</p>
+                        <div class="profile-header">
+                            <img src="../images/website_Icon/LittleCactus.jpg" alt="Plant emoji" class="profile-picture">
+                            <h1>John Doe</h1>
+                            <p>Full Stack Developer</p>
+                            <p>Bay Area, San Francisco, CA</p>
+                            <button class="follow-btn">Follow</button>
+                            <button class="message-btn">Message</button>
                         </div>
-                        <div class="image-content animate slide delay-5"></div>
-                        <div class="dots animate">
-                            <div class="dot animate slide-up delay-6"></div>
-                            <div class="dot animate slide-up delay-7"></div>
-                            <div class="dot animate slide-up delay-8"></div>
+                        <div style="margin: 24px 0;">
+                            <a href="https://www.instagram.com/andreistandard/"><i class="fa fa-instagram"></i></a> 
+                            <a href="https://twitter.com/elonmusk"><i class="fa fa-twitter"></i></a>  
+                            <a href="https://www.linkedin.com/in/popa-andrei-2a8063271/"><i class="fa fa-linkedin"></i></a>  
+                            <a href="https://www.facebook.com/andreistandard"><i class="fa fa-facebook"></i></a> 
                         </div>
-                    </div>
-                    <div class="text">
-                        <p><img class="inset" src="https://assets.codepen.io/4787486/oak_1.jpg" alt="" />Trees are woody perennial plants that are a member of the kingdom <em>Plantae</em>. All species of trees are grouped by their genus, family, and order. This helps make identifying and studying trees easier.</p>
-                        <p>Apart from providing oxygen for the planet and beauty when they bloom or turn color, trees are very useful. Certain species of hardwood and softwood trees are excellent for timber, making furniture, and paper.</p>
-                        <p>When managed properly, trees are a good source of renewable energy and construction material.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="wrap animate pop">
-                    <div class="overlay">
-                        <div class="overlay-content animate slide-left delay-2">
-                            <h1 class="animate slide-left pop delay-4">Plant2</h1>
-                            <p class="animate slide-left pop delay-5" style="color: white; margin-bottom: 2rem;">Kingdom: <em>Plantae</em></p>
-                        </div>
-                        <div class="image-content animate slide delay-5"></div>
-                        <div class="dots animate">
-                            <div class="dot animate slide-up delay-6"></div>
-                            <div class="dot animate slide-up delay-7"></div>
-                            <div class="dot animate slide-up delay-8"></div>
-                        </div>
-                    </div>
-                    <div class="text">
-                        <p><img class="inset" src="https://assets.codepen.io/4787486/oak_1.jpg" alt="" />Trees are woody perennial plants that are a member of the kingdom <em>Plantae</em>. All species of trees are grouped by their genus, family, and order. This helps make identifying and studying trees easier.</p>
-                        <p>Apart from providing oxygen for the planet and beauty when they bloom or turn color, trees are very useful. Certain species of hardwood and softwood trees are excellent for timber, making furniture, and paper.</p>
-                        <p>When managed properly, trees are a good source of renewable energy and construction material.</p>
+                        <p><button class="contact-btn">Contact</button></p>
                     </div>
                 </div>
-            </div>
-            <div class="card">
-                <div class="wrap animate pop">
-                    <div class="overlay">
-                        <div class="overlay-content animate slide-left delay-2">
-                            <h1 class="animate slide-left pop delay-4">Plant3</h1>
-                            <p class="animate slide-left pop delay-5" style="color: white; margin-bottom: 2rem;">Kingdom: <em>Plantae</em></p>
-                        </div>
-                        <div class="image-content animate slide delay-5"></div>
-                        <div class="dots animate">
-                            <div class="dot animate slide-up delay-6"></div>
-                            <div class="dot animate slide-up delay-7"></div>
-                            <div class="dot animate slide-up delay-8"></div>
-                        </div>
+                <div id="container">
+                    <h1>&bull; Profile &bull;</h1>
+                    <div class="profile-header">
+                        <img src="profile-pic.jpg" alt="Profile Picture" class="profile-picture">
+                        <h1>John Doe</h1>
+                        <button class="follow-btn">Follow</button>
+                        <button class="message-btn">Message</button>
                     </div>
-                    <div class="text">
-                        <p><img class="inset" src="https://assets.codepen.io/4787486/oak_1.jpg" alt="" />Trees are woody perennial plants that are a member of the kingdom <em>Plantae</em>. All species of trees are grouped by their genus, family, and order. This helps make identifying and studying trees easier.</p>
-                        <p>Apart from providing oxygen for the planet and beauty when they bloom or turn color, trees are very useful. Certain species of hardwood and softwood trees are excellent for timber, making furniture, and paper.</p>
-                        <p>When managed properly, trees are a good source of renewable energy and construction material.</p>
+                    
+                    <div class="social-links">
+                        <a href="https://bootdey.com" target="_blank">Website</a>
+                        <a href="https://github.com/bootdey" target="_blank">Github</a>
+                        <a href="https://twitter.com/bootdey" target="_blank">Twitter</a>
+                        <a href="https://instagram.com/bootdey" target="_blank">Instagram</a>
+                        <a href="https://facebook.com/bootdey" target="_blank">Facebook</a>
+                    </div>
+                    
+                    <div class="user-details">
+                        
+                        <div class="details">
+                        <h2>Full Name</h2>
+                        <p>Kenneth Valdez</p>
+                        <h2>Email</h2>
+                        <p>fip@jukmuh.al</p>
+                        <h2>Phone</h2>
+                        <p>(239) 816-9029</p>
+                        <h2>Mobile</h2>
+                        <p>(320) 380-4539</p>
+                        <h2>Address</h2>
+                        <p>Bay Area, San Francisco, CA</p>
+                        <button class="edit-btn">Edit</button>
+                        </div>
+                        
+                        <div class="project-status">
+                        <h2>Project Status</h2>
+                        <label for="warmth">Warmth</label>
+                        <progress id="warmth" value="70" max="100">70 %</progress>
+                        
+                        <label for="humidity">Humidity</label>
+                        <progress id="humidity" value="80" max="100">80 %</progress>
+                        
+                        <label for="light">Light</label>
+                        <progress id="light" value="50" max="100">50 %</progress>
+                        
+                        <label for="fertility-of-soil">Fertility of Soil</label>
+                        <progress id="fertility-of-soil" value="60" max="100">60 %</progress>
+                        
+                        <label for="parasites">Parasites</label>
+                        <progress id="parasites" value="90" max="100">90 %</progress>
+                        </div>
+                        
                     </div>
                 </div>
-            </div>
-            <div class="card">
-                <div class="wrap animate pop">
-                    <div class="overlay">
-                        <div class="overlay-content animate slide-left delay-2">
-                            <h1 class="animate slide-left pop delay-4">Plant4</h1>
-                            <p class="animate slide-left pop delay-5" style="color: white; margin-bottom: 2rem;">Kingdom: <em>Plantae</em></p>
+                <div id="container">
+                    <h2 style="text-align:center">User Profile Card</h2>
+                        <div class="card">
+                        <img src="../images/background/team2.jpg" alt="John" style="width:100%">
+                        <h1>John Doe</h1>
+                        <p class="title">CEO & Founder, Example</p>
+                        <p>Harvard University</p>
+                        <div class="profile-header">
+                            <img src="../images/website_Icon/LittleCactus.jpg" alt="Plant emoji" class="profile-picture">
+                            <h1>John Doe</h1>
+                            <p>Full Stack Developer</p>
+                            <p>Bay Area, San Francisco, CA</p>
+                            <button class="follow-btn">Follow</button>
+                            <button class="message-btn">Message</button>
                         </div>
-                        <div class="image-content animate slide delay-5"></div>
-                        <div class="dots animate">
-                            <div class="dot animate slide-up delay-6"></div>
-                            <div class="dot animate slide-up delay-7"></div>
-                            <div class="dot animate slide-up delay-8"></div>
+                        <div style="margin: 24px 0;">
+                            <a href="https://www.instagram.com/andreistandard/"><i class="fa fa-instagram"></i></a> 
+                            <a href="https://twitter.com/elonmusk"><i class="fa fa-twitter"></i></a>  
+                            <a href="https://www.linkedin.com/in/popa-andrei-2a8063271/"><i class="fa fa-linkedin"></i></a>  
+                            <a href="https://www.facebook.com/andreistandard"><i class="fa fa-facebook"></i></a> 
                         </div>
-                    </div>
-                    <div class="text">
-                        <p><img class="inset" src="https://assets.codepen.io/4787486/oak_1.jpg" alt="" />Trees are woody perennial plants that are a member of the kingdom <em>Plantae</em>. All species of trees are grouped by their genus, family, and order. This helps make identifying and studying trees easier.</p>
-                        <p>Apart from providing oxygen for the planet and beauty when they bloom or turn color, trees are very useful. Certain species of hardwood and softwood trees are excellent for timber, making furniture, and paper.</p>
-                        <p>When managed properly, trees are a good source of renewable energy and construction material.</p>
+                        <p><button class="contact-btn">Contact</button></p>
                     </div>
                 </div>
+
             </div>
-            
-        </div>
+        </div> -->
     </main>
-    <footer>
-        <img id = "github" class="socialMediaIcon" src="../images/social_media/github.png" alt="Logo Small">
-        <p class="gradient_Text">© 2024 HeMa. All rights reserved.</p>
-        <img id = "uaic" class="socialMediaIcon" src="../images/social_media/uaic_logo_small.png" alt="Logo Small">
-    </footer>
-    <!-- Scripts -->
-    <script src="../scripts/script.js"></script>
+  <footer>
+    <img id = "github" class="socialMediaIcon" src="../images/social_media/github.png" alt="Logo Small">
+    <p class="gradient_Text">© 2024 HeMa. All rights reserved.</p>
+    <img id = "uaic" class="socialMediaIcon" src="../images/social_media/uaic_logo_small.png" alt="Logo Small">
+</footer>
 </body>
-
 </html>
