@@ -62,6 +62,7 @@ main {
 
 #headerLogin
 {
+    margin-top: 20px;
     font-size: max(9vmin, 80px);
     position: relative;
     text-align: center;
@@ -125,6 +126,15 @@ main {
         margin-left: 50px;
         margin-right: 40px;
         transform: translate(0%,-7%);
+    }
+    .login{
+        margin-left: 0px;
+        margin-right: 0px;
+        width:95%;
+    }
+    #login1 #headerLogin{
+        padding-bottom: 70px;
+        margin-top: 30px;
     }
 }
 
@@ -273,7 +283,11 @@ form p
     #submit{
         transform: translate(-65%,0%);
     }
-    
+
+    #textBox{
+        margin-top: 50px;
+    }
+
     #submit:hover{
         width:130px;
         height: 27px;
@@ -292,9 +306,6 @@ form p
 footer {
     margin-top: 100px;
 }
-
-
-
 
 .f-wrapper--2 .flower__leaf--1{
     background-color: #ff847c;

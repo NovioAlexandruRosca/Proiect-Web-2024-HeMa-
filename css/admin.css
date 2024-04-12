@@ -15,6 +15,7 @@ main {
 }
 
 #adminPanel{
+    margin-top: 20px;
     background-image: linear-gradient(#a0e0908c, #e2f4c57c, #a0e09080);
     padding: 30px 20px 40px 20px;
     border-radius: 4%;

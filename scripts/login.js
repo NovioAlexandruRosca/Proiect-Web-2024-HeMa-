@@ -1,3 +1,16 @@
+document.addEventListener("DOMContentLoaded", function() {
+
+        document.getElementById('login_form').addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        if(localStorage.getItem('clientIsAdmin') == 'true'){
+            window.location.href = '../html/admin.html';
+        }else{
+            window.location.href = '../html/index.html';
+        }
+    });
+});
+
 const register_button = document.getElementById("register");
 
 register_button.addEventListener("click",() => {

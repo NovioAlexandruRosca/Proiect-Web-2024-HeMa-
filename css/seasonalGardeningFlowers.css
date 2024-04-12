@@ -1,0 +1,45 @@
+.f-wrapper--2 {
+    left: 10vw;
+}
+
+.f-wrapper--2 .f{
+    transform: translate(-350%,-50%) rotate(-340deg);
+}
+
+
+.f-wrapper--2 .flower__leaf--1 {
+    background-color: #ff847c;
+}
+
+.f-wrapper--2 .f .flower__leaf--8 {
+    transform: rotate(-50deg);
+    background-image: linear-gradient(to left bottom, #feceab, #4e4e4e);
+}
+
+.f-wrapper--2 .flower__leaf:not(:first-child) {
+    background-image: linear-gradient(to bottom, #f2d3c4, #f9e2d2, #f1f5f6 99%);
+}
+
+.f-wrapper--3 .flower__leaf--1 {
+    background-color: #8be9fd;
+}
+
+.f-wrapper--3 .f .flower__leaf--8 {
+    background-image: linear-gradient(to left bottom, #ffbe0b, #4e4e4e);
+}
+
+.f-wrapper--3 .flower__leaf:not(:first-child) {
+    background-image: linear-gradient(to bottom, #d6f9ff, #add8e6, #c0c0c0 99%);
+}
+
+.f-wrapper--1 .flower__leaf--1 {
+    background-color: #b19cd9;
+}
+
+.f-wrapper--1 .f .flower__leaf--8 {
+    background-image: linear-gradient(to left bottom, #ffef96, #4e4e4e);
+}
+
+.f-wrapper--1 .flower__leaf:not(:first-child) {
+    background-image: linear-gradient(to bottom, #ff6b6b, #f3c623, #ffaa00 99%);
+}

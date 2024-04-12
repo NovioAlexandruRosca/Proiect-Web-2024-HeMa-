@@ -1,0 +1,57 @@
+.blog-post:hover{
+    background-color: #58a399f8;
+    box-shadow: 0px 0px 40px rgba(0, 0, 0, 1);
+}
+
+
+.f-wrapper--2 .flower__leaf--1 {
+    background-color: #ff8a65; /* New color */
+}
+
+.f-wrapper--2 .f .flower__leaf--8 {
+    transform: rotate(-50deg);
+    background-image: linear-gradient(to left bottom, #fcbf49, #fc1a1a); /* New gradient colors */
+}
+
+.f-wrapper--2 .flower__leaf:not(:first-child) {
+    background-image: linear-gradient(to bottom, #ff8a65, #ffcd3c, #a8ff78 99%); /* New gradient colors */
+}
+
+.f-wrapper--3 .flower__leaf--1 {
+    background-color: #c4fb6d; /* New color */
+}
+
+.f-wrapper--3 .f .flower__leaf--8 {
+    background-image: linear-gradient(to left bottom, #ff68ff, #7d00ff); /* New gradient colors */
+}
+
+.f-wrapper--3 .flower__leaf:not(:first-child) {
+    background-image: linear-gradient(to bottom, #ff6b6b, #f3c623, #ffaa00 99%); /* New gradient colors */
+}
+
+.f-wrapper--1 .flower__leaf--1 {
+    background-color: #9cd9fb; /* New color */
+}
+
+.f-wrapper--1 .f .flower__leaf--8 {
+    background-image: linear-gradient(to left bottom, #ff68ff, #7d00ff); /* New gradient colors */
+}
+
+.f-wrapper--1 .flower__leaf:not(:first-child) {
+    background-image: linear-gradient(to bottom, #ff6b6b, #f3c623, #ffaa00 99%); /* New gradient colors */
+}
+
+
+.f-wrapper--2 {
+    top: 90px;
+    left: 10vw;
+}
+
+.f-wrapper--3 {
+    top: 90px;
+    left: 98vw;
+}
+  
+.f-wrapper--2 .f{
+    transform: translate(-350%,-50%) rotate(160deg);
+}
