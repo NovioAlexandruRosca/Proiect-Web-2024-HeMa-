@@ -1,0 +1,190 @@
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-content: center;
+    background: #425a52;
+}
+
+button {
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 8px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
+}
+
+a {
+    text-decoration: none;
+    font-size: 22px;
+    color: black;
+}
+
+button:hover, a:hover {
+    opacity: 0.7;
+} 
+
+.format-btn {
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
+.gutters-sm {
+    margin-right: -8px;
+    margin-left: -8px;
+}
+
+.gutters-sm>.col, .gutters-sm>[class*=col-] {
+    padding-right: 8px;
+    padding-left: 8px;
+}
+
+.mb-3, .my-3 {
+    margin-bottom: 1rem!important;
+}
+
+.button-div { 
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.main-body {
+    padding: 15px;
+}
+
+.collections-container {
+    text-align: center; 
+    margin: 20px 0; 
+}
+
+
+.collections-card {
+    display: flex;
+    flex-direction: column;
+    word-wrap: break-word;
+    flex: 1 1 auto;
+
+    background-clip: border-box;
+    border: 0 solid rgba(0,0,0,.125);
+
+    position: relative;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
+    background-color: #fff; 
+    border-radius: 0.25rem; 
+    padding: 1rem;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06); 
+    text-align: center;
+    margin: auto;
+    max-width: 75%; 
+    min-width: 0;
+    overflow: hidden;
+}
+
+.collections-title {
+    font-size: 24px;
+    color: #3a3a3a; 
+    margin-bottom: 15px; 
+    text-transform: uppercase; 
+}
+
+.collection-particularity {
+    flex-direction: column;
+}
+
+.collections {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; 
+    align-items: center;
+    gap: 10px;
+    padding: 0%;
+}
+
+.collection-button {
+    width: calc(33.333% - 20px); 
+    margin: 10px; 
+}
+
+.collection-button button {
+    width: 100%; 
+    padding: 10px 15px; 
+    font-size: 16px; 
+    font-weight: bold; 
+    color: white; 
+    background-color: #4CAF50; 
+    border: none;
+    border-radius: 5px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
+    margin: 5px;
+}
+
+.collection-button button:hover {
+    background-color: #367c39; 
+}
+
+.collection-item {
+    width: calc(25% - 20px);
+    margin: 5px;
+    flex: 1 0 21%;
+}
+
+
+
+.socialMediaIcon2{
+    width: calc(25% - 10px);
+    padding: 10%;
+    border: none;
+    background-color: transparent;
+
+    width: max(3vmin, 25px); 
+    height: max(3vmin, 25px); 
+    margin: auto; 
+    opacity: 0.6; 
+
+    display: inline-block;
+    position: relative;
+    width: auto;
+    height: auto;
+    transition: opacity 0.3s ease;
+}
+
+.socialMediaIcon2:hover{
+    opacity: 100%;
+}
+
+
+
+
+
+
+.col {
+    padding: 15px;
+    flex: 2;
+}
+
+.central-column {
+    flex: 3; 
+}
+
+.left-column,
+.right-column {
+    width: 20%; 
+}
+
+.central-column {
+    width: 60%; 
+}
+
+@media (max-width: 768px) {
+    .collection-card {
+        max-width: 100%; 
+    }
+}
