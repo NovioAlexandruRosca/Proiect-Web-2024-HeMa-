@@ -1,0 +1,176 @@
+main{
+    display: flex;
+    justify-content: center;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width:50%;
+    margin-top: 50px;
+    background-color: rgba(255, 255, 255, 0.733);
+    border-radius: 32px;
+    border: 2px solid black;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
+}
+
+.container p{
+    color:black;
+    font-size: 25px;
+}
+
+.blog-post{
+    display: flex;
+    flex-direction: column;
+    width:80%;
+    background-color: #58a399ab;
+    margin-bottom: 20px;
+    border-radius: 32px;
+    padding:20px 30px 20px 30px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
+}
+
+.blog-post p{
+    text-align: center;
+}
+
+.blog-post h2{
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.image{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.image img{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 32px;
+    margin-left:5px;
+    margin-right:5px;
+    border: 1px solid #E2F4C5;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
+}
+
+.item{
+    margin-top: 10px;
+}
+
+#AddNew{
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    background-color: #58a399ab;
+    margin-bottom: 20px;
+    border-radius: 32px;
+    padding:20px 30px 20px 30px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
+    transition: background-color 0.3s;
+}
+
+a{
+    color: inherit;
+    text-decoration: none;
+}
+
+#AddNew:hover{
+    background-color: #458b82;
+}
+
+#bestImage{
+    width:400px;
+}
+
+#titleHowToPress{
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    width:80%;
+    padding: 30px 20px 30px 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#titleHowToPress #signature{
+    float:right;
+}
+
+#titleHowToPress #date{
+    float:left;
+}
+
+
+@media (max-width: 1140px) {
+    .image{
+        flex-direction: column;
+        align-items: center;
+    }
+    #titleHowToPress #signature{
+        float:none;
+    }
+    #titleHowToPress #date{
+        float:none;
+    }
+    .container{
+        width: 600px;
+    }
+}
+
+@media (max-width: 550px) {
+    .image{
+        flex-direction: column;
+        align-items: center;
+    }
+    #titleHowToPress #signature{
+        float:none;
+    }
+    .container{
+        width: 95%;
+    }
+    #bestImage{
+        width:260px;
+    }
+    h1{
+        font-size: 50px;
+    }
+}
+
+
+.f-wrapper--1 {
+    top: 97.9%;
+    left: 90vw;
+}
+
+.f-wrapper--2 {
+    top: 97.9%;
+    left: 5vw;
+}
+
+.f-wrapper--3 {
+    top: 90px;
+    left: 98vw;
+}
+  
+.f-wrapper--3 .f{
+    transform: translate(-350%,-50%) rotate(-160deg);
+}
+
+.f-wrapper--2 {
+    left: 10vw;
+}
+
+.f-wrapper--2 .f{
+    transform: translate(-350%,-50%) rotate(-340deg);
+}
+
+#back{
+    width: 100px;
+    height: 100px;
+    background-color: red;
+}

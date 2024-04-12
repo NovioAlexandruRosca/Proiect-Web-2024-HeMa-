@@ -1,0 +1,37 @@
+.f-wrapper--2 .flower__leaf--1{
+    background-color: #ff847c;
+}
+
+.f-wrapper--2 .f .flower__leaf--8{
+    transform: rotate(-50deg);
+    background-image: linear-gradient(to left bottom, #feceab  ,#4e4e4e);
+}
+
+
+.f-wrapper--2 .flower__leaf:not(:first-child){
+    background-image: linear-gradient(to bottom,#669bbc  , #8fbfbf  ,#cad2c5 99%);
+}
+
+.f-wrapper--3 .flower__leaf--1{
+    background-color: #8be9fd;
+}
+
+.f-wrapper--3 .f .flower__leaf--8{
+    background-image: linear-gradient(to left bottom, #ffbe0b  ,#4e4e4e);
+}
+
+.f-wrapper--3 .flower__leaf:not(:first-child){
+    background-image: linear-gradient(to bottom, #a9a9a9   ,#696969 , #808080 99%);
+}
+
+.f-wrapper--1 .flower__leaf--1{
+    background-color: #b19cd9;  
+}
+
+.f-wrapper--1 .f .flower__leaf--8{
+    background-image: linear-gradient(to left bottom, #ffef96 ,#4e4e4e);
+}
+
+.f-wrapper--1 .flower__leaf:not(:first-child){
+    background-image: linear-gradient(to bottom, #fb5607  ,#ff006e , #8338ec 99%);
+}

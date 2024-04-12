@@ -1,0 +1,36 @@
+.f-wrapper--2 .flower__leaf--1 {
+    background-color: #ff9f1c; /* New color */
+}
+
+.f-wrapper--2 .f .flower__leaf--8 {
+    transform: rotate(-50deg);
+    background-image: linear-gradient(to left bottom, #ffbf00, #f75c03); /* New gradient colors */
+}
+
+.f-wrapper--2 .flower__leaf:not(:first-child) {
+    background-image: linear-gradient(to bottom, #ff9f1c, #ffc93c, #ffef99 99%); /* New gradient colors */
+}
+
+.f-wrapper--3 .flower__leaf--1 {
+    background-color: #4caf50; /* New color */
+}
+
+.f-wrapper--3 .f .flower__leaf--8 {
+    background-image: linear-gradient(to left bottom, #ffeb3b, #f44336); /* New gradient colors */
+}
+
+.f-wrapper--3 .flower__leaf:not(:first-child) {
+    background-image: linear-gradient(to bottom, #4caf50, #8bc34a, #cddc39 99%); /* New gradient colors */
+}
+
+.f-wrapper--1 .flower__leaf--1 {
+    background-color: #3f51b5; /* New color */
+}
+
+.f-wrapper--1 .f .flower__leaf--8 {
+    background-image: linear-gradient(to left bottom, #ffeb3b, #9c27b0); /* New gradient colors */
+}
+
+.f-wrapper--1 .flower__leaf:not(:first-child) {
+    background-image: linear-gradient(to bottom, #3f51b5, #7986cb, #9fa8da 99%); /* New gradient colors */
+}
