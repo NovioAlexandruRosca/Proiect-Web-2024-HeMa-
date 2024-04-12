@@ -62,6 +62,7 @@ main {
 
 #headerLogin
 {
+    margin-top: 20px;
     font-size: max(9vmin, 80px);
     position: relative;
     text-align: center;
