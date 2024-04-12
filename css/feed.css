@@ -253,9 +253,9 @@ select {
     table{
         border-spacing: 3px;
     }
-    .emoji{
-        font-size: 8px;
-    }
+    
+    
+    
 }
 
 @media (max-width: 600px) {
@@ -385,4 +385,43 @@ select {
 
  #hideFlip{
     display: none;
+ }
+
+ @media screen and (max-width: 1000px) {
+    .flip-card {
+        width: 95%;
+        min-width: 45%;
+        height: 140px;
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+ }
+
+ @media screen and (max-width: 760px) {
+    #switch2{
+        position: relative;
+        width:90%;
+        left:50%;   
+        transform: translate(-50%,0%);
+    }
+    .flip-card {
+        height: 120px;
+      }
+
+      #switch2 .emoji{
+        font-size: 15px;
+      }
+
+ }
+
+ @media screen and (max-width: 550px) {
+    .flip-card {
+        height: 100px;
+      }
+ }
+
+ @media screen and (max-width: 440px) {
+    .flip-card {
+        height: 80px;
+      }
  }
