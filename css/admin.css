@@ -18,7 +18,7 @@ main {
     margin-top: 20px;
     background-image: linear-gradient(#a0e0908c, #e2f4c57c, #a0e09080);
     padding: 30px 20px 40px 20px;
-    border-radius: 4%;
+    border-radius: 32px;
     border: 1px black solid;
     box-shadow: 0 0 20px rgba(0, 0, 0, 1); 
 

@@ -47,7 +47,7 @@ function filterTable(nameInputText, clientInputText, dateInputText) {
 
     let numberOfShowedTables = 0;
 
-    if(isTextDisplayOn == true){
+    if(isTextDisplayOn){
 
         const tables = document.querySelectorAll('#switch1 .clientsTable');
 
@@ -149,10 +149,6 @@ selectElement.addEventListener('change', function(event) {
     const dateInputText = inputs[2].value.trim().toLowerCase();
     filterTable(nameInputText, clientInputText, dateInputText);
 });
-
-
-
-
 
 
 

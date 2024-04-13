@@ -1,146 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HeMa</title>
-    <link rel="stylesheet" href="../css/template.css">
-    <link rel="stylesheet" href="../css/cards.css">
-    <link rel="stylesheet" href="../css/aboutUsCards.css">
-    <link rel="icon" href="../images/website_Icon/plant.png" type="image/x-icon">
-</head>
-
-<body>    
-    <div class="nav">
-        <input type="checkbox" id="nav-check">
-        <div class="nav-header">
-          <div class="nav-title">
-            <div class="left">
-                <img id="plant_Logo" src="../images/website_Icon/plant.png" alt="Logo Small">
-                <h3 class="gradient_Text">HeMa (Herbal Web Manager)</h3>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>About | HeMa</title>
+        <link rel="stylesheet" href="../css/template.css">
+        <link rel="stylesheet" href="../css/about.css">
+        <link rel="icon" href="../images/website_Icon/plant.png" type="image/x-icon">
+    </head>
+    <body class="body-extension">
+        <div class="nav">
+            <input type="checkbox" id="nav-check">
+            <div class="nav-header">
+              <div class="nav-title">
+                <div class="left">
+                    <img id="plant_Logo" src="../images/website_Icon/plant.png" alt="Logo Small">
+                    <h3 class="gradient_Text">HeMa (Herbal Web Manager)</h3>
+                </div>
+              </div>
+            </div>
+            <div class="nav-btn">
+              <label for="nav-check">
+                <span></span>
+                <span></span>
+                <span></span>
+              </label>
+            </div>
+            
+            <div class="nav-links">
+              <a href="index.html" >Home</a>
+              <a href="about.html" >About</a>
+              <a href="contact.html" >Contact</a>
+              <a href="landingPage.html">Logout</a>
             </div>
           </div>
-        </div>
-        <div class="nav-btn">
-          <label for="nav-check">
-            <span></span>
-            <span></span>
-            <span></span>
-          </label>
-        </div>
-        
-        <div class="nav-links">
-          <a href="index.html" >Home</a>
-          <a href="about.html" >About</a>
-          <a href="contact.html" >Contact</a>
-          <a href="landingPage.html">Logout</a>
-        </div>
-      </div>
-    <!-- <header>
-        <div class="left">
-            <img id="plant_Logo" src="../images/website_Icon/plant.png" alt="Logo Small">
-            <h1 class="gradient_Text">HeMa (Herbal Web Manager)</h1>
-        </div>
-        
-        <form action="" class="search_Bar">
-            <input type="text" placeholder="search plant" name="q" autocomplete="off">
-            <button type="submit"><img src="../images/website_Icon/search.png" alt=""></button>
-        </form>
 
-        <div class="right">
-            <nav>
-                <ul>
-                    <li class="gradient_Text"><a href="index.html">Home</a></li>
-                    <li class="gradient_Text"><a href="about.html">About</a></li>
-                    <li class="gradient_Text"><a href="contact.html">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header> -->
-    <main>
-        <div class="card">
-            <div class="wrap animate pop">
-                <div class="overlay">
-                    <div class="overlay-content animate slide-left delay-2">
-                        <h1 class="animate slide-left pop delay-4">Our Goals</h1>
-                        <p class="animate slide-left pop delay-5" id="smallTitle">Herbal Web <em>Manager</em></p>
-                    </div>
-                    <div class="image-content animate slide delay-5" id="card1"></div>
-                    <div class="dots animate">
-                        <div class="dot animate slide-up delay-6"></div>
-                        <div class="dot animate slide-up delay-7"></div>
-                        <div class="dot animate slide-up delay-8"></div>
-                    </div>
-                </div>
-                <div class="text">
-                    <p><img class="inset" src="../images/website_Icon/plant.png" alt="" width="150px" />‎  ‎  ‎  At HeMa, our primary goal is to bridge the gap between botanical enthusiasts and the fascinating world of plant biodiversity through innovative digital solutions. We aspire to create a dynamic online platform that serves as a comprehensive resource for plant exploration, education, and conservation.</p>
-                    <p>‎  ‎  ‎ ‎ Some of our goals are to facilitate exploration and discovery of new species, to promote education and awareness of protected and rare plants, to encourage collaboration and community bonding to advance conservation and sustainability and to create a connection point between nature and technology through an internal drive that aims to innovate and advance this topic</p>
-                </div>
+        <main>
+            <div id="homeTitle">
+                <p>Hello "User", what would you like to do today?</p>
             </div>
+
+            <div class="about-main facts-section">
+            
+            <article class="cta fact-item">
+                <img src='../images/background/white1.jpg' alt='Profile'>
+                <div class="cta__text-column">
+                    <p class ="desc">Add, Edit and Customize your Profile with colorful pallets, collections and let everyone know who is the best plant collector out there!</p>
+                    <a href="profile.html">View Your Profile</a>
+                </div>
+            </article>
+
+            <article class="cta fact-item">
+                <img src='../images/background/plantCollection.jpg' alt='Login'>
+                <div class="cta__text-column">
+                    <p class ="desc">See plant collections shared by loving and ambitious users just like you, enjoy multiatributes search, different view styles and sorting methods.</p>
+                    <a href="feed.html">View Shared Collections</a>
+                </div>
+            </article>
+
+            <article class="cta fact-item">
+                <img src='../images/background/tipsAndTricks.jpg' alt='Login'>
+                <div class="cta__text-column">
+                    <p class ="desc">Find new and interesting ideas about nature including even you, here you can find blogs such us how to press plants, tips and tricks about urban gardening and more!</p>
+                    <a href="blog.html">Search the Blogs</a>
+                </div>
+            </article>
+
+            <article class="cta fact-item">
+                <img src='../images/background/card4.jpg' alt='Plant of the Week'>
+                <div class="cta__text-column">
+                    <p class ="desc">Who is there? A new weekly champion? Enter to see who is the best plant out there, the most loved and collected one.</p>
+                    <a href="PlantProfilePage.html">See Plant of the Week</a>
+                </div>
+            </article>
+
+            <article class="cta fact-item">
+                <img src='../images/background/contact.png' alt='Plant of the Week'>
+                <div class="cta__text-column">
+                    <p class ="desc">Want to colaborate with us? Just have a question? or you want to improve our loving platform? Then dont hesitate to contact us!</p>
+                    <a href="contact.html">Contact Us</a>
+                </div>
+            </article>
+
         </div>
+        </main>
 
-        <div class="card">
-            <div class="wrap animate pop">
-                <div class="overlay">
-                    <div class="overlay-content animate slide-left delay-2">
-                        <h1 class="animate slide-left pop delay-4">What we Offer?</h1>
-                        <p class="animate slide-left pop delay-5" id="smallTitle"></p>
-                    </div>
-                    <div class="image-content animate slide delay-5" id="card2"></div>
-                    <div class="dots animate">
-                        <div class="dot animate slide-up delay-6"></div>
-                        <div class="dot animate slide-up delay-7"></div>
-                        <div class="dot animate slide-up delay-8"></div>
-                    </div>
-                </div>
-                <div class="text">
-                    <p><img class="inset" src="../images/background/whatweoffer.webp" alt="" />‎  ‎  ‎  At HeMa, we offer a comprehensive suite of features and resources designed to enhance your botanical exploration and learning experience. Here's what you can expect to find here:</p>
-                    <ul>
-                        <li><p>Comprehensive Digital Herbarium: Access a vast collection of pressed plant specimens from around the world, meticulously cataloged and annotated for easy exploration.</p></li>
-                        <li><p>Advanced Multi-Criteria Search: Find specific plants quickly and efficiently using our advanced search filters, including species, habitat, geographic location, and more.</p></li>
-                        <li><p>Curated Themed Collections: Explore curated collections tailored to specific interests and themes, such as medicinal plants, native flora, rare species, and more.</p></li>
-                        <li><p>Educational Resources: Expand your botanical knowledge with informative articles, guides, and interactive tools covering a wide range of topics, from plant identification to ecological conservation.</p></li>
-                        <li><p>Community Engagement: Connect with a vibrant community of plant enthusiasts, researchers, educators, and conservationists. Share your discoveries, exchange ideas, and collaborate on projects that contribute to our collective understanding of plant biodiversity.</p></li>
-                        <li><p>Conservation Initiatives: oin us in our commitment to protecting and preserving our planet's precious plant life.</p></li>
-                      </ul>
-                </div>
-            </div>
-        </div>
+        <footer>
+            <img id = "github" class="socialMediaIcon" src="../images/social_media/github.png" alt="Logo Small">
+            <p class="gradient_Text">© 2024 HeMa. All rights reserved.</p>
+            <img id = "uaic" class="socialMediaIcon" src="../images/social_media/uaic_logo_small.png" alt="Logo Small">
+        </footer>
 
-        <div class="card">
-            <div class="wrap animate pop" id="whoAreWe">
-                <div class="overlay">
-                    <div class="overlay-content animate slide-left delay-2">
-                        <h1 class="animate slide-left pop delay-4">Who are we?</h1>
-                        <p class="animate slide-left pop delay-5" id="smallTitle"></p>
-                    </div>
-                    <div class="image-content animate slide delay-5" id="card3"></div>
-                    <div class="dots animate">
-                        <div class="dot animate slide-up delay-6"></div>
-                        <div class="dot animate slide-up delay-7"></div>
-                        <div class="dot animate slide-up delay-8"></div>
-                    </div>
-                </div>
-                <div class="text">
-                    <img class="inset" src="../images/background/roscaAlexandru.png" alt="" />
-                    <img class="inset" src="../images/background/popaAndrei.png" alt="" />
-                    <p>We are Rosca Alexandru David and Popa Andrei, two passionate students embarking on a journey at the esteemed Alexandru Ioan Cuza University, where we pursue our studies at the renowned Faculty of Computer Science.</p>
-                    <p>‎  ‎  ‎ Beyond the confines of academia, we are dreamers with a shared vision fueled by curiosity, and a profound love for the transformative power of technology.</p>
-                    <p>‎  ‎  ‎ ‎ As second-year students, we stand at the threshold of possibility, eager to immerse ourselves in the dynamic world of computer science and explore the endless horizons it offers. Guided by our insatiable thirst for knowledge and our unwavering commitment to excellence, we are driven by a singular purpose: to push the boundaries of what is possible and leave an indelible mark on the ever-evolving landscape of technology.</p>
-                </div>
-            </div>
-        </div>
-        
-
-    </main>
-    <footer>
-        <img id = "github" class="socialMediaIcon" src="../images/social_media/github.png" alt="Logo Small">
-        <p class="gradient_Text">© 2024 HeMa. All rights reserved.</p>
-        <img id = "uaic" class="socialMediaIcon" src="../images/social_media/uaic_logo_small.png" alt="Logo Small">
-    </footer>
-
-    <!-- Scripts -->
-    <script src="../scripts/footer.js"></script>
-</body>
+        <script src="../scripts/footer.js"></script>
+    </body>
 </html>

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feed</title>
     <link rel="stylesheet" href="../css/template.css">
     <link rel="stylesheet" href="../css/cards.css"> 
@@ -47,19 +47,19 @@
 
         <section>
 
-            <input class="textInput" id="nameInput" placeholder="Search by name"></input>
-            <input class="textInput" id="clientInput" placeholder="Search by sharer"></input>
-            <input class="textInput" id="dateInput" placeholder="Search by date(dd/mm/yyyy)"></input>
+            <input class="textInput" id="nameInput" placeholder="Search by name">
+            <input class="textInput" id="clientInput" placeholder="Search by sharer">
+            <input class="textInput" id="dateInput" placeholder="Search by date(dd/mm/yyyy)">
 
-            <select placeholder="Order By" name="order" id="order_input" required>
-              <option disabled hidden selected> 🡦 Sort 🡧</option>
+            <select name="order" id="order_input" required>
+              <option disabled hidden selected value=""> 🡦 Sort 🡧</option>
               <option id="option1">The collection's name</option>
               <option id="option2">The collection's owner</option>
               <option id="option3">The posting date</option>
             </select>
 
-            <select placeholder="Display Type" name="display" id="display_input" required>
-              <option disabled hidden selected> 🡦 View 🡧</option>
+            <select name="display" id="display_input" required>
+              <option disabled hidden selected value=""> 🡦 View 🡧</option>
               <option id="optionn1">Text</option>
               <option id="optionn2">Visual Spoiler</option>
             </select>
@@ -69,7 +69,7 @@
             <table id="hiddenTable">
               <thead>
                   <tr>
-                      <th><h2>No posts could be found!</h2></th>
+                      <th><span>No posts could be found!</span></th>
                   </tr>
               </thead>
           </table>
@@ -78,34 +78,29 @@
             <table class="clientsTable">
               <thead>
                   <tr>
-                      <th><h2>Collection Name</h2></th>
-                      <th><h2>Shared by</h2></th>
-                      <th><h2>Posting Date</h2></th>
+                      <th><span>Collection Name</span></th>
+                      <th><span>Shared by</span></th>
+                      <th><span>Posting Date</span></th>
                   </tr>
               </thead>
               <tbody class="clientsTableBody">
                   <tr>
-                      <td class="scrollable-content"><h2>Mountain Plants Collection</h2></td>
-                      <td class="scrollable-content"><h2>Rosca Alexandru David</h2></td>
-                      <td class="scrollable-content"><h2>4/10/2024</h2></td>
+                      <td class="scrollable-content"><span>Mountain Plants Collection</span></td>
+                      <td class="scrollable-content"><span>Rosca Alexandru David</span></td>
+                      <td class="scrollable-content"><span>4/10/2024</span></td>
                   </tr>
-              </tbody>
-          
-              <thead>
                   <tr>
-                      <th colspan="3"><h2>Collection Description</h2></th>
+                    <th colspan="3"><span>Collection Description</span></th>
                   </tr>
-              </thead>
-              <tbody class="clientsTableBody">
                   <tr>
-                      <td colspan="3"><h2>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</h2></td>
+                    <td colspan="3"><span>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</span></td>
                   </tr>
               </tbody>
               <tfoot>
                   <tr>
-                      <th class="like"><h2 class="emoji">👍🏻</h2></th>
-                      <th class="dislike"><h2 class="emoji">👎🏻</h2></th>
-                      <th class="visit"><h2 class="emoji">🌱</h2></th>
+                      <th class="like"><span class="emoji">👍🏻</span></th>
+                      <th class="dislike"><span class="emoji">👎🏻</span></th>
+                      <th class="visit"><span class="emoji">🌱</span></th>
                   </tr>
               </tfoot>
           </table>
@@ -113,34 +108,30 @@
          <table class="clientsTable">
               <thead>
                   <tr>
-                      <th><h2>Collection Name</h2></th>
-                      <th><h2>Shared by</h2></th>
-                      <th><h2>Posting Date</h2></th>
+                      <th><span>Collection Name</span></th>
+                      <th><span>Shared by</span></th>
+                      <th><span>Posting Date</span></th>
                   </tr>
               </thead>
               <tbody class="clientsTableBody">
                   <tr>
-                      <td class="scrollable-content"><h2>Gigi helper</h2></td>
-                      <td class="scrollable-content"><h2>Rosca Alexandru David</h2></td>
-                      <td class="scrollable-content"><h2>4/10/2024</h2></td>
+                      <td class="scrollable-content"><span>Gigi helper</span></td>
+                      <td class="scrollable-content"><span>Rosca Alexandru David</span></td>
+                      <td class="scrollable-content"><span>4/10/2024</span></td>
+                  </tr>
+                  <tr>
+                    <th colspan="3"><span>Collection Description</span></th>
+                  </tr>
+                  <tr>
+                    <td colspan="3"><span>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</span></td>
                   </tr>
               </tbody>
-          
-              <thead>
-                  <tr>
-                      <th colspan="3"><h2>Collection Description</h2></th>
-                  </tr>
-              </thead>
-              <tbody class="clientsTableBody">
-                  <tr>
-                      <td colspan="3"><h2>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</h2></td>
-                  </tr>
-              </tbody>
+
               <tfoot>
                   <tr>
-                      <th class="like"><h2 class="emoji">👍🏻</h2></th>
-                      <th class="dislike"><h2 class="emoji">👎🏻</h2></th>
-                      <th class="visit"><h2 class="emoji">🌱</h2></th>
+                      <th class="like"><span class="emoji">👍🏻</span></th>
+                      <th class="dislike"><span class="emoji">👎🏻</span></th>
+                      <th class="visit"><span class="emoji">🌱</span></th>
                   </tr>
               </tfoot>
           </table>
@@ -166,18 +157,18 @@
                 <div class="flip-card-inner">
                   <div class="flip-card-front">
                     <table class="clientsTable">
-                      <tbody class="clientsTableBody" class="firstPart">
+                      <tbody class="clientsTableBody firstPart">
                         <tr>
-                          <th><h2>⭯ ‎ ‎ Collection‎ ‎ ‎ ‎  Name</h2></th>
-                          <td class="scrollable-content"><h2>Mountain Plants Collection</h2></td>
+                          <th><span>⭯ ‎ ‎ Collection‎ ‎ ‎ ‎  Name</span></th>
+                          <td class="scrollable-content"><span>Mountain Plants Collection</span></td>
                       </tr> 
                         <tr>
-                          <th><h2>Shared by</h2></th>
-                          <td class="scrollable-content"><h2>Rosca Alexandru David</h2></td>
+                          <th><span>Shared by</span></th>
+                          <td class="scrollable-content"><span>Rosca Alexandru David</span></td>
                         </tr>
                         <tr>
-                          <th><h2>Posting Date</h2></th>
-                          <td class="scrollable-content"><h2>4/10/2024</h2></td>
+                          <th><span>Posting Date</span></th>
+                          <td class="scrollable-content"><span>4/10/2024</span></td>
                         </tr>
                       </tbody>
                     </table>
@@ -187,19 +178,19 @@
                     <table class="clientsTable">
                           <thead>
                             <tr>
-                                <th colspan="3"><h2>Collection Description</h2></th>
+                                <th colspan="3"><span>Collection Description</span></th>
                             </tr>
                         </thead>
-                        <tbody class="clientsTableBody" class="secondPart">
+                        <tbody class="clientsTableBody secondPart">
                             <tr>
-                                <td colspan="3"><h2>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</h2></td>
+                                <td colspan="3"><span>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</span></td>
                             </tr>
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th class="like"><h2 class="emoji">👍🏻</h2></th>
-                                <th class="dislike"><h2 class="emoji">👎🏻</h2></th>
-                                <th class="visit"><h2 class="emoji">🌱</h2></th>
+                                <th class="like"><span class="emoji">👍🏻</span></th>
+                                <th class="dislike"><span class="emoji">👎🏻</span></th>
+                                <th class="visit"><span class="emoji">🌱</span></th>
                             </tr>
                         </tfoot>
                     </table>
@@ -210,41 +201,41 @@
               <div class="flip-card">
                 <div class="flip-card-inner">
                   <div class="flip-card-front">
-                    <table class="clientsTable" class="firstPart">
-                        <tbody class="clientsTableBody" class="firstPart">
+                    <table class="clientsTable firstPart">
+                        <tbody class="clientsTableBody firstPart">
                           <tr>
-                            <th><h2>⭯ ‎ ‎ Collection‎ ‎ ‎ ‎  Name</h2></th>
-                            <td class="scrollable-content"><h2>Mountain Plants Collection</h2></td>
+                            <th><span>⭯ ‎ ‎ Collection‎ ‎ ‎ ‎  Name</span></th>
+                            <td class="scrollable-content"><span>Mountain Plants Collection</span></td>
                         </tr> 
                           <tr>
-                            <th><h2>Shared by</h2></th>
-                            <td class="scrollable-content"><h2>Rosca Alexandru David</h2></td>
+                            <th><span>Shared by</span></th>
+                            <td class="scrollable-content"><span>Rosca Alexandru David</span></td>
                           </tr>
                           <tr>
-                            <th><h2>Posting Date</h2></th>
-                            <td class="scrollable-content"><h2>4/10/2024</h2></td>
+                            <th><span>Posting Date</span></th>
+                            <td class="scrollable-content"><span>4/10/2024</span></td>
                           </tr>
                         </tbody>
                     </table>
                   </div>
                   <div class="flip-card-back">
                       
-                    <table class="clientsTable" class="secondPart">
+                    <table class="clientsTable secondPart">
                           <thead>
                             <tr>
-                                <th colspan="3"><h2>Collection Description</h2></th>
+                                <th colspan="3"><span>Collection Description</span></th>
                             </tr>
                         </thead>
                         <tbody class="clientsTableBody">
                             <tr>
-                                <td colspan="3"><h2>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</h2></td>
+                                <td colspan="3"><span>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</span></td>
                             </tr>
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th class="like"><h2 class="emoji">👍🏻</h2></th>
-                                <th class="dislike"><h2 class="emoji">👎🏻</h2></th>
-                                <th class="visit"><h2 class="emoji">🌱</h2></th>
+                                <th class="like"><span class="emoji">👍🏻</span></th>
+                                <th class="dislike"><span class="emoji">👎🏻</span></th>
+                                <th class="visit"><span class="emoji">🌱</span></th>
                             </tr>
                         </tfoot>
                     </table>
@@ -256,41 +247,41 @@
               <div class="flip-card">
                 <div class="flip-card-inner">
                   <div class="flip-card-front">
-                    <table class="clientsTable" class="firstPart">
-                        <tbody class="clientsTableBody" class="firstPart">
+                    <table class="clientsTable firstPart">
+                        <tbody class="clientsTableBody firstPart">
                           <tr>
-                            <th><h2>⭯ ‎ ‎ Collection‎ ‎ ‎ ‎  Name</h2></th>
-                            <td class="scrollable-content"><h2>Mountain Plants Collection</h2></td>
+                            <th><span>⭯ ‎ ‎ Collection‎ ‎ ‎ ‎  Name</span></th>
+                            <td class="scrollable-content"><span>Mountain Plants Collection</span></td>
                         </tr> 
                           <tr>
-                            <th><h2>Shared by</h2></th>
-                            <td class="scrollable-content"><h2>Popa Andrei</h2></td>
+                            <th><span>Shared by</span></th>
+                            <td class="scrollable-content"><span>Popa Andrei</span></td>
                           </tr>
                           <tr>
-                            <th><h2>Posting Date</h2></th>
-                            <td class="scrollable-content"><h2>4/10/2024</h2></td>
+                            <th><span>Posting Date</span></th>
+                            <td class="scrollable-content"><span>4/10/2024</span></td>
                           </tr>
                         </tbody>
                     </table>
                   </div>
                   <div class="flip-card-back">
                       
-                    <table class="clientsTable" class="secondPart">
+                    <table class="clientsTable secondPart">
                           <thead>
                             <tr>
-                                <th colspan="3"><h2>Collection Description</h2></th>
+                                <th colspan="3"><span>Collection Description</span></th>
                             </tr>
                         </thead>
                         <tbody class="clientsTableBody">
                             <tr>
-                                <td colspan="3"><h2>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</h2></td>
+                                <td colspan="3"><span>The plant description can have anywhere between 50-200 words so it has to go on multiple lines if neccesary</span></td>
                             </tr>
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th class="like"><h2 class="emoji">👍🏻</h2></th>
-                                <th class="dislike"><h2 class="emoji">👎🏻</h2></th>
-                                <th class="visit"><h2 class="emoji">🌱</h2></th>
+                                <th class="like"><span class="emoji">👍🏻</span></th>
+                                <th class="dislike"><span class="emoji">👎🏻</span></th>
+                                <th class="visit"><span class="emoji">🌱</span></th>
                             </tr>
                         </tfoot>
                     </table>

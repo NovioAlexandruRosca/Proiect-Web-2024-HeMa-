@@ -106,7 +106,7 @@ body::-webkit-scrollbar-thumb:hover{
   display: none;
 }
 
-@media (max-width:600px) {
+@media (max-width:800px) {
   .nav > .nav-btn {
     display: inline-block;
     position: absolute;
@@ -263,7 +263,7 @@ header a:hover{
     padding-bottom: 12px;
 }
 
-@media (max-width: 1000px) {
+@media (max-width:1080px) {
     header {
         padding: 8px 0px 7px 0px; 
         margin-bottom: 0px;
