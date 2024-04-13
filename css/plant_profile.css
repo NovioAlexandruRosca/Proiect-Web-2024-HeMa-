@@ -17,8 +17,8 @@ body {
 /* Utility classes */
 .w-70 { width: 70%; }
 .w-100 { width: 100%; }
-.w-xl-25 { width: 25%; } /* For extra large screens */
-.w-xl-50 { width: 50%; } /* For extra large screens */
+.w-xl-25 { width: 25%; } 
+.w-xl-50 { width: 50%; } 
 
 /* Plant profile card */
 .user-profile-card {
@@ -30,6 +30,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    max-width: 800px;
 }
 
 /* Image and info containers */
@@ -38,11 +39,12 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    align-items: center;
 }
 
 /* Labels and content */
 .label {
-    font-weight: 700; /* Bold labels */
+    font-weight: 700; 
     margin-bottom: 0.25rem;
 }
 
@@ -52,6 +54,7 @@ body {
     border-bottom: 2px solid var(--primary-color);
     padding: 0.5rem 0;
     margin-bottom: 1rem;
+    width: 100%
 }
 
 /* Buttons */
@@ -74,8 +77,13 @@ body {
 }
 
 /* Responsive design */
+@media (max-width: 767px) {
+    .w-70 { width: 100%; } 
+}
+
 @media (min-width: 768px) {
     .row {
+        display: flex;
         flex-direction: row;
     }
 
@@ -85,12 +93,18 @@ body {
     }
 
     .form-group {
-        width: calc(50% - 1rem); /* Adjust width for side-by-side form groups */
+        width: calc(50% - 1rem); 
     }
 }
 
 @media (min-width: 1024px) {
     .user-profile-card {
-        flex-direction: row; /* Horizontal layout on larger screens */
+        flex-direction: row; 
+    }
+
+    .form-control {
+        width: auto; 
     }
 }
+
+
