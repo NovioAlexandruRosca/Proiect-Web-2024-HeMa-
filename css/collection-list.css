@@ -66,13 +66,16 @@ button:hover, a:hover {
 
 .collections-card {
     display: flex;
-    flex-direction: column;
+
+    align-items: flex-start;
+    justify-content: center;
+
+    align-items: center;
+    flex-wrap: wrap;
     word-wrap: break-word;
     flex: 1 1 auto;
-
     background-clip: border-box;
     border: 0 solid rgba(0,0,0,.125);
-
     position: relative;
     box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
     background-color: #fff; 
@@ -87,6 +90,15 @@ button:hover, a:hover {
 }
 
 .collections-title {
+    margin-top: 0;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 0;
+
     font-size: 24px;
     color: #3a3a3a; 
     margin-bottom: 15px; 
@@ -131,7 +143,7 @@ button:hover, a:hover {
 }
 
 .collection-item {
-    width: calc(25% - 20px);
+    flex-basis: calc(33.333% - 20px);
     margin: 5px;
     flex: 1 0 21%;
 }
@@ -184,7 +196,32 @@ button:hover, a:hover {
 }
 
 @media (max-width: 768px) {
-    .collection-card {
-        max-width: 100%; 
+    body {
+        font-size: 18px;
+    }
+
+    .card-body,
+    .list-group-item {
+        padding: 1rem;
+    }
+
+    .social-media .socialMediaIcon2,
+    .social-links a {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px; 
+        text-align: center; 
+    }
+
+    .collections-title {
+        margin-top: 10px; 
+        font-size: 20px; 
+    }
+    
+    .button-div button,
+    .profile-header button {
+        width: 100%;
+        margin-bottom: 10px;
     }
 }
+

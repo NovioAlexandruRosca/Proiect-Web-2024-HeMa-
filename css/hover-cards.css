@@ -3,6 +3,7 @@ figure {
     border-radius: 1rem;
     overflow: hidden;
     cursor: pointer;
+    margin: 20px;
 }
 
 figure > * {
@@ -39,6 +40,6 @@ figure:hover img {
 @supports not (-webkit-mask-clip: text) {
     figure figcaption {
         -webkit-mask: none;
-        color: #fff;
+        color: #000000;
     }
 }
