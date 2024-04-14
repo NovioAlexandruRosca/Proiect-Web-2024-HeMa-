@@ -20,11 +20,11 @@ function generateRandomTableRows(numRows) {
         const email = generateRandomEmail();
         const row = document.createElement('tr');
         row.innerHTML = `
-            <th><h2 class="idcol">${id}</h2></th>
-            <th class="scrollable-content"><h2>${name}</h2></th>
-            <th><h2>${email}</h2></th>
-            <th class="deleteBtn"><h2 class="emoji">🗑️</h2></th>
-            <th><h2 class="emoji">🌱</h2></th>
+            <th><span class="idcol">${id}</span></th>
+            <th class="scrollable-content"><span>${name}</span></th>
+            <th><span>${email}</span></th>
+            <th class="deleteBtn"><span class="emoji">🗑️</span></th>
+            <th><span class="emoji">🌱</span></th>
         `;
         table.appendChild(row);
     }
@@ -56,7 +56,7 @@ textInput.addEventListener('input', function(event) {
     tableRows.forEach(row => {
         count++;
         if(count > 1){
-            const emailCell = row.querySelector('th:nth-child(3) h2');
+            const emailCell = row.querySelector('th:nth-child(3) span');
             const email = emailCell.textContent.trim().toLowerCase();
             
             if (email.includes(inputText)) {

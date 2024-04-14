@@ -17,7 +17,7 @@ main {
 #adminPanel{
     background-image: linear-gradient(#a0e0908c, #e2f4c57c, #a0e09080);
     padding: 30px 20px 40px 20px;
-    border-radius: 1%;
+    border-radius: 32px;
     border: 1px black solid;
     box-shadow: 0 0 20px rgba(0, 0, 0, 1); 
 
@@ -101,7 +101,7 @@ th {
     background-color: #f2f2f2;
 }
 
-table h2{
+table span{
     padding: 0px 10px 0px 10px;
     font-size: max(2.5vmin, 12px);
 }

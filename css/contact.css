@@ -86,7 +86,7 @@ textarea {
 }
 
 #email_input:not(:focus){
-    background-color: none;
+    background-color: transparent;
 }
 
 #contact_form input[type='text'],[type='email'], select, textarea {

@@ -60,7 +60,7 @@ main {
     }
 }
 
-#headerLogin
+.headerLogin
 {
     margin-top: 20px;
     font-size: max(9vmin, 80px);
@@ -68,9 +68,10 @@ main {
     text-align: center;
     top:5%;
     opacity: 100%;
+    color: #A8CD9F;
 }
 
-#line{
+.line{
     position: absolute;
     top:29%;
     left:50%;
@@ -108,7 +109,7 @@ main {
     justify-content: space-evenly;
 }
 
-#login1 #headerLogin{
+#login1 .headerLogin{
     padding-bottom: 100px;
 }
 
@@ -119,9 +120,6 @@ main {
 }
 
 @media (max-width: 850px) {
-    #login1 #headerLogin{
-        font-size: 60px;
-    }
     #textBox{
         margin-left: 50px;
         margin-right: 40px;
@@ -132,9 +130,10 @@ main {
         margin-right: 0px;
         width:95%;
     }
-    #login1 #headerLogin{
+    #login1 .headerLogin{
         padding-bottom: 70px;
         margin-top: 30px;
+        font-size: 60px;
     }
 }
 

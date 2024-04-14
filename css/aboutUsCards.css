@@ -168,13 +168,17 @@
     display: none;
 }
 
-#smallTitle{
+.smallTitle{
 	color: #A8CD9F;
 	margin-bottom: 2rem;
 }
 
-.wrap:hover #smallTitle{
+.wrap:hover .smallTitle{
 	display: none;
+}
+
+#colorGreen{
+	color: #A8CD9F;
 }
 
 /* Animations and timing delays */
