@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="Documentatie.css">
+<title>HeMa Documentation</title>
+</head>
+<body>
+<h1>HeMa (Herbal Web Manager)</h1>
+<h2>Abstract</h2>
+<p>HeMa (Herbal Web Manager) represents an innovative implementation of a plant collection management system structured in an advanced document format known as Scholarly HTML. This web platform facilitates not only the management and cataloging of botanical species by enthusiasts and researchers but also provides extended blogging functionalities and community interaction all accessible through an optimized web interface. This documentation details the architecture, encoding, and functionalities of the system, with a particular emphasis on interoperability with modern browsers and the adoption of open standards for the exchange of scholarly articles. Utilizing Scholarly HTML, HeMa aims to set a new standard in digital publishing in the field of botany, enhancing the accessibility, discovery, and management of data in an academic and research environment.</p>
+<h2>Introduction</h2>
+<p>In the current landscape of digital publishing, many academic fields face the challenge of efficiently managing scientific data in an accessible and structured format. Despite the availability of advanced documentation technologies, much of the valuable information generated in research remains encapsulated in unstructured formats, which significantly limits their potential for discovery and subsequent use.</p>
+<p>HeMa (Herbal Web Manager) is a platform designed to address these challenges, offering an integrated solution for managing, presenting, and exchanging botanical information. Utilizing the Scholarly HTML format, HeMa proposes a standardized and extensible methodology for documenting and sharing knowledge in the field of botany. This enriched format allows not only the precise representation of scientific data but also advanced interaction with it, while supporting the principles of accessibility and internationalization.</p>
+<p>According to a report from the New York Times, the introduction of structured information into their culinary recipes improved their discoverability, leading to an immediate 52% increase in traffic. This example highlights the significant benefits that structuring and standardizing data can bring in any field, including the academic and scientific domain.</p>
+<p>HeMa applies these principles by offering a platform where scientific articles, plant collections, and user blogs are managed and presented in a way that not only improves accessibility and discoverability but also enhances interactivity and the overall functionality of the content. This approach places a significant burden on tool developers and service providers who must explore the world of extracting data from static publications and build a complex set of tools while simultaneously offering interoperability and opportunities for cooperative improvements.</p>
+<p>To meet these challenges, HeMa adopts an approach rooted in established best practices for the reuse of open and standardized formats. We propose an "HTML Vernacular", a set of guidelines for creating domain-specific data formats that utilize the inherent extensibility of HTML. This vernacular foundation, overlaid with schema.org metadata and proposed extensions to it, has produced a format for the authoring and exchange of scholarly articles built on open standards, ready for use by everyone, including independent researchers who choose to publish their articles on their own.</p>
+<h2>External Interface Requirements</h2>
+<h3>User Interfaces</h3>
+<h4>Landing Page</h4>
+<p>This is the initial presentation of the HeMa platform, designed with an intuitive and engaging user interface catering to both guest visitors and registered users. The landing page offers a concise overview of the site's functionalities adorned with a rotating gallery of plant images that highlight the essence of HeMa as a plant collection manager.</p>
+
+<h4>Login Page</h4>
+<p>The Login page is the gateway for users to access their personal HeMa accounts. The user-friendly design requires only essential information like username or email and password.</p>
+<img src="/images/login.png" alt="Login">
+
+<h4>Signup Page</h4>
+<p>The Signup page stands as an invitation to join the HeMa community. Future users can create a unique account using their email and a chosen username. The design ensures a quick but secure registration process, preventing the creation of multiple accounts with the same email or username.</p>
+<img src="/images/register.png" alt="Register">
+
+<h4>Main Page</h4>
+<p>Once logged in, users are welcomed to the main page which serves as the central hub for all HeMa functionalities. Here, users can access different plant collections, manage their profiles, and get helpful plant care tips, all through an inviting interface embellished with thematic plant imagery.</p>
+<img src="/images/about.png" alt="Main">
+
+<h4>My Profile</h4>
+<p>Users can customize their experience on the My Account page by changing usernames, passwords, and reviewing their plant collection and shopping history.</p>
+<img src="/images/profile.png" alt="Profile">
+
+<h4>My Garden</h4>
+<p>The My Garden page allows users to manage their personal plant collections which were taken from a large database of existing species.</p>
+<img src="/images/profileWithCollections.png" alt="Collections">
+
+<h4>Blog Page</h4>
+<p>The Blog page is where users can create and share their articles or experiences about plant care, botanical research, and more. It serves as a platform for community engagement and knowledge sharing. This page allows users to post new content, edit existing posts, and interact with other community members through comments.</p>
+<img src="/images/createNewBlog.png" alt="Blog Page">
+
+<h4>Collection Page</h4>
+<p>The Collection Page allows users to view, manage, and organize their personal plant collections. This page provides detailed views of each plant, including care tips, scientific classifications, and the ability to add or remove plants from their collection. It is designed to be highly interactive and user-friendly, facilitating easy management of plant data.</p>
+<img src="/images/plantCollection.png" alt="Collection Page">
+
+
+<h3>Software Interfaces</h3>
+<p>Database: Utilizing a robust MySQL database, HeMa efficiently handles a vast array of data from user transactions to detailed plant information. Encased in a Docker container, the database guarantees both security and portability.</p>
+<p>Server: The server stands as the backbone of HeMa, ensuring all user requests are handled with speed and reliability, fostering a seamless user experience.</p>
+
+<h3>Communication Interfaces</h3>
+<p>Account Interface: With endpoints like register, login, logout, reset-password, and verify-email, HeMa ensures secure and efficient management of user accounts, aiding users in the safe handling of their credentials.</p>
+
+<h2>System Features</h2>
+<h3>Login/Logout</h3>
+<p>The site requires users to log in to access the full range of functionalities. To log in, users must enter their email address or username and the corresponding password for their account.</p>
+
+<h3>Registration</h3>
+<p>To create an account, new users should visit the Registration page and provide an email address, a username, and a password. After registering, they will receive an email to confirm their email address.</p>
+
+<h3>Changing Password</h3>
+<p>For security, the database does not store user passwords. If a user forgets their password and cannot access their account, they should enter their email address on the password reset page. They will receive an email with a link to set a new password.</p>
+
+<h3>Plant Collection Management</h3>
+<p>Registered users have the ability to add or remove plants from their personal collection. This feature allows users to customize and organize their plant collections according to their preferences, whether they wish to maintain a registry of the plants they have or plan future acquisitions.</p>
+
+<h3>Managing Multiple Collections</h3>
+<p>Each user can create and manage multiple plant collections. These collections can be thematic, such as "Spring Flowers" or "Succulents", allowing users to categorize and display their plants in an organized manner. Users can add new collections or remove existing ones as they see fit.</p>
+
+<h3>Creating and Reading Blogs</h3>
+<p>The HeMa platform offers each user the opportunity to create their own blogs, allowing them to share experiences, tips, or stories related to plants. Users can also read and interact with blogs posted by other community members, fostering the exchange of knowledge and experiences among plant enthusiasts.</p>
+
+<h3>Interaction with the Community</h3>
+<p>HeMa encourages interaction among users through integrated social features such as the ability to follow interesting collections of other users or to receive notifications when a collection is updated. Thus, the platform becomes not just a space for managing plants, but also a vibrant community for botanical enthusiasts.</p>
+
+<h2>Additional System Requirements</h2>
+<h3>Performance Requirements</h3>
+<p>In addition to being responsive across various frame sizes, including monitors, laptops, tablets, and phones, the website is optimized for quick load times and smooth transitions between pages. The dynamic content loading feature ensures that users experience minimal wait times as they navigate through the extensive plant collections and blog entries.</p>
+
+<h3>Security Requirements</h3>
+<p>Beyond the hashing of passwords, the website employs advanced encryption techniques to safeguard user data during transmission and storage. All personal data management conforms to GDPR standards, ensuring user consent and data rights are at the forefront of our platform's operation.</p>
+
+<h3>Privacy Requirements</h3>
+<p>The website adheres to stringent privacy protocols, not only aligning with GDPR but also providing users with comprehensive control over their personal information. Users can easily access, rectify, or delete their data upon request.</p>
+
+<h3>Compliance Requirements</h3>
+<p>To maintain the highest standard of compliance, the website regularly updates its policies to align with the latest legal and regulatory requirements. This includes periodic reviews of user agreements and privacy statements, as well as incorporating user feedback to address any concerns related to data handling and user rights.</p>
+
+</body>
+</html>
