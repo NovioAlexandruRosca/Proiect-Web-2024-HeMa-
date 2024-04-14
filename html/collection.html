@@ -7,87 +7,50 @@
     <title>HeMa</title>
     <link rel="stylesheet" href="../css/template.css">
     <link rel="stylesheet" href="../css/cards.css">
-    <link rel="stylesheet" href="../css/test.css">
+    <link rel="stylesheet" href="../css/aboutUsCards.css">
     <link rel="stylesheet" href="../css/collection.css">
     <link rel="stylesheet" href="../css/hover-cards.css">
     <link rel="icon" href="../images/website_Icon/plant.png" type="image/x-icon">
 </head>
 
 <body>    
-    <header>
-        <div class="left">
-            <img id="plant_Logo" src="../images/website_Icon/plant.png" alt="Logo Small">
-            <h1 class="gradient_Text">HeMa (Herbal Web Manager)</h1>
+    <div class="nav">
+        <input type="checkbox" id="nav-check">
+        <div class="nav-header">
+          <div class="nav-title">
+            <div class="left">
+                <img id="plant_Logo" src="../images/website_Icon/plant.png" alt="Logo Small">
+                <h3 class="gradient_Text">HeMa (Herbal Web Manager)</h3>
+            </div>
+          </div>
+        </div>
+        <div class="nav-btn">
+          <label for="nav-check">
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
         </div>
         
-        <form action="" class="search_Bar">
-            <input type="text" placeholder="search plant" name="q" autocomplete="off">
-            <button type="submit"><img src="../images/website_Icon/search.png" alt=""></button>
-        </form>
-
-        <div class="right">
-            <nav>
-                <ul>
-                    <li class="gradient_Text"><a href="index.html">Home</a></li>
-                    <li class="gradient_Text"><a href="about.html">About</a></li>
-                    <li class="gradient_Text"><a href="contact.html">Contact</a></li>
-                </ul>
-            </nav>
+        <div class="nav-links">
+          <a href="index.html" >Home</a>
+          <a href="about.html" >About</a>
+          <a href="contact.html" >Contact</a>
+          <a href="landingPage.html">Logout</a>
         </div>
-    </header>
-    <!-- <main>
-        <div class="container"></div>
-            <figure style="--c:#fff5">
-                <img src="../Images/website_Icon/LittleCactus.jpg" alt="Landscape with Mountains">
-                <figcaption>Cute Plant</figcaption>
-            </figure>
-            <figure style="--c:#fff5">
-                <img src="../Images/website_Icon/LittleCactus.jpg" alt="Mountains">
-                <figcaption>Cute Plant</figcaption>
-            </figure>
-
-            <figure style="--c:#fff5;">
-                <img src="../Images/website_Icon/LittleCactus.jpg" alt="Mountains">
-                <figcaption>Cute Plant</figcaption>
-            </figure>
-            <figure style="--c:#fff5">
-                <img src="../Images/website_Icon/LittleCactus.jpg" alt="Mountains">
-                <figcaption>Cute Plant</figcaption>
-            </figure>
-
-            <figure>
-                <img src="../Images/website_Icon/LittleCactus.jpg" alt="Mountains">
-                <figcaption>Cute Plant</figcaption>
-            </figure>
-            <figure style="--c:#fff5">
-                <img src="../Images/website_Icon/LittleCactus.jpg" alt="Mountains">
-                <figcaption>Cute Plant</figcaption>
-            </figure>
-
-            <figure>
-                <img src="../Images/website_Icon/LittleCactus.jpg" alt="Mountains">
-                <figcaption>Cute Plant</figcaption>
-            </figure>
-            <figure style="--c:#fff5">
-                <img src="../Images/website_Icon/LittleCactus.jpg" alt="Mountains">
-                <figcaption>Cute Plant</figcaption>
-            </figure>
-
-            <figure>
-                <img src="../Images/website_Icon/LittleCactus.jpg" alt="Mountains">
-                <figcaption>Cute Plant</figcaption>
-            </figure>
-            <figure style="--c:#fff5">
-                <img src="../Images/website_Icon/LittleCactus.jpg" alt="Mountains">
-                <figcaption>Cute Plant</figcaption>
-            </figure>
-        </div>   
-        
-    </main> -->
+      </div>
     <main>
         <button id="addPlantButton" class="floating-button" title="Add New Button">&#43;</button>
-        <div class="container" id="collectionContainer">
-            <p class="no-collections-message">No collections made yet.</p>
+        <div id="cont">
+            <div id="title"><p>Collection1</p></div>
+            <div id="descripton">
+                <h3>Descripton</h3>
+                <div id="line"></div>
+                <p>Example of a description for the given collection (such as mountain flowers)</p>
+            </div>
+            <div class="container" id="collectionContainer">
+                <p class="no-collections-message">No plants have been added yet.</p>
+            </div>
         </div>
     </main>
     <footer>
@@ -96,57 +59,7 @@
         <img id = "uaic" class="socialMediaIcon" src="../images/social_media/uaic_logo_small.png" alt="Logo Small">
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            checkCollections();
-            document.getElementById('addPlantButton').addEventListener('click', addFigure);
-        });
-
-        function addFigure() {
-            var anchor = document.createElement('a');
-            anchor.href = "../html/PlantProfilePage.html"; 
-            anchor.setAttribute('target', '_blank'); 
-
-            var figure = document.createElement('figure');
-            figure.style.cssText = "--c:#4caf50";
-
-            var img = document.createElement('img');
-            img.src = "../Images/website_Icon/LittleCactus.jpg";
-            img.alt = "Cute Plant";
-
-            var caption = document.createElement('figcaption');
-            caption.textContent = 'Cute Plant';
-
-            figure.appendChild(img);
-            figure.appendChild(caption);
-
-            anchor.appendChild(figure);
-
-            document.querySelector('.container').appendChild(anchor);
-            checkCollections();
-        }
-
-        function checkCollections() {
-            var container = document.getElementById('collectionContainer');
-            var messageExists = container.querySelector('.no-collections-message');
-            var figuresExist = container.getElementsByTagName('figure').length > 0;
-
-            if (!figuresExist && !messageExists) {
-                var message = document.createElement('p');
-                message.className = 'no-collections-message';
-                message.textContent = 'No collections made yet.';
-                container.appendChild(message);
-            } else if (figuresExist && messageExists) {
-                container.removeChild(messageExists);
-            }
-
-            if (messageExists) {
-                messageExists.style.display = figuresExist ? 'none' : 'block';
-            }
-        }
-
-    </script>
-
+    <script src="../scripts/collection.js"></script>
     <script src="../scripts/footer.js"></script>
 </body>
 </html>

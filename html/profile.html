@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
+    <title>Profile</title>
     <link rel="stylesheet" href="../css/template.css">
     <link rel="stylesheet" href="../css/hover-cards.css">
     <!-- <link rel="stylesheet" href="../css/profile.css"> -->
@@ -14,108 +14,104 @@
 
 
 <body>
-    <header>
-        <div class="left">
-            <img id="plant_Logo" src="../images/website_Icon/plant.png" alt="Logo Small">
-            <h1 class="gradient_Text">HeMa (Herbal Web Manager)</h1>
+    <div class="nav">
+        <input type="checkbox" id="nav-check">
+        <div class="nav-header">
+          <div class="nav-title">
+            <div class="left">
+                <img id="plant_Logo" src="../images/website_Icon/plant.png" alt="Logo Small">
+                <h3 class="gradient_Text">HeMa (Herbal Web Manager)</h3>
+            </div>
+          </div>
+        </div>
+        <div class="nav-btn">
+          <label for="nav-check">
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
         </div>
         
-        <form action="" class="search_Bar">
-            <input type="text" placeholder="search plant" name="q" autocomplete="off">
-            <button type="submit"><img src="../images/website_Icon/search.png" alt=""></button>
-        </form>
-
-        <div class="right">
-            <nav>
-                <ul>
-                    <li class="gradient_Text"><a href="index.html">Home</a></li>
-                    <li class="gradient_Text"><a href="about.html">About</a></li>
-                    <li class="gradient_Text"><a href="contact.html">Contact</a></li>
-                </ul>
-            </nav>
+        <div class="nav-links">
+          <a href="index.html" >Home</a>
+          <a href="about.html" >About</a>
+          <a href="contact.html" >Contact</a>
+          <a href="landingPage.html">Logout</a>
         </div>
-    </header>
+      </div>
     <main>
-        <div class="container">
-            <div class="main-body">
-                <div class="gutters-sm">
-                    <div class="mb-3">
-                        <div class="collections-card">
-                            <div>
-                                <div class="d-flex flex-column align-items-center text-center">
-                                    <h2 class="collections-title">PROFILE</h2>
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" width="150">
-                                    <div class="collections  collection-particularity">
-                                        <h4>John Doe</h4>
-                                        <p>Full Time Collectioner</p>
-                                        <p>Bay Area, San Francisco, CA</p>
-                                        <div class="button-div">
-                                            <button class="format-btn">Follow</button>
-                                            <button class="format-btn">Message</button>
-                                        </div>
-                                    </div>
-                                </div>
+        <div id="container">
+            <div class="collections-card" id="data">
+                <div class="d-flex flex-column align-items-center text-center">
+                    <div class="collections  collection-particularity">
+                        <div id="profileInfo">
+                            <div id="circleAvatar">
+                                <img id="avatar" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" width="150">
                             </div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="card collections-card">
-                            <h2 class="collections-title">SOCIAL MEDIA</h2>
-                            <div class="collections">
-                                <div class="collection-item">
-                                    <button class="socialMediaIcon2"><img src="../images/social_media/icons8-facebook-100.png" alt="Facebook"></button>
+                            <div id="circleData">
+                                <h2>Popa Andrei</h2>
+                                <h3>Full Time Student</h3>
+                                <h3>Iasi, Strada Bucium, nr.35</h3>
+                                <div class="button-div">
+                                    <button class="format-btn">Follow</button>
+                                    <button class="format-btn">Edit Info</button>
                                 </div>
-                                <div class="collection-item">
-                                    <button class="socialMediaIcon2"><img src="../images/social_media/icons8-github-100.png" alt="Twitter"></button>
-                                </div>
-                                <div class="collection-item">
-                                    <button class="socialMediaIcon2"><img src="../images/social_media/icons8-instagram-100.png" alt="Instagram"></button>
-                                </div>
-                                <div class="collection-item">
-                                    <button class="socialMediaIcon2"><img src="../images/social_media/icons8-twitter-100.png" alt="LinkedIn"></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="card collections-card">
-                            <h2 class="collections-title">My Collections</h2>
-                            <div class="collections">
-                                <figure>
-                                    <img src="https://picsum.photos/id/287/250/300" alt="Mountains">
-                                    <figcaption>Collection1</figcaption>
-                                </figure>
-                                <figure style="--c:#fff5">
-                                    <img src="https://picsum.photos/id/475/250/300" alt="Mountains">
-                                    <figcaption>Collection2</figcaption>
-                                </figure>
-                                <figure>
-                                    <img src="https://picsum.photos/id/287/250/300" alt="Mountains">
-                                    <figcaption>Collection3</figcaption>
-                                </figure>
-                                <figure style="--c:#fff5">
-                                    <img src="https://picsum.photos/id/475/250/300" alt="Mountains">
-                                    <figcaption>Collection4</figcaption>
-                                </figure>
-                                <figure>
-                                    <img src="https://picsum.photos/id/287/250/300" alt="Mountains">
-                                    <figcaption>Collection5</figcaption>
-                                </figure>
-                                <figure style="--c:#fff5">
-                                    <img src="https://picsum.photos/id/475/250/300" alt="Mountains">
-                                    <figcaption>Collection6</figcaption>
-                                </figure>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="card collections-card" id="socialLinks">
+                <div class="collections" id="links">
+                    <img class="socialMediaIcon2" id="faceb" src="../images/social_media/icons8-facebook-100.png" alt="Facebook">
+                    <img class="socialMediaIcon2" id="git" src="../images/social_media/icons8-github-100.png" alt="Twitter">
+                    <img class="socialMediaIcon2" id="insta" src="../images/social_media/icons8-instagram-100.png" alt="Instagram">
+                    <img class="socialMediaIcon2" id="tw" src="../images/social_media/icons8-twitter-100.png" alt="LinkedIn">
+                </div>
+            </div>
+            <div class="card collections-card" id="collectionList">
+                <h2 class="collections-title">Plant Collections</h2>
+                <button id="addPlantButton" class="floating-button" title="Add New Button">&#43;</button>
+                <div class="collections collectionsPlace" id="figurePlace">
+                    <div class="line"></div>
+                    <p class="no-collections-message">No collections have been made yet.</p>
+                    <!-- <figure>
+                        <img src="../images/background/card2.jpg" alt="Mountains" width="250" height="300">
+                        <figcaption>Collection1</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="../images/background/picture2.png" alt="Mountains" width="250" height="300">
+                        <figcaption>Collection2</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="../images/background/picture8.png" alt="Mountains" width="250" height="300">
+                        <figcaption>Collection3</figcaption>
+                    </figure> -->
+                    
+                </div>
+            </div>
+            <div class="card collections-card">
+                <h2 class="collections-title">Following List</h2>
+                <div class="collections">
+                    <div class="line"></div>
+                    <img class="friend" src="../images/background/friend.png" alt="Mountains" width="100" height="100">
+                    <img class="friend" src="../images/background/friend.png" alt="Mountains" width="100" height="100">
+                    <img class="friend" src="../images/background/friend.png" alt="Mountains" width="100" height="100">  
+                    <img class="friend" src="../images/background/friend.png" alt="Mountains" width="100" height="100">
+                    <img class="friend" src="../images/background/friend.png" alt="Mountains" width="100" height="100">
+                    <img class="friend" src="../images/background/friend.png" alt="Mountains" width="100" height="100">  
+                </div>
+            </div>
         </div>
     </main>
+
   <footer>
     <img id = "github" class="socialMediaIcon" src="../images/social_media/github.png" alt="Logo Small">
     <p class="gradient_Text">© 2024 HeMa. All rights reserved.</p>
     <img id = "uaic" class="socialMediaIcon" src="../images/social_media/uaic_logo_small.png" alt="Logo Small">
-</footer>
+    </footer>
+
+    <script src="../scripts/footer.js"></script>
+    <script src="../scripts/profile.js"></script>
 </body>
 </html>
