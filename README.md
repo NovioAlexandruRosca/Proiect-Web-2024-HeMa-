@@ -57,10 +57,68 @@ CREATE TABLE clients (
 
 ## Screenshots
 
+> ⚠️ ***KEEP IN MIND THAT THE ENTIRE WEBSITE IS RESPONSIVE, BUT TOO MANY SCREENSHOTS ARE NEEDED TO REPRESENT IT***
+
 Here you can see a couple of screenshots of the app in use:
 
-- **Decoy(for further use)**
-![image](https://github.com/AlexandruRoscaPOO/Recursive_Grep/assets/113398639/6ebf7d92-4555-4d66-bb6c-1f4536bef216)
+- **Landing Page**
+![landing](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/0eec0c83-96f8-4aa2-addf-2f79b859436d)
+
+- **Login Page**
+![login](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/4b426f0c-6425-4765-a787-5522a0fd0bf0)
+
+- **Register Page**
+![register](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/ed35cc4f-5e9f-4086-a960-7b1690c8334d)
+
+- **Admin Page**
+![admin](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/90631d86-fdd7-42f5-9bd9-495d25bee8d2)
+
+- **List Of Users Page**
+![listOfClients](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/9e8e46dc-007c-4676-974c-560991cb4e4a)
+
+- **Generate Reports Page**
+![generetateReports](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/1c18e8fb-6df6-42e6-a91b-75a7be77dfe8)
+
+- **Error404 Page**
+![error404](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/96924e32-c406-4076-a9c6-e5033dba6fc3)
+
+- **Home Page(First Part)**
+![home1](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/dfa2bc81-2283-4308-a303-657fb58261fb)
+- **Home Page(Second Part)**
+![home2](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/5d4beccc-f777-4899-97bb-3a09c38d27ee)
+
+- **About Us Page**
+![about](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/86174845-fbf9-482c-946a-aae20cc21502)
+
+- **Forum Page(Text View)**
+![sharedCol](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/0fca72fd-397b-43b2-9af6-34cc51fdcc2f)
+- **Forum Page(Visual boxes)**
+![sharedCol2](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/26566ea3-d9c9-46fa-9b6c-156ad963cc39)
+- **Forum Page(Search Capabilities)**
+![sharedCol3](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/c6ff682e-640c-408d-a2e5-551c8b82afa7)
+
+- **Blogs Page**
+![blogs](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/a3e9b475-6ae3-4def-9fed-fafa79ce297b)
+
+- **Profile(Without Collections)**
+![profile](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/9b3d524e-4da0-415a-8c0b-009f82e3e006)
+- **Profile(With Collections)**
+![profileWithCollections](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/0f71970d-8860-493e-97ce-c2cfe92774b9)
+
+- **Collection**
+![plantCollection](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/13cd3302-1da7-41d9-bb16-c2d097831a65)
+
+- **Contact(UI)**
+![contact1](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/662107cf-37ea-486f-813c-0abc3602fa9a)
+- **Contact(Mail Sending Example)**
+![contact2](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/b336a6cc-f6f0-4df4-8bd6-a1a04b5333be)
+
+- **NavBar(Normal Size)**
+![navbar](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/2fd5e5d3-7969-4d5f-8ab2-df2bf1d44cfd)
+- **NavBar(Responsive Capabilities)**
+![navbar2](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/35f75fd0-b6b7-4d06-a781-046da0422de5)
+- **NavBar(Responsive Use Example)**
+![navbar3](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/e2177a48-7963-4aca-9cb5-6c1c382b668c)
 
 
 
