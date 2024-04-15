@@ -18,5 +18,5 @@ document.getElementById('error').addEventListener('click', function (event) {
 });
 
 document.getElementById('documentation').addEventListener('click', function (event) {
-    window.location.href = '../html/error404.html';
+    window.location.href = '../Documentatie/Documentatie.html';
 });

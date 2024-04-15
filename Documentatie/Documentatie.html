@@ -9,7 +9,46 @@
 <h1>HeMa (Herbal Web Manager)</h1>
 <h2>Abstract</h2>
 <p>HeMa (Herbal Web Manager) represents an innovative implementation of a plant collection management system structured in an advanced document format known as Scholarly HTML. This web platform facilitates not only the management and cataloging of botanical species by enthusiasts and researchers but also provides extended blogging functionalities and community interaction all accessible through an optimized web interface. This documentation details the architecture, encoding, and functionalities of the system, with a particular emphasis on interoperability with modern browsers and the adoption of open standards for the exchange of scholarly articles. Utilizing Scholarly HTML, HeMa aims to set a new standard in digital publishing in the field of botany, enhancing the accessibility, discovery, and management of data in an academic and research environment.</p>
+<p>
+    This webpage is written in accordance with the Scholarly HTML template - a domain-specific rich document
+    format. The role
+    of this documentation is to present the esential functionalities of our website and its user interaction.
+    The structure follows the IEEE System Requirements Specification Template.
+</p>
+<p>
+    For detailed information on these templates, please refer to the
+    <a role="doc-biblioref" href="#ref-Scholarly-HTML">Scholarly HTML</a> and
+    <a role="doc-biblioref" href="#ref-IEEE-Template">IEEE System Requirements
+        Specification
+        Template</a>.
+</p>
 <h2>Introduction</h2>
+<h3>Purpose</h3>
+            <p>
+                This Software Requirements Specification (SRS) document outlines the specifications for the development
+                of a web application aggregator intitulated HeMa. The purpose of this document is to clearly define the
+                scope, objectives, and goals of the project, including the management of collections of plants stored on our platfrom,
+                the forum aspect of the page where people can share their collections and the blogs page where people can share tips about
+                gardening or plant related subjects
+            </p>
+
+<h3>Document conventions</h3>
+<p>
+    The SRS follows standard document conventions, including clear formatting, headings, and section
+    numbering for easy navigation. In this document, the typographical conventions follow the Roboto font,
+    with the fallback font of sans-serif.
+</p>
+<h3>Intended Audience and Reading Suggestions</h3>
+            <p>
+                This document is intended for the two developers of the site involved in the development and deployment
+                of the web application, serving as an outline for the overall website. The targeted audience also includes
+                the users of the website and the coordonator(s) of the project (<a role="doc-biblioref"
+                    href="#ref-FII-UAIC">Web technologies professors</a> from <a href="https://www.uaic.ro/">UAIC
+                    University</a>). Readers are encouraged to start with the <a href="#abstract">Introduction
+                    chapter</a> and progress to sections relevant to their role or interest.
+            </p>
+        </p>
+        <h3>Context</h3>
 <p>In the current landscape of digital publishing, many academic fields face the challenge of efficiently managing scientific data in an accessible and structured format. Despite the availability of advanced documentation technologies, much of the valuable information generated in research remains encapsulated in unstructured formats, which significantly limits their potential for discovery and subsequent use.</p>
 <p>HeMa (Herbal Web Manager) is a platform designed to address these challenges, offering an integrated solution for managing, presenting, and exchanging botanical information. Utilizing the Scholarly HTML format, HeMa proposes a standardized and extensible methodology for documenting and sharing knowledge in the field of botany. This enriched format allows not only the precise representation of scientific data but also advanced interaction with it, while supporting the principles of accessibility and internationalization.</p>
 <p>According to a report from the New York Times, the introduction of structured information into their culinary recipes improved their discoverability, leading to an immediate 52% increase in traffic. This example highlights the significant benefits that structuring and standardizing data can bring in any field, including the academic and scientific domain.</p>
@@ -17,9 +56,15 @@
 <p>To meet these challenges, HeMa adopts an approach rooted in established best practices for the reuse of open and standardized formats. We propose an "HTML Vernacular", a set of guidelines for creating domain-specific data formats that utilize the inherent extensibility of HTML. This vernacular foundation, overlaid with schema.org metadata and proposed extensions to it, has produced a format for the authoring and exchange of scholarly articles built on open standards, ready for use by everyone, including independent researchers who choose to publish their articles on their own.</p>
 <h2>External Interface Requirements</h2>
 <h3>User Interfaces</h3>
+<p>
+    This chapter describe the logical characteristics of each interface between the software product and the
+    users. Our website aims to use a minimalist style in order to make the user flow/navigation simpler. The
+    choosen design should enhance the user experience. Because the design is so simple, there should be a
+    minimal difference between the Web and Mobile versions.
+</p>
 <h4>Landing Page</h4>
 <p>This is the initial presentation of the HeMa platform, designed with an intuitive and engaging user interface catering to both guest visitors and registered users. The landing page offers a concise overview of the site's functionalities adorned with a rotating gallery of plant images that highlight the essence of HeMa as a plant collection manager.</p>
-
+<img src="./images/landing.png" alt="Login">
 <h4>Login Page</h4>
 <p>The Login page is the gateway for users to access their personal HeMa accounts. The user-friendly design requires only essential information like username or email and password.</p>
 <img src="./images/login.png" alt="Login">
@@ -48,6 +93,9 @@
 <p>The Collection Page allows users to view, manage, and organize their personal plant collections. This page provides detailed views of each plant, including care tips, scientific classifications, and the ability to add or remove plants from their collection. It is designed to be highly interactive and user-friendly, facilitating easy management of plant data.</p>
 <img src="./images/plantCollection.png" alt="Collection Page">
 
+<h3>Feed</h3>
+<p>HeMa allows users of the platform to interacted with other users collections that they shared on the website, this can be done using the form page where they can search using multiatributes specific collections and they can see it in 2 different modes, a text based one and a more visually appearing one</p>
+<img src="./images/sharedCol.png" alt="Collection Page">
 
 <h3>Software Interfaces</h3>
 <p>Database: Utilizing a robust MySQL database, HeMa efficiently handles a vast array of data from user transactions to detailed plant information. Encased in a Docker container, the database guarantees both security and portability.</p>
@@ -82,17 +130,106 @@
 <p>HeMa encourages interaction among users through integrated social features such as the ability to follow interesting collections of other users or to receive notifications when a collection is updated. Thus, the platform becomes not just a space for managing plants, but also a vibrant community for botanical enthusiasts.</p>
 
 <h2>Additional System Requirements</h2>
+<h3>Operating Environment</h3>
+            <p>
+                In the first part of the development, the website will be stored locally on the users' personal
+                computer. It can be downloaded from this <a
+                    href="https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-">GitHub</a> page.
+            </p>
+            <p>As for the end user perspective, this product shouldn't require too high specifications, as an internet
+                connection and a web browser will suffice. Even if the used browser isn't compatible with all of the
+                product's features, there should be some fallback methods, allowind the user experience to be as close
+                as possible to the maximum potentional of the website.</p>
+            <p>It's important to note that our product will be available on any type of device (PCs, phones, tablets,
+                etc.). Therefore, its design shall be responsive.
+            </p>
+            <h3><span></span>User Documentation</h3>
+            <p>
+                Our users can find a <code>README.md</code> file on the previously specified GitHub Repository. The
+                choosen design for our product should be simple enough to make the user experience as intuitive as
+                possible, thus overcomind the need for documentation. However, there will be a page which will inform
+                all the users of the limitations imposed by our website, mainly the number of photos that can be
+                collected in a period of time from another application. If any, the limitations of uploading a photo to
+                these websites will be also documented.
+            </p>
 <h3>Performance Requirements</h3>
 <p>In addition to being responsive across various frame sizes, including monitors, laptops, tablets, and phones, the website is optimized for quick load times and smooth transitions between pages. The dynamic content loading feature ensures that users experience minimal wait times as they navigate through the extensive plant collections and blog entries.</p>
 
 <h3>Security Requirements</h3>
 <p>Beyond the hashing of passwords, the website employs advanced encryption techniques to safeguard user data during transmission and storage. All personal data management conforms to GDPR standards, ensuring user consent and data rights are at the forefront of our platform's operation.</p>
-
+<p>
+    HeMa will encrypt all sensitive user data, including passwords and personal information, while storing them. 
+    Also, it will use secure communication protocols, such as HTTPS, for all data
+    transmission between clients and server.
+</p>
+<p>
+    HeMa website must implement measures to prevent code injection vulnerabilities, such as SQL Injection
+    or command injection. Input validation and sanitization must be performed on all user-supplied data to
+    ensure that it does not contain malicious code.
+</p>
 <h3>Privacy Requirements</h3>
 <p>The website adheres to stringent privacy protocols, not only aligning with GDPR but also providing users with comprehensive control over their personal information. Users can easily access, rectify, or delete their data upon request.</p>
 
 <h3>Compliance Requirements</h3>
 <p>To maintain the highest standard of compliance, the website regularly updates its policies to align with the latest legal and regulatory requirements. This includes periodic reviews of user agreements and privacy statements, as well as incorporating user feedback to address any concerns related to data handling and user rights.</p>
 
+<h3>Business Rules</h3>
+            <p>
+                The final product will have two different types of users, they wont have to respect the same rules on the website.
+                All of them will need to log into our website, through the login page but one will choose to log as an admin and one as a user. 
+                There won't be any given restrictions to the registred accounts. Only the developers will have access to the website's
+                database. The admins will be able to generate pdf/csv files containg data related to plants and the users of the platform, see all the
+                users and ban anyone who doesnt respect the internal rules.
+            </p>
+
+
+            <section id="finalReferences">
+                <h2>References</h2>
+                <dl>
+                    <dt id="ref-FII-UAIC">FII UAIC</dt>
+                    <dd property="schema:citation" typeof="schema:ScholarlyArticle"
+                        resource="https://edu.info.uaic.ro/web-technologies/web-projects.html">
+                        <cite property="schema:name"><a
+                                href="https://edu.info.uaic.ro/web-technologies/web-projects.html">Practical Projects - Web
+                                Technologies</a></cite>,
+                        by
+                        <span property="schema:author" typeof="schema:Person">
+                            <meta property="schema:honorificPrefix" content="Dr.">
+                            <meta property="schema:givenName" content="Sabin">
+                            <meta property="schema:additionalName" content="Corneliu">
+                            <meta property="schema:familyName" content="Buraga">
+                            <span property="schema:name">Dr. Sabin-Corneliu Buraga</span>
+                        </span>,
+                        <span property="schema:author" typeof="schema:Person">
+                            <meta property="schema:honorificPrefix" content="Dr.">
+                            <meta property="schema:givenName" content="Andrei">
+                            <meta property="schema:familyName" content="Panu">
+                            <span property="schema:name">Dr. Andrei Panu</span>
+                        </span>;
+                        <time property="schema:datePublished" datetime="2024-02" datatype="xsd:gYearMonth">2024 Feb</time>.
+                    </dd>
+                    <dt id="ref-Scholarly-HTML">Scholarly HTML</dt>
+                    <dd property="schema:citation" typeof="schema:ScholarlyArticle"
+                        resource="https://w3c.github.io/scholarly-html/">
+                        <cite property="schema:name"><a href="https://w3c.github.io/scholarly-html/">Scholarly HTML - Community
+                                Draft</a></cite>.
+                    </dd>
+                    <dt id="ref-IEEE-Template">IEEE-Template</dt>
+                    <dd property="schema:citation" typeof="schema:WebPage"
+                        resource="https://github.com/rick4470/IEEE-SRS-Tempate">
+                        <cite property="schema:name"><a href="https://github.com/rick4470/IEEE-SRS-Tempate">IEEE System
+                                Requirements Specification Template</a></cite>.
+                    </dd>
+                    <dt id="ref-PageSpeed">PageSpeed</dt>
+                    <dd property="schema:citation" typeof="schema:WebPage" resource="https://pagespeed.web.dev/">
+                        <cite property="schema:name"><a href="https://pagespeed.web.dev/">Google PageSpeed Insights</a></cite>.
+                    </dd>
+                    <dt id="ref-CSL">CSL</dt>
+                    <dd property="schema:citation" typeof="schema:WebPage" resource="http://citationstyles.org/">
+                        <cite property="schema:name"><a href="http://citationstyles.org/">Citation Styles
+                                Language</a></cite>.
+                    </dd>
+                </dl>
+            </section>
 </body>
 </html>
