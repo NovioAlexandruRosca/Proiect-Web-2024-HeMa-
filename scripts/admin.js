@@ -16,3 +16,7 @@ document.getElementById('adminLogout').addEventListener('click', function (event
 document.getElementById('error').addEventListener('click', function (event) {
     window.location.href = '../html/error404.html';
 });
+
+document.getElementById('documentation').addEventListener('click', function (event) {
+    window.location.href = '../html/error404.html';
+});
