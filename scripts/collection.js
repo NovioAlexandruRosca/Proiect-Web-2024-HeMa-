@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function addFigure() {
     let anchor = document.createElement('a');
-    anchor.href = "../html/PlantProfilePage.html"; 
+    anchor.href = "./PlantProfilePage.html"; 
     anchor.setAttribute('target', '_blank'); 
 
     let figure = document.createElement('figure');

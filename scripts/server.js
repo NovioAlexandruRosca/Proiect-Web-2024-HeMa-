@@ -18,6 +18,7 @@ const pool = mysql.createPool({
     queueLimit: 0
 });
 
+// This variable checks to see if the client request is for an html/css... file or is used for registering login, data fetching....
 let headerNotModified = true;
 
 // WE CREATE THE BASE OF THE SERVER
@@ -56,7 +57,7 @@ const server = http.createServer((req, res) => {
         });
         req.on('end', () => {
             try {
-                const { Email, Password } = JSON.parse(body);
+                const { Email, Password, IsAdmin } = JSON.parse(body);
 
                 pool.getConnection((err, connection) => {
                     if (err) {
@@ -66,26 +67,49 @@ const server = http.createServer((req, res) => {
                         return;
                     }
                     
-                    connection.query('SELECT * FROM clients WHERE email = ? AND password = ?', [Email, Password], (err, results, fields) => {
-                        if (err) {
-                            console.error('Error executing query:', err);
-                            res.writeHead(500, { 'Content-Type': 'text/plain' });
-                            res.end('Internal Server Error');
-                            return;
-                        }
-                        
-                        if (results.length > 0) {
-                            console.log('User authenticated successfully');
-                            res.writeHead(200, { 'Content-Type': 'text/plain' });
-                            res.end('OK');
-                        } else {
-                            console.log('User not found or incorrect credentials');
-                            res.writeHead(401, { 'Content-Type': 'text/plain' });
-                            res.end('Unauthorized');
-                        }
+                    if(IsAdmin === 'true'){
+                        connection.query('SELECT * FROM admins WHERE email = ? AND password = ?', [Email, Password], (err, results, fields) => {
+                            if (err) {
+                                console.error('Error executing query:', err);
+                                res.writeHead(500, { 'Content-Type': 'text/plain' });
+                                res.end('Internal Server Error');
+                                return;
+                            }
+                            
+                            if (results.length > 0) {
+                                console.log('User authenticated successfully');
+                                res.writeHead(200, { 'Content-Type': 'text/plain', 'isAdmin': 'Yes' });
+                                res.end('OK');
+                            } else {
+                                console.log('User not found or incorrect credentials');
+                                res.writeHead(401, { 'Content-Type': 'text/plain' });
+                                res.end('Unauthorized');
+                            }
 
-                        connection.release();
-                    });
+                            connection.release();
+                        });
+                    }else{
+                        connection.query('SELECT * FROM clients WHERE email = ? AND password = ?', [Email, Password], (err, results, fields) => {
+                            if (err) {
+                                console.error('Error executing query:', err);
+                                res.writeHead(500, { 'Content-Type': 'text/plain' });
+                                res.end('Internal Server Error');
+                                return;
+                            }
+                            
+                            if (results.length > 0) {
+                                console.log('User authenticated successfully');
+                                res.writeHead(200, { 'Content-Type': 'text/plain', 'isAdmin': 'No' });
+                                res.end('OK');
+                            } else {
+                                console.log('User not found or incorrect credentials');
+                                res.writeHead(401, { 'Content-Type': 'text/plain' });
+                                res.end('Unauthorized');
+                            }
+
+                            connection.release();
+                        });
+                    }
                 });
             } catch (error) {
                 console.error('Error parsing JSON:', error);
@@ -167,14 +191,34 @@ const server = http.createServer((req, res) => {
         });
 
         req.on('end', () => {
-            const formData = querystring.parse(body);
+            const formData = JSON.parse(body);
             sendEmail(formData, (error) => {
                 if (error) {
                     res.writeHead(500);
                     res.end('Error sending email');
                 } else {
-                    res.writeHead(200);
-                    res.end('Email sent successfully');
+
+                    pool.getConnection((err, connection) => {
+                        if (err) {
+                            console.error('Error getting connection from pool:', err);
+                            res.writeHead(500, { 'Content-Type': 'text/plain' });
+                            res.end('Internal Server Error');
+                            return;
+                        }
+                        
+                        connection.query('INSERT INTO sentemails (account_email, sender_name, sender_email, recipient_email, subject, message) VALUES ("alexandrurosca434", ?, ?, ?, ?, ?)', [formData.nume, formData.gmail, process.env.MAILADDRESS, formData.subject, formData.message], (err, results, fields) => {
+                            if (err) {
+                                console.error('Error executing query:', err);
+                                res.writeHead(500, { 'Content-Type': 'text/plain' });
+                                res.end('Internal Server Error');
+                                return;
+                            }
+                        
+                            connection.release();
+                            res.writeHead(200);
+                            res.end('Email sent successfully');
+                        });
+                    });
                 }
             });
         });
@@ -184,10 +228,12 @@ const server = http.createServer((req, res) => {
     if(headerNotModified){
         let filePath = null;
 
-        if(getContentType(req.url) == 'text/html'){
+        if(req.url == '../Documentatie/Documentatie.html'){
+            filePath = 'Documentatie/Documentatie.html';
+        }else if(getContentType(req.url) == 'text/html'){
             filePath = './html' + req.url;
         }else if(req.url == '/'){
-            filePath = './html/login.html';
+            filePath = './html/landingPage.html';
         }
         
         filePath = path.join(__dirname, '..', filePath || req.url);
@@ -196,8 +242,10 @@ const server = http.createServer((req, res) => {
         fs.readFile(filePath, (err, content) => {
             if (err) {
                 if (err.code === 'ENOENT') {
-                    res.writeHead(404, { 'Content-Type': 'text/html' });
-                    res.end('<h1>404 Not Found</h1>');
+                    fs.readFile('./html/error404.html', (err, content) =>{
+                        res.writeHead(404, { 'Content-Type': 'text/html' });
+                        res.end(content, 'utf-8');
+                    });
                 } else {
                     res.writeHead(500);
                     res.end(`Server Error: ${err.code}`);

@@ -54,13 +54,13 @@
                 <input type="text" placeholder="My name is" name="nume" id="name_input" autocomplete="off">
               </div>
               <div class="telephone">
-                <input type="text" placeholder="My number is" name="telephone" pattern="07[0-9]{8}" id="telephone_input" autocomplete="off" oninvalid="this.setCustomValidity('Please enter a valid phone number in the format 07XXXXXXXX')" oninput="this.setCustomValidity('')">
+                <input type="text" placeholder="My number is" name="telephone" id="telephone_input" autocomplete="off" oninput="this.setCustomValidity('')">
               </div>
               <div class="dsa">
-                <input type="email" placeholder="My e‎-mail is" name="gmail" id="das" autocomplete="off">
+                <input type="text" placeholder="My e‎-mail is" name="gmail" id="das" autocomplete="off">
               </div>
               <div class="subject">
-                <select name="subject" id="subject_input" required>
+                <select name="subject" id="subject_input">
                     <option disabled hidden selected value="">Subject line</option>
                     <option id="option1">I'd like to suggest a feature</option>
                     <option id="option2">I'd like to ask a question</option>

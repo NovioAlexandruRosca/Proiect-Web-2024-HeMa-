@@ -46,13 +46,31 @@ Various statistics will be generated and made available in open formats, includi
 
 ## Database(This is only for educational purposes)
 
-- The databases shape is at follows:
+- The tables from the database are as it follows:
 
 CREATE TABLE clients (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE admins (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE SentEmails (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    account_email VARCHAR(255) NOT NULL,
+    sender_name VARCHAR(255) NOT NULL,
+    sender_email VARCHAR(255) NOT NULL,
+    recipient_email VARCHAR(255) NOT NULL,
+    subject VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 ## Screenshots

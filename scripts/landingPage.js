@@ -73,14 +73,14 @@ let registerClients = document.getElementById("registerClients");
 
 loginClients.addEventListener('click', function (event) {
     localStorage.setItem('clientIsAdmin', 'false');
-    window.location.href = '../html/login.html';
+    window.location.href = '/login.html';
 });
 
 loginAdmin.addEventListener('click', function (event) {
     localStorage.setItem('clientIsAdmin', 'true');
-    window.location.href = '../html/login.html';
+    window.location.href = '/login.html';
 });
 
 registerClients.addEventListener('click', function (event) {
-    window.location.href = '../html/register.html';
+    window.location.href = '/register.html';
 });
