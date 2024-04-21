@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById("Error_Message").innerText = "Email already exists!";
                 }
                 else    
-                    window.location.href = "/";
+                    window.location.href = "/login.html";
             })
             .catch((error) => {
                 console.error('Error:', error);

@@ -21,8 +21,23 @@ const pool = mysql.createPool({
 // This variable checks to see if the client request is for an html/css... file or is used for registering login, data fetching....
 let headerNotModified = true;
 
+// Map to store session data
+const sessions = {};
+
+// Function to generate session ID
+const generateSessionId = () => {
+    return Math.random().toString(36).substring(2, 15);
+};
+
 // WE CREATE THE BASE OF THE SERVER
 const server = http.createServer((req, res) => {
+
+    const cookies = parseCookies(req.headers.cookie)
+    const sessionId = cookies.sessionId;
+    const sessionData = getSession(sessionId);
+
+    const cookieValue = `sessionId=${sessionId}; HttpOnly; Max-Age=${24 * 60 * 60}`;
+    res.setHeader('Set-Cookie', cookieValue);
 
     if (req.url === '/data') {
         headerNotModified = false;
@@ -46,6 +61,27 @@ const server = http.createServer((req, res) => {
                 
             });
         });
+    }
+
+    // USED FOR LOGGING OUT
+    if(req.method === 'POST' && req.url === '/error404Return'){
+        headerNotModified = false;        
+        res.writeHead(200, { 'Content-Type': 'text/plain', 'isAdmin': sessionData.isAdmin });
+        res.end('Error404 Back To Page');
+    }
+
+    // USED FOR LOGGING OUT
+    if(req.method === 'POST' && req.url === '/logout'){
+        headerNotModified = false;
+        if(sessionData.isAdmin == 'True'){
+            console.log(`Admin with ID ${sessionData.userId} Logged Out`);
+        }else{
+            console.log(`User with ID ${sessionData.userId} Logged Out`);
+        }
+        destroySession(sessionId);
+        res.setHeader('Set-Cookie', 'sessionId=; HttpOnly; Max-Age=0');
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end('Logout successful');
     }
 
     // USED FOR LOGGING IN(TESTING THE CREDENTIALS)
@@ -77,7 +113,18 @@ const server = http.createServer((req, res) => {
                             }
                             
                             if (results.length > 0) {
-                                console.log('User authenticated successfully');
+                                
+                                const sessionId = createSession();
+                                
+                                //cookies
+                                const cookieValue = `sessionId=${sessionId}; HttpOnly; Max-Age=${24 * 60 * 60}`;
+                                res.setHeader('Set-Cookie', cookieValue);
+
+                                const userData = {sessionId: sessionId, userId: results[0].id, username: results[0].name, isAdmin: 'True'};
+                                setSessionData(sessionId, userData);
+                                console.log(userData);
+
+                                console.log(`Admin with ID ${userData.userId} authenticated successfully`);
                                 res.writeHead(200, { 'Content-Type': 'text/plain', 'isAdmin': 'Yes' });
                                 res.end('OK');
                             } else {
@@ -98,7 +145,18 @@ const server = http.createServer((req, res) => {
                             }
                             
                             if (results.length > 0) {
-                                console.log('User authenticated successfully');
+
+                                const sessionId = createSession();
+                                
+                                //cookies
+                                const cookieValue = `sessionId=${sessionId}; HttpOnly; Max-Age=${24 * 60 * 60}`;
+                                res.setHeader('Set-Cookie', cookieValue);
+
+                                const userData = {sessionId: sessionId, userId: results[0].id, username: results[0].name, isAdmin: 'False'};
+                                setSessionData(sessionId, userData);
+                                console.log(userData);
+
+                                console.log(`User with ID ${userData.userId} authenticated successfully`);
                                 res.writeHead(200, { 'Content-Type': 'text/plain', 'isAdmin': 'No' });
                                 res.end('OK');
                             } else {
@@ -235,7 +293,21 @@ const server = http.createServer((req, res) => {
         }else if(req.url == '/'){
             filePath = './html/landingPage.html';
         }
-        
+
+        // If they aren't logged in they should be able to see anything but the 3 pages from the second part of the if
+        if (!sessionData) {
+            if(getContentType(req.url) == 'text/html' && (filePath != './html/landingPage.html' && filePath != './html/login.html' && filePath != './html/register.html'))
+                filePath = './html/landingPage.html';
+        }
+
+        if(sessionData){
+           if(getContentType(req.url) == 'text/html')
+                if(sessionData.isAdmin == 'True' && (filePath != './html/admin.html' && filePath != './html/generateReports.html' && filePath != './html/listOfClients.html'))
+                    filePath = './html/error404.html';
+                else if(sessionData.isAdmin == 'False' && (filePath == './html/admin.html' || filePath == './html/generateReports.html' || filePath == './html/listOfClients.html'))
+                    filePath = './html/error404.html';
+        }
+
         filePath = path.join(__dirname, '..', filePath || req.url);
 
         const contentType = getContentType(filePath);
@@ -297,4 +369,38 @@ function getContentType(filePath) {
         default:
             return 'application/octet-stream';
     }
+}
+
+// Function to create session
+const createSession = () => {
+    const sessionId = generateSessionId();
+    sessions[sessionId] = {};
+    return sessionId;
+};
+
+// Function to get session
+const getSession = (sessionId) => {
+    return sessions[sessionId];
+};
+
+// Function to set session data
+const setSessionData = (sessionId, data) => {
+    sessions[sessionId] = data;
+};
+
+// Function to destroy session
+const destroySession = (sessionId) => {
+    delete sessions[sessionId];
+};
+
+// Function to parse cookies from the request headers
+function parseCookies(cookieHeader) {
+    const cookies = {};
+    if (cookieHeader) {
+        cookieHeader.split(';').forEach(cookie => {
+            const parts = cookie.split('=');
+            cookies[parts[0].trim()] = parts[1].trim();
+        });
+    }
+    return cookies;
 }
