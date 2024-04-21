@@ -40,6 +40,7 @@ Various statistics will be generated and made available in open formats, includi
 - **nodemon** (Version 3.1.0)
 - **nodemailer** (Version 6.9.13)
 - **mysql2** (Version 3.9.3)
+- **bcrypt** (Version 5.1.1)
 
 ## Contribution
 - You are welcome to create pull requests in order to report bugs or suggest further improvments of the app
@@ -71,6 +72,33 @@ CREATE TABLE SentEmails (
     subject VARCHAR(255) NOT NULL,
     message TEXT NOT NULL,
     sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE blog_posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    post_date DATE NOT NULL,
+    user_id INT NOT NULL,
+    user_name VARCHAR(255) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES clients(id) ON DELETE CASCADE
+);
+
+CREATE TABLE blog_post_sections (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    post_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    FOREIGN KEY (post_id) REFERENCES blog_posts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE section_images (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    post_id INT NOT NULL,
+    section_id INT NOT NULL,
+    image_url VARCHAR(255) NOT NULL,
+    FOREIGN KEY (post_id) REFERENCES blog_posts(id) ON DELETE CASCADE,
+    FOREIGN KEY (section_id) REFERENCES blog_post_sections(id) ON DELETE CASCADE
 );
 
 ## Screenshots

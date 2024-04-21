@@ -66,11 +66,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     const myPromise = new Promise((resolve) => {
                         setTimeout(() => {
                           resolve("Promise resolved after 2 seconds");
-                        }, 2000);
+                        }, 3000);
                       });
 
                     myPromise.then(() => {
-                        window.location.href = "/";    
+                        window.location.href = "./index.html";    
                         document.getElementById('form_button').value = "SEND MESSAGE";                    
                     }).catch((error) => {
                         console.error(error);

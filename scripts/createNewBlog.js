@@ -1,8 +1,8 @@
 document.getElementById('AddNewSection').addEventListener('click', function(){
     
-    var divElement = document.getElementById("sectionForSections");
+    let divElement = document.getElementById("sectionForSections");
 
-    var htmlCode = `<div class="blog-post">
+    let htmlCode = `<div class="blog-post">
     <h2>Section Title:</h2>
     <input type="text" class="nameInput" name="nameInput"><br>
     
@@ -17,31 +17,31 @@ document.getElementById('AddNewSection').addEventListener('click', function(){
     </div>
 </div>`;
 
-    divElement.innerHTML += htmlCode;
+    divElement.insertAdjacentHTML('beforeend', htmlCode);
 
 });
 
 function deleteSection(button) {
-    var section = button.closest('.blog-post'); // Find the parent section
+    let section = button.closest('.blog-post'); // Find the parent section
     section.remove(); // Remove the section
 }
 
 
 function addPictures(button) {
 
-    var blogPostDiv = button.closest('.blog-post');
+    let blogPostDiv = button.closest('.blog-post');
+    let addImagesDiv = blogPostDiv.querySelector('.image');
+    let fileInput = blogPostDiv.querySelector('.fileInput');
 
+    let existingImagesCount = addImagesDiv.querySelectorAll('img').length;
+    if (existingImagesCount >= 3) {
+        console.log('Maximum number of images (3) reached.');
+        return;
+    }
 
-    var addImagesDiv = blogPostDiv.querySelector('.image');
+    for (let i = 0; i < fileInput.files.length; i++) {
 
-
-    var fileInput = blogPostDiv.querySelector('.fileInput');
-
-
-    for (var i = 0; i < fileInput.files.length; i++) {
-
-        var imgElement = document.createElement("img");
-
+        let imgElement = document.createElement("img");
 
         imgElement.src = URL.createObjectURL(fileInput.files[i]);
 
@@ -60,30 +60,56 @@ function addPictures(button) {
 }
 
 
-document.getElementById('Save').addEventListener('click', function(){
-    var currentDate = new Date();
-    var formattedDate = currentDate.getDate() + '/' + (currentDate.getMonth() + 1) + '/' + currentDate.getFullYear();
-    
-    console.log('Rosca Alexandru David');
-    console.log('Date: ' + formattedDate);
+document.getElementById('Save').addEventListener('click', async function(){
+
+    // Create an array to store the blog post data
+    let postData = [];
 
     // Iterate over each blog-post element
-    var blogPosts = document.querySelectorAll('.blog-post');
+    let blogPosts = document.querySelectorAll('.blog-post');
     blogPosts.forEach(function(post, index) {
         // Get the title and description inputs
-        var titleInput = post.querySelector('.nameInput').value;
-        var descriptionInput = post.querySelector('.descriptionInput').value;
+        let titleInput = post.querySelector('.nameInput').value;
+        let descriptionInput = post.querySelector('.descriptionInput').value;
 
-        // Output the data to the console
-        console.log('Title: ' + titleInput);
-        console.log('Description: ' + descriptionInput);
+        let imageUrls = [];
 
         // Get the images added
-        var images = post.querySelectorAll('.image img');
+        let images = post.querySelectorAll('.image img');
         images.forEach(function(img, imgIndex) {
-            console.log('Image ' + (imgIndex + 1) + ' URL: ' + img.src);
+            imageUrls.push(img.src);
         });
 
-        console.log('---'); // Separate each blog post with a line
-    })
+        postData.push({
+            title: titleInput,
+            description: descriptionInput,
+            images: imageUrls
+        });
+    });
+
+    try {
+        // Send the postData array to the server
+        const response = await fetch('/saveBlogPosts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postData)
+        });
+
+        if (response.ok) {
+            // Get the URLs of the first images from the server response
+            const firstImageUrls = await response.json();
+
+            // Open a new window/tab for each first image URL received from the server
+            firstImageUrls.forEach(imageUrl => {
+                window.open(imageUrl);
+            });
+        } else {
+            console.error('Failed to save blog posts:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error saving blog posts:', error);
+    }
+    window.location.href = './blog.html';
 });

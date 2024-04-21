@@ -109,6 +109,10 @@ textarea {
 	transition: all 0.3s;
 }
 
+#contact_form #das {
+  text-transform: none;
+}
+
 input[type='text']:focus, [type='email']:focus, textarea:focus {
 	outline: none;
 }

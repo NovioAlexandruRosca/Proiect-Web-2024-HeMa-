@@ -6,6 +6,8 @@ const querystring = require('querystring');
 const mysql = require('mysql2');
 const { parse } = require('querystring');
 require('dotenv').config();
+const bcrypt = require('bcrypt');
+
 
 // DATA NEEDED TO CONNECT TO THE DATABASE
 const pool = mysql.createPool({
@@ -39,6 +41,7 @@ const server = http.createServer((req, res) => {
     const cookieValue = `sessionId=${sessionId}; HttpOnly; Max-Age=${24 * 60 * 60}`;
     res.setHeader('Set-Cookie', cookieValue);
 
+
     if (req.url === '/data') {
         headerNotModified = false;
         // WE TRY TO USE THE DATABASE
@@ -63,6 +66,158 @@ const server = http.createServer((req, res) => {
         });
     }
 
+    // USED FOR getting the users name
+    if(req.method === 'GET' && req.url === '/api/user'){
+        headerNotModified = false;        
+        res.writeHead(200, { 'Content-Type': 'text/plain', 'Name' : sessionData.username });
+        res.end('Error404 Back To Page');
+    }
+
+    // USED FOR getting the users name
+    if (req.method === 'GET' && req.url === '/api/blogs') {
+        headerNotModified = false; 
+        pool.query('SELECT id, title, description FROM blog_posts', (error, results, fields) => {
+            if (error) {
+                console.error('Error fetching blogs from database:', error);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Internal Server Error' }));
+            } else {
+                // Format the retrieved data into JSON format
+                const jsonData = JSON.stringify(results);
+
+                // Send the JSON response back to the client
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(jsonData);
+            }
+        });
+    }
+
+    if (req.method === 'POST' && req.url === '/api/blogData') {
+        headerNotModified = false; 
+        let body = '';
+      
+        req.on('data', (chunk) => {
+            body += chunk;
+        });
+      
+        req.on('end', () => {
+            try {
+                const postData = JSON.parse(body);
+                const postId = postData.postId;
+    
+                // Get a connection from the pool
+                pool.getConnection((err, connection) => {
+                    if (err) {
+                        console.error('Error getting connection from pool:', err);
+                        res.writeHead(500, { 'Content-Type': 'text/plain' });
+                        res.end('Internal Server Error');
+                        return;
+                    }
+    
+                    // Query the database for blog post data and client name
+                    connection.query('SELECT b.title, b.description, c.name AS client_name, b.post_date FROM blog_posts b INNER JOIN clients c ON b.user_id = c.id WHERE b.id = ?', [postId], async (error, results) => {
+                        if (error) {
+                            console.error('Error querying blog post data:', error);
+                            res.writeHead(500, { 'Content-Type': 'text/plain' });
+                            res.end('Internal Server Error');
+                            connection.release();
+                            return;
+                        }
+    
+                        const postData = results[0];
+    
+                        // Query the database for blog post sections
+                        connection.query('SELECT * FROM blog_post_sections WHERE post_id = ?', [postId], async (error1, sections) => {
+                            if (error1) {
+                                console.error('Error querying blog post sections:', error1);
+                                res.writeHead(500, { 'Content-Type': 'text/plain' });
+                                res.end('Internal Server Error');
+                                connection.release();
+                                return;
+                            }
+    
+                            // Iterate over sections to fetch associated images
+                            for (let i = 0; i < sections.length; i++) {
+                                const section = sections[i];
+                                // Query the database for images associated with this section
+                                const images = await new Promise((resolve, reject) => {
+                                    connection.query('SELECT image_url FROM section_images WHERE section_id = ?', [section.id], (error2, results) => {
+                                        if (error2) {
+                                            console.error('Error querying section images:', error2);
+                                            reject(error2);
+                                            return;
+                                        }
+                                        resolve(results.map(result => result.image_url));
+                                    });
+                                });
+                                // Add images to the section object
+                                section.images = images;
+                            }
+    
+                            // Release the connection back to the pool
+                            connection.release();
+    
+                            // Send the response back to the client
+                            const responseData = {
+                                post: postData,
+                                sections: sections
+                            };
+                            res.writeHead(200, { 'Content-Type': 'application/json' });
+                            res.end(JSON.stringify(responseData));
+                        });
+                    });
+                });
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+                res.writeHead(400, { 'Content-Type': 'text/plain' });
+                res.end('Bad Request');
+            }
+        });
+    }
+    
+      
+
+    // USED FOR SAVING BLOGS
+    if (req.method === 'POST' && req.url === '/saveBlogPosts') {
+        headerNotModified = false;   
+        let body = '';
+
+        req.on('data', (chunk) => {
+            body += chunk;
+        });
+
+        req.on('end', async () => {
+            try {
+                const postData = JSON.parse(body);
+
+                const { title, description, images} = postData[0];
+                let postId = await addBlogPost(title, description, sessionData.userId, sessionData.username);
+                let blogDetails = true;
+
+                postData.forEach(async (post) => {
+                    const { title, description, images } = post;
+
+                    if(blogDetails){
+                        blogDetails = false;
+                    }else{
+                        let sectionId = await addSection(postId, title, description);
+                        for (const imageUrl of images) {
+                            pool.query('INSERT INTO section_images (post_id, section_id, image_url) VALUES (?, ?, ?)', [postId, sectionId, imageUrl]);
+                        }
+                    }                 
+                });
+
+                console.log('Blog posts saved successfully');
+                res.writeHead(200, { 'Content-Type': 'text/plain' });
+                res.end('Blog added succesfully');
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+                res.writeHead(400, { 'Content-Type': 'text/plain' });
+                res.end('Bad Request');
+            }
+        });
+    }
+
     // USED FOR LOGGING OUT
     if(req.method === 'POST' && req.url === '/error404Return'){
         headerNotModified = false;        
@@ -73,6 +228,10 @@ const server = http.createServer((req, res) => {
     // USED FOR LOGGING OUT
     if(req.method === 'POST' && req.url === '/logout'){
         headerNotModified = false;
+
+        if(sessionData.isAdmin == undefined)
+        sessionData.isAdmin = 'False';
+
         if(sessionData.isAdmin == 'True'){
             console.log(`Admin with ID ${sessionData.userId} Logged Out`);
         }else{
@@ -91,7 +250,7 @@ const server = http.createServer((req, res) => {
         req.on('data', (chunk) => {
             body += chunk.toString();
         });
-        req.on('end', () => {
+        req.on('end', async () => {
             try {
                 const { Email, Password, IsAdmin } = JSON.parse(body);
 
@@ -104,29 +263,38 @@ const server = http.createServer((req, res) => {
                     }
                     
                     if(IsAdmin === 'true'){
-                        connection.query('SELECT * FROM admins WHERE email = ? AND password = ?', [Email, Password], (err, results, fields) => {
+                        connection.query('SELECT * FROM admins WHERE email = ?', [Email], async (err, results, fields) => {
                             if (err) {
                                 console.error('Error executing query:', err);
                                 res.writeHead(500, { 'Content-Type': 'text/plain' });
                                 res.end('Internal Server Error');
                                 return;
                             }
-                            
+
                             if (results.length > 0) {
                                 
-                                const sessionId = createSession();
-                                
-                                //cookies
-                                const cookieValue = `sessionId=${sessionId}; HttpOnly; Max-Age=${24 * 60 * 60}`;
-                                res.setHeader('Set-Cookie', cookieValue);
+                                const hashedPassword = results[0].password;
+                                const isPasswordValid = await bcrypt.compare(Password, hashedPassword);
 
-                                const userData = {sessionId: sessionId, userId: results[0].id, username: results[0].name, isAdmin: 'True'};
-                                setSessionData(sessionId, userData);
-                                console.log(userData);
+                                if (isPasswordValid) {
+                                    const sessionId = createSession();
+                                    
+                                    //cookies
+                                    const cookieValue = `sessionId=${sessionId}; HttpOnly; Max-Age=${24 * 60 * 60}`;
+                                    res.setHeader('Set-Cookie', cookieValue);
 
-                                console.log(`Admin with ID ${userData.userId} authenticated successfully`);
-                                res.writeHead(200, { 'Content-Type': 'text/plain', 'isAdmin': 'Yes' });
-                                res.end('OK');
+                                    const userData = {sessionId: sessionId, userId: results[0].id, username: results[0].name, isAdmin: 'True'};
+                                    setSessionData(sessionId, userData);
+                                    console.log(userData);
+
+                                    console.log(`Admin with ID ${userData.userId} authenticated successfully`);
+                                    res.writeHead(200, { 'Content-Type': 'text/plain', 'isAdmin': 'Yes' });
+                                    res.end('OK');
+                                }else{
+                                    console.log('User not found or incorrect credentials');
+                                    res.writeHead(401, { 'Content-Type': 'text/plain' });
+                                    res.end('Unauthorized');
+                                }
                             } else {
                                 console.log('User not found or incorrect credentials');
                                 res.writeHead(401, { 'Content-Type': 'text/plain' });
@@ -136,7 +304,7 @@ const server = http.createServer((req, res) => {
                             connection.release();
                         });
                     }else{
-                        connection.query('SELECT * FROM clients WHERE email = ? AND password = ?', [Email, Password], (err, results, fields) => {
+                        connection.query('SELECT * FROM clients WHERE email = ?', [Email], async (err, results, fields) => {
                             if (err) {
                                 console.error('Error executing query:', err);
                                 res.writeHead(500, { 'Content-Type': 'text/plain' });
@@ -146,19 +314,29 @@ const server = http.createServer((req, res) => {
                             
                             if (results.length > 0) {
 
-                                const sessionId = createSession();
-                                
-                                //cookies
-                                const cookieValue = `sessionId=${sessionId}; HttpOnly; Max-Age=${24 * 60 * 60}`;
-                                res.setHeader('Set-Cookie', cookieValue);
+                                const hashedPassword = results[0].password;
+                                const isPasswordValid = await bcrypt.compare(Password, hashedPassword);
 
-                                const userData = {sessionId: sessionId, userId: results[0].id, username: results[0].name, isAdmin: 'False'};
-                                setSessionData(sessionId, userData);
-                                console.log(userData);
+                                if (isPasswordValid) {
 
-                                console.log(`User with ID ${userData.userId} authenticated successfully`);
-                                res.writeHead(200, { 'Content-Type': 'text/plain', 'isAdmin': 'No' });
-                                res.end('OK');
+                                    const sessionId = createSession();
+                                    
+                                    //cookies
+                                    const cookieValue = `sessionId=${sessionId}; HttpOnly; Max-Age=${24 * 60 * 60}`;
+                                    res.setHeader('Set-Cookie', cookieValue);
+
+                                    const userData = {sessionId: sessionId, userId: results[0].id, username: results[0].name, isAdmin: 'False'};
+                                    setSessionData(sessionId, userData);
+                                    console.log(userData);
+
+                                    console.log(`User with ID ${userData.userId} authenticated successfully`);
+                                    res.writeHead(200, { 'Content-Type': 'text/plain', 'isAdmin': 'No' });
+                                    res.end('OK');
+                                }else{
+                                    console.log('User not found or incorrect credentials');
+                                    res.writeHead(401, { 'Content-Type': 'text/plain' });
+                                    res.end('Unauthorized');
+                                }
                             } else {
                                 console.log('User not found or incorrect credentials');
                                 res.writeHead(401, { 'Content-Type': 'text/plain' });
@@ -184,9 +362,12 @@ const server = http.createServer((req, res) => {
         req.on('data', (chunk) => {
             body += chunk.toString();
         });
-        req.on('end', () => {
+        req.on('end', async () => {
             try {
                 const { Email, Name, Password } = JSON.parse(body);
+
+                const hashedPassword = await bcrypt.hash(Password, 10);
+
                 pool.getConnection((err, connection) => {
                     if (err) {
                         console.error('Error getting connection from pool:', err);
@@ -214,7 +395,7 @@ const server = http.createServer((req, res) => {
                         } 
                         
                         // Insert new user
-                        connection.query('INSERT INTO clients (email, name, password) VALUES (?, ?, ?)', [Email, Name, Password], (err, results, fields) => {
+                        connection.query('INSERT INTO clients (email, name, password) VALUES (?, ?, ?)', [Email, Name, hashedPassword], (err, results, fields) => {
                             if (err) {
                                 console.error('Error executing query:', err);
                                 res.writeHead(500, { 'Content-Type': 'text/plain' });
@@ -302,7 +483,7 @@ const server = http.createServer((req, res) => {
 
         if(sessionData){
            if(getContentType(req.url) == 'text/html')
-                if(sessionData.isAdmin == 'True' && (filePath != './html/admin.html' && filePath != './html/generateReports.html' && filePath != './html/listOfClients.html'))
+                if(sessionData.isAdmin == 'True' && (filePath != './html/admin.html' && filePath != './html/generateReports.html' && filePath != './html/listOfClients.html' && filePath != './html/landingPage.html' && filePath != './html/login.html' && filePath != './html/register.html'))
                     filePath = './html/error404.html';
                 else if(sessionData.isAdmin == 'False' && (filePath == './html/admin.html' || filePath == './html/generateReports.html' || filePath == './html/listOfClients.html'))
                     filePath = './html/error404.html';
@@ -403,4 +584,40 @@ function parseCookies(cookieHeader) {
         });
     }
     return cookies;
+}
+
+// Define a function to add a blog post
+function addBlogPost(title, description, userId, username) {
+    return new Promise((resolve, reject) => {
+        const currentDate = new Date().toISOString().slice(0, 10);
+        // Perform database insertion operation
+        pool.query('INSERT INTO blog_posts (title, description, post_date, user_id, user_name) VALUES (?, ?, ?, ?, ?)', [title, description, currentDate, userId, username], (error, results) => {
+            if (error) {
+                console.error('Error adding blog post:', error);
+                reject(error); // Reject the promise if there's an error
+            } else {
+                const postId = results.insertId; // Obtain the postId from the results
+                console.log('Blog post added successfully. Post ID:', postId);
+                resolve(postId); // Resolve the promise with the postId
+            }
+        });
+    });
+}
+
+// Function to add a new section to a blog post
+function addSection(postId, title, description) {
+    return new Promise((resolve, reject) => {
+        // Insert the new section into the database
+        const query = 'INSERT INTO blog_post_sections (post_id, title, description) VALUES (?, ?, ?)';
+        pool.query(query, [postId, title, description], (error, results) => {
+            if (error) {
+                console.error('Error adding section:', error);
+                reject(error);
+            }else {
+                const sectionId = results.insertId; // Obtain the postId from the results
+                console.log('Section added successfully. Post ID:', sectionId);
+                resolve(sectionId); // Resolve the promise with the postId
+            }
+        });
+    });
 }
