@@ -101,6 +101,19 @@ CREATE TABLE section_images (
     FOREIGN KEY (section_id) REFERENCES blog_post_sections(id) ON DELETE CASCADE
 );
 
+CREATE TABLE comments (
+    id INT NOT NULL AUTO_INCREMENT,
+    post_id INT,
+    user_id INT,
+    user_name VARCHAR(255),
+    comment_text TEXT,
+    posted_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    KEY post_id_fk (post_id),
+    CONSTRAINT post_id_fk FOREIGN KEY (post_id) REFERENCES posts(id)
+);
+
+
 ## Screenshots
 
 > ⚠️ ***KEEP IN MIND THAT THE ENTIRE WEBSITE IS RESPONSIVE, BUT TOO MANY SCREENSHOTS ARE NEEDED TO REPRESENT IT***
