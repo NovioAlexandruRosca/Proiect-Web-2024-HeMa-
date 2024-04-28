@@ -165,10 +165,48 @@ addCommentBtn.addEventListener('click', () => {
           newComment.appendChild(deleteButton);
         }
 
+        const postedDate = new Date(data.posted_date);
+        const currentTime = new Date();
+        const timeDifference = currentTime - postedDate;
+
+        const seconds = Math.floor(timeDifference / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+        const weeks = Math.floor(days / 7);
+        const months = Math.floor(days / 30);
+        const years = Math.floor(days / 365);
+
+        let timeString = '';
+        if (years > 0) {
+            timeString = years === 1 ? 'a year ago' : `${years} years ago`;
+        } else if (months > 0) {
+            timeString = months === 1 ? 'a month ago' : `${months} months ago`;
+        } else if (weeks > 0) {
+            timeString = weeks === 1 ? 'a week ago' : `${weeks} weeks ago`;
+        } else if (days > 0) {
+            timeString = days === 1 ? 'a day ago' : `${days} days ago`;
+        } else if (hours > 0) {
+            timeString = hours === 1 ? 'an hour ago' : `${hours} hours ago`;
+        } else if (minutes > 0) {
+            timeString = minutes === 1 ? 'a minute ago' : `${minutes} minutes ago`;
+        } else {
+            timeString = seconds <= 10 ? 'just now' : `${seconds} seconds ago`;
+        }
+
+        const timeDiv = document.createElement('div');
+        timeDiv.classList.add('time');
+        timeDiv.textContent = `Posted ${timeString}`;
+
         const userSpan = document.createElement('span');
         userSpan.classList.add('user');
         userSpan.textContent = `${data.user_name}:`;
-        newComment.appendChild(userSpan);
+
+        const nameDate = document.createElement('div');
+        nameDate.classList.add('nameDate');
+        nameDate.appendChild(userSpan);
+        nameDate.appendChild(timeDiv);
+        newComment.appendChild(nameDate);
 
         const contentDiv = document.createElement('div');
         contentDiv.classList.add('content');
@@ -242,10 +280,48 @@ function createCommentElement(commentData) {
     commentElement.appendChild(deleteButton);
   }
 
+  const postedDate = new Date(commentData.posted_date);
+  const currentTime = new Date();
+  const timeDifference = currentTime - postedDate;
+
+  const seconds = Math.floor(timeDifference / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+  const weeks = Math.floor(days / 7);
+  const months = Math.floor(days / 30);
+  const years = Math.floor(days / 365);
+
+  let timeString = '';
+  if (years > 0) {
+      timeString = years === 1 ? 'a year ago' : `${years} years ago`;
+  } else if (months > 0) {
+      timeString = months === 1 ? 'a month ago' : `${months} months ago`;
+  } else if (weeks > 0) {
+      timeString = weeks === 1 ? 'a week ago' : `${weeks} weeks ago`;
+  } else if (days > 0) {
+      timeString = days === 1 ? 'a day ago' : `${days} days ago`;
+  } else if (hours > 0) {
+      timeString = hours === 1 ? 'an hour ago' : `${hours} hours ago`;
+  } else if (minutes > 0) {
+      timeString = minutes === 1 ? 'a minute ago' : `${minutes} minutes ago`;
+  } else {
+      timeString = seconds <= 10 ? 'just now' : `${seconds} seconds ago`;
+  }
+
   const userSpan = document.createElement('span');
   userSpan.classList.add('user');
   userSpan.textContent = `${commentData.user_name}:`;
-  commentElement.appendChild(userSpan);
+
+  const timeDiv = document.createElement('div');
+  timeDiv.classList.add('time');
+  timeDiv.textContent = `Posted ${timeString}`;
+
+  const nameDate = document.createElement('div');
+  nameDate.classList.add('nameDate');
+  nameDate.appendChild(userSpan);
+  nameDate.appendChild(timeDiv);
+  commentElement.appendChild(nameDate);
 
   const contentDiv = document.createElement('div');
   contentDiv.classList.add('content');

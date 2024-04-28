@@ -169,7 +169,7 @@ const server = http.createServer((req, res) => {
     // USED FOR getting the users name
     if (req.method === 'GET' && req.url === '/api/blogs') {
         headerNotModified = false; 
-        pool.query('SELECT id, title, description FROM blog_posts', (error, results, fields) => {
+        pool.query('SELECT * FROM blog_posts', (error, results, fields) => {
             if (error) {
                 console.error('Error fetching blogs from database:', error);
                 res.writeHead(500, { 'Content-Type': 'application/json' });

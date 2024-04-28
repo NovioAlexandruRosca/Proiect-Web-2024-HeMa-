@@ -11,6 +11,7 @@ main{
 }
 
 #Delete{
+    margin-left: 20px;
     cursor: url(../images/cursors/PottedPlantNS.cur),auto;
     display: flex;
     align-items: center;
@@ -88,7 +89,7 @@ main{
 .user {
     font-weight: bold;
     margin-right: 10px;
-    font-size: 30px;
+    font-size: 25px;
     margin-left: 10px;
 }
 
@@ -96,6 +97,17 @@ main{
     font-size: 20px;
     margin-top: 5px;
     margin-left: 10px;
+}
+
+.time{
+    margin-left: 4px;
+    margin-top: 7px;
+    font-weight: bold;
+}
+
+.nameDate{
+    display: flex;
+    flex-direction: row;
 }
 
 .deleteComment{
