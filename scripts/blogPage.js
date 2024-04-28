@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   const storedData = sessionStorage.getItem('blogPostData');
     if (storedData != null) {
       const blogPostData = JSON.parse(storedData);
+      sessionStorage.setItem('temporaryRefreshBlogPostData', blogPostData);
       sessionStorage.removeItem('blogPostData');
 
       try {
@@ -353,4 +354,9 @@ document.addEventListener('click', async (event) => {
           console.error('Error deleting comment:', error);
       }
   }
+});
+
+
+window.addEventListener('beforeunload', function (event) {
+    sessionStorage.setItem('blogPostData', sessionStorage.getItem('temporaryRefreshBlogPostData'));
 });

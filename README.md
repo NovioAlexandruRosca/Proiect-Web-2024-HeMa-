@@ -113,6 +113,19 @@ CREATE TABLE comments (
     CONSTRAINT post_id_fk FOREIGN KEY (post_id) REFERENCES posts(id)
 );
 
+CREATE TABLE clients_details (
+    client_id INT PRIMARY KEY,
+    FOREIGN KEY (client_id) REFERENCES clients(id),
+    name VARCHAR(255),
+    occupation VARCHAR(255),
+    city VARCHAR(255),
+    street VARCHAR(255),
+    house_number VARCHAR(50),
+    facebook_link VARCHAR(255),
+    github_link VARCHAR(255),
+    instagram_link VARCHAR(255),
+    twitter_link VARCHAR(255)
+);
 
 ## Screenshots
 

@@ -40,6 +40,30 @@
         </div>
       </div>
     <main>
+
+        <div id="modal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <form>
+                <div id="updateTitle">
+                    <p>UPDATE YOUR DATA</p>
+                </div>
+                <div id="updateLine"></div>
+                <input type="text" placeholder="Name" name="name">
+                <input type="text" placeholder="Occupation" name="occupation">
+                <input type="text" placeholder="City" name="city">
+                <input type="text" placeholder="Street" name="street">
+                <input type="text" placeholder="Number" name="number">
+                <input type="text" placeholder="Facebook" name="facebook">
+                <input type="text" placeholder="Github" name="github">
+                <input type="text" placeholder="Instagram" name="Instagram">
+                <input type="text" placeholder="Twitter" name="twitter">
+
+                <button type="submit" id="updateDataButton">Save</button>
+              </form>
+            </div>
+          </div>
+
         <div id="container">
             <div class="collections-card" id="data">
                 <div class="d-flex flex-column align-items-center text-center">
@@ -49,12 +73,12 @@
                                 <img id="avatar" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" width="150">
                             </div>
                             <div id="circleData">
-                                <h2>Popa Andrei</h2>
-                                <h3>Full Time Student</h3>
-                                <h3>Iasi, Strada Bucium, nr.35</h3>
+                                <h2 id="userName">Popa Andrei</h2>
+                                <h3 id="userOccupation">Full Time Student</h3>
+                                <h3 id="userAddress">Iasi, Strada Bucium, nr.35</h3>
                                 <div class="button-div">
-                                    <button class="format-btn">Follow</button>
-                                    <button class="format-btn">Edit Info</button>
+                                    <button class="format-btn" id="followButton">Follow</button>
+                                    <button class="format-btn" id="editButton">Edit Info</button>
                                 </div>
                             </div>
                         </div>

@@ -185,6 +185,99 @@ const server = http.createServer((req, res) => {
         });
     }
 
+    // USED FOR updating the user data
+    if (req.method === 'POST' && req.url === '/api/updateUser') {
+        headerNotModified = false; 
+        let body = '';
+    
+            // Collect request body data
+        req.on('data', (chunk) => {
+            body += chunk.toString();
+        });
+
+        req.on('end', () => {
+            const formData = JSON.parse(body);
+        
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    return;
+                }
+        
+                const { name, occupation, city, street, number, facebookLink, githubLink, instagramLink, twitterLink } = formData;
+  
+                connection.query('SELECT * FROM clients_details WHERE client_id = ?', [sessionData.userId], (selectError, selectResults) => {
+                    if (selectError) {
+                        console.error('Error checking if user exists:', selectError);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                        connection.release();
+                        return;
+                    }
+        
+                    if (selectResults.length > 0) {
+                        connection.query('UPDATE clients_details SET name = ? ,occupation = ?, city = ?, street = ?, house_number = ?, facebook_link = ?, github_link = ?, instagram_link = ?, twitter_link = ? WHERE client_id = ?', 
+                                        [name, occupation, city, street, number, facebookLink, githubLink, instagramLink, twitterLink, sessionData.userId], 
+                                        (updateError, updateResults) => {
+                            connection.release();
+                            if (updateError) {
+                                console.error('Error updating user data:', updateError);
+                                res.writeHead(500, { 'Content-Type': 'application/json' });
+                                res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                                return;
+                            }
+                            connection.query('UPDATE clients SET name = ? WHERE id = ?', [name, sessionData.userId], (error, results) => {
+                                connection.release();
+                                if (error) {
+                                    console.error('Error updating client name:', error);
+                                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                                    return;
+                                }
+                    
+                                const userData = {sessionId: sessionData.sessionId, userId: sessionData.userId, username: name, isAdmin: sessionData.isAdmin};
+                                setSessionData(sessionId, userData);
+
+                                res.writeHead(200, { 'Content-Type': 'application/json' });
+                                res.end(JSON.stringify({ success: true }));
+                            });
+                        });
+                    } else {
+                        connection.query('INSERT INTO clients_details (client_id, name, occupation, city, street, house_number, facebook_link, github_link, instagram_link, twitter_link) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+                                        [sessionData.userId, name, occupation, city, street, number, facebookLink, githubLink, instagramLink, twitterLink], 
+                                        (insertError, insertResults) => {
+                            connection.release();
+                            if (insertError) {
+                                console.error('Error inserting user data:', insertError);
+                                res.writeHead(500, { 'Content-Type': 'application/json' });
+                                res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                                return;
+                            }
+                            connection.query('UPDATE clients SET name = ? WHERE id = ?', [name, sessionData.userId], (error, results) => {
+                                connection.release();
+                                if (error) {
+                                    console.error('Error updating client name:', error);
+                                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                                    return;
+                                }
+                    
+                                const userData = {sessionId: sessionData.sessionId, userId: sessionData.userId, username: name, isAdmin: sessionData.isAdmin};
+                                setSessionData(sessionId, userData);
+
+                                res.writeHead(200, { 'Content-Type': 'application/json' });
+                                res.end(JSON.stringify({ success: true }));
+                            });
+                        });
+                    }
+                });
+            });
+        });
+        
+    }
+
     // USED FOR getting the blog comments for a post
     if (req.method === 'POST' && req.url === '/api/blogComments') {
         headerNotModified = false; 
