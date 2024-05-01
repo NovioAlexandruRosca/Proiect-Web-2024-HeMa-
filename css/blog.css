@@ -4,6 +4,7 @@ main{
 }
 
 .container{
+    cursor: url(../images/cursors/PottedPlantNS.cur),auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -16,6 +17,7 @@ main{
 }
 
 .container p{
+    cursor: url(../images/cursors/PottedPlantNS.cur),auto;
     color:black;
     font-size: 25px;
 }
@@ -62,6 +64,7 @@ main{
 }
 
 #AddNew{
+    cursor: url(../images/cursors/PottedPlantNS.cur),auto;
     display: flex;
     align-items: center;
     margin-top: 30px;
@@ -93,7 +96,7 @@ a{
     font-weight: bold;
     text-align: center;
     width:80%;
-    padding: 30px 20px 30px 20px;
+    padding: 30px 20px 20px 20px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 

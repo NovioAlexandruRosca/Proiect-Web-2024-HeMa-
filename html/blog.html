@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blogs</title>
+    <title>Blogs | HeMa</title>
     <link rel="stylesheet" href="../css/template.css">
     <link rel="stylesheet" href="../css/flower.css">
     <link rel="stylesheet" href="../css/blog.css">
@@ -35,7 +35,7 @@
           <a href="index.html" >Home</a>
           <a href="about.html" >About</a>
           <a href="contact.html" >Contact</a>
-          <a href="landingPage.html">Logout</a>
+          <a id="logout" href="landingPage.html">Logout</a>
         </div>
       </div>
     <main>
@@ -44,6 +44,12 @@
 
             <div id="titleHowToPress">
                 <h1>Blogs</h1>
+            </div>
+
+            <div id="searchBar">
+            <input class="textInput" id="nameInput" placeholder="Search by title">
+            <input class="textInput" id="clientInput" placeholder="Search by user">
+            <input class="textInput" id="dateInput" placeholder="Search by date(dd/mm/yyyy)">
             </div>
 
             <div class="blog-post" id="1">
@@ -102,5 +108,6 @@
     <!-- Scripts -->
     <script src="../scripts/footer.js"></script>
     <script src="../scripts/blogs.js"></script>
+    <script src="../scripts/navBar.js"></script>
 </body>
 </html>

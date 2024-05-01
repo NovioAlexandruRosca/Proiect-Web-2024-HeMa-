@@ -55,3 +55,49 @@
 .f-wrapper--2 .f{
     transform: translate(-350%,-50%) rotate(160deg);
 }
+
+.textInput{
+    font-family: 'Dancing Script', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+    width: 30%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5%;
+    border: 1px solid black;
+    text-align: center;
+}
+
+.textInput:focus{
+    background-color: rgb(219, 217, 217);
+    border: 1px solid #496989cb;
+}
+
+.textInput::placeholder{
+    color: black;
+}
+
+.textInput:not(:last-child){
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+@media screen and (max-width: 1630px) {
+    .textInput{
+        min-width: 300px;
+    }
+    #searchBar{
+        flex-direction: column;
+    }
+}
+
+#textInput::placeholder{
+    color: black;
+}
+
+#searchBar{
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-evenly;
+}

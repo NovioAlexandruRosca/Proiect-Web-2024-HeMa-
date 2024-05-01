@@ -1,7 +1,7 @@
 const login_button = document.getElementById("register");
 
 login_button.addEventListener("click",() => {
-    window.location.href = "../html/login.html";
+    window.location.href = "./login.html";
 });
 
 document.getElementById("Email").addEventListener("click", () => {
@@ -29,9 +29,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let auth = true;
 
-        if(username == "") 
-        {
+        if(username == ""){
             document.getElementById("Email").placeholder = "Can't leave empty";
+            auth = false;
+        }else if(!isValidEmail(username)){
+            document.getElementById("Email").placeholder = "Use a Valid Email";
+            document.getElementById("Email").value = "";
             auth = false;
         }
         if(name == "")
@@ -65,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById("Error_Message").innerText = "Email already exists!";
                 }
                 else    
-                    window.location.href = "/";
+                    window.location.href = "/login.html";
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -73,3 +76,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    return emailRegex.test(email);
+  }
