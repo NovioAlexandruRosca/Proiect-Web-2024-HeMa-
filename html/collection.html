@@ -40,13 +40,42 @@
         </div>
       </div>
     <main>
+
+      <div id="modal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <form>
+            <div id="updateTitle">
+                <p>UPDATE YOUR COLLECTION</p>
+            </div>
+            <div id="updateLine"></div>
+            <input type="text" placeholder="Title" name="title">
+            <input type="text" placeholder="Descripton" name="description">
+            <div id="updateLine1"></div>
+            <label for="isShared">Share Collection?:</label>
+            <input type="checkbox" id="isShared" name="isShared" value=1>
+
+
+            <button type="submit" id="updateDataButton">Save</button>
+          </form>
+        </div>
+      </div>
+
         <button id="addPlantButton" class="floating-button" title="Add New Button">&#43;</button>
         <div id="cont">
-            <div id="title"><p>Collection1</p></div>
+            <div id="title">
+              <p id="titleText"></p>
+              <p class="smallDetails" id="left"></p>
+              <p class="smallDetails" id="right"></p>
+            </div>
             <div id="descripton">
                 <h3>Descripton</h3>
                 <div id="line"></div>
-                <p>Example of a description for the given collection (such as mountain flowers)</p>
+                <p id="descriptionText"></p>
+            </div>
+            <div id="collectionButtons">
+              <button class="format-btn" id="edit">Edit Collection</button>
+              <button class="format-btn" id="delete">Delete Collection</button>
             </div>
             <div class="container" id="collectionContainer">
                 <p class="no-collections-message">No plants have been added yet.</p>
