@@ -101,7 +101,6 @@
     line-height: 60px; 
     text-align: center; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
-    cursor: pointer;
     border: none;
     outline: none;
     z-index: 1000; 
@@ -122,4 +121,257 @@
     #cont{
         width:95%;
     }
+}
+
+.format-btn {
+    cursor: url(../images/cursors/PottedPlantNS.cur),auto;
+    font-family: 'Dancing Script', sans-serif;
+    margin: 10px 10px;
+    width:170px;
+    line-height: 1.5;
+    background-color:rgb(18, 92, 42) ;
+    color:white;
+    box-shadow: 0px 0px 20px rgb(18, 92, 42);
+    padding: 10px;
+    font-size: 25px;
+    border-radius: 16px;
+    transition: all 0.3s;
+}
+
+.format-btn:hover{
+    background-color:rgb(6, 58, 22);
+    color:rgb(209, 204, 204);
+}
+
+#collectionButtons{
+    background-color: #a0e090b9; 
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
+    border: 1px solid black;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+/* Hidden by default */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    justify-content: center;
+
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px); 
+
+  }
+  
+
+/* Hidden by default */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    justify-content: center;
+
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px); 
+
+  }
+  
+  /* Modal content */
+  .modal-content {
+    background-color: white;   /*#a0e090b9*/
+
+    padding: 20px 20px 0px 20px;
+    width: 570px;
+    height: 300px;
+    border-radius: 20px;
+    border : 2px solid black;
+    box-shadow: 0px 0px 20px rgba(0,0,0,1);
+    margin-top: 300px;
+  }
+
+  form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  input{
+    width: 60%;
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.4);
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 23px;
+    font-weight: bold;
+    font-family: 'Dancing Script', sans-serif;
+  }
+
+  #updateDataButton{
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.4);
+    border-radius: 10px;
+    font-family: 'Dancing Script', sans-serif;
+    margin-top: 10px;
+    background-color: rgb(18, 92, 42);
+    width: 60%;
+    cursor: url(../images/cursors/PottedPlantNS.cur),auto;
+    font-size: 28px;
+    color: white;
+  }
+
+  input::placeholder{
+    color:#b4b0ff;
+    padding: 5px;
+  }
+  
+  label{
+    color:#b4b0ff;
+    padding: 5px;
+    font-size: 22px;
+  }
+
+  input[type="checkbox"] {
+    appearance: none;
+    box-shadow: 0 0px 20px rgba(0, 0, 0, 0.5);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc;
+    border-radius: 3px;
+    outline: none;
+    cursor: url(../images/cursors/PottedPlantNS.cur),auto;
+    transform: translate(0px,-10px);
+}
+
+/* Style the custom checkbox when checked */
+input[type="checkbox"]:checked {
+    background-color: rgb(18, 92, 42);
+    border-color: rgb(18, 92, 42);
+}
+
+/* Style the custom checkbox label */
+input[type="checkbox"] + label {
+    font-weight: normal;
+}
+
+/* Style the custom checkbox label when checked */
+input[type="checkbox"]:checked + label {
+    color: rgb(18, 92, 42);
+}
+
+  /* Close button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 60px;
+    font-weight: bold;
+    transform: translate(0px,-30px);
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+  }
+
+  .collectionClose{
+    display: none;
+    transform: translate(+100px, -20px);
+    float: right;
+    opacity: 0;
+    font-size: 60px;
+    font-weight: bold;
+    color: black;
+  }
+
+  #updateTitle{
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  #updateLine{
+    width: 60%;
+    height: 2px;
+    background-color: #000;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  #updateLine1{
+    width: 60%;
+    height: 2px;
+    background-color: #000;
+    margin-top: 15px;
+  }
+
+  @media (max-width: 670px) {
+    input{
+        width: 80%;
+    }
+    .modal-content {
+    width:90%;
+    }
+    #updateTitle{
+        font-size: 24px;
+    }
+    }
+
+    .smallDetails{
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    #left{
+      float:left;
+      margin-left: 60px;
+      transform: translate(0px,11px);
+    }
+
+    #right{
+      float:right;
+      margin-right: 60px;
+    }
+
+    #descriptionText{
+      padding: 0px 10px 0px 10px;
+    }
+
+
+    @media (max-width: 720px) {
+      #right{
+          float:none;
+          margin-right: 0px;
+      }
+      #left{
+        margin-left: 0px;
+        transform: translate(0px,0px);
+        float:none;
+      }
+  }
+
+  @media (max-width: 540px) {
+    #descripton{
+      font-size: 25px;
+    }
+    .format-btn {
+      margin: 10px 10px;
+      width:150px;
+      font-size: 20px;
+    }
+    .no-collections-message{
+      font-size: 25px;
+    } 
+
 }

@@ -2,7 +2,6 @@ figure {
     display: grid;
     border-radius: 1rem;
     overflow: hidden;
-    cursor: pointer;
     margin: 20px;
     font-family: 'Dancing Script', sans-serif;
 }
@@ -13,6 +12,7 @@ figure > * {
 }
 
 figure figcaption {
+
     display: grid;
     align-items: end;
     font-size: 2.3rem;
@@ -32,6 +32,11 @@ figure figcaption {
 
 figure:hover figcaption{
     --_i: 0%;
+}
+
+figure:hover .collectionClose{
+    display: block;
+    opacity: 1;
 }
 
 figure:hover img {

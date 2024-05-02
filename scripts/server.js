@@ -43,6 +43,108 @@ const server = http.createServer((req, res) => {
 
 
     // USED FOR deleting a blog
+    if(req.method === 'PUT' && req.url === '/api/updateCollection'){
+        headerNotModified = false;        
+        
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString(); 
+        });
+
+        req.on('end', () => {
+            const collectionData = JSON.parse(body);
+
+            console.log(collectionData);
+
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    res.end('Internal Server Error');
+                    return;
+                }
+
+                const modificationTime = new Date();
+            
+                connection.query('UPDATE plant_collections SET name = ?, description = ?, is_shared = ?, modification_time = ? WHERE collection_id = ?', 
+                             [collectionData.title, collectionData.description, collectionData.isShared, modificationTime, collectionData.collectionId], 
+                             (err, result) => {
+                if (err) {
+                    console.error('Error updating collection:', err);
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    res.end('Internal Server Error');
+                    connection.release();
+                    return;
+                }
+        
+                console.log(`Collection with ID ${collectionData.collectionId} updated successfully`);
+                res.writeHead(200, { 'Content-Type': 'text/plain' });
+                res.end('Collection updated successfully');
+                
+                connection.release();
+            });
+            });
+            
+        });
+
+    }
+
+    // USED FOR deleting a comment from a blog
+    if(req.method === 'DELETE' && req.url === '/api/deleteCollection'){
+        headerNotModified = false;        
+        
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString(); 
+        });
+
+        req.on('end', () => {
+            const {collectionId} = JSON.parse(body);
+
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    res.end('Internal Server Error');
+                    return;
+                }
+            
+                if (!collectionId) {
+                    console.log('Post ID is required');
+                    res.writeHead(400, { 'Content-Type': 'text/plain' });
+                    res.end('Post ID is required');
+                    connection.release();
+                    return;
+                }
+            
+                connection.query('DELETE FROM plant_collections WHERE collection_id = ?', [collectionId], (err, result) => {
+                    if (err) {
+                        console.error('Error deleting comment:', err);
+                        res.writeHead(500, { 'Content-Type': 'text/plain' });
+                        res.end('Internal Server Error');
+                        connection.release();
+                        return;
+                    }
+            
+                    if (result.affectedRows > 0) {
+                        console.log(`Collection with ID ${collectionId} deleted successfully`);
+                        res.writeHead(200, { 'Content-Type': 'text/plain' });
+                        res.end('Post deleted successfully');
+                    } else {
+                        console.log(`Collection with ID ${collectionId} not found`);
+                        res.writeHead(404, { 'Content-Type': 'text/plain' });
+                        res.end('Post not found');
+                    }
+            
+                    connection.release();
+                });
+            });
+            
+        });
+
+    }
+
+    // USED FOR deleting a blog
     if(req.method === 'DELETE' && req.url === '/api/deletePost'){
         headerNotModified = false;        
         
@@ -185,6 +287,144 @@ const server = http.createServer((req, res) => {
         });
     }
 
+    // USED FOR getting the details of a client when he goes in his profile
+    if (req.method === 'POST' && req.url === '/api/clientData') {
+        headerNotModified = false; 
+        let data = '';
+        
+        req.on('data', chunk => {
+            data += chunk;
+        });
+
+        req.on('end', () => {
+            const client_id  = JSON.parse(data);
+
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    return;
+                }
+
+                connection.query('SELECT * FROM clients_details WHERE client_id = ?', [client_id.clientId], (error, results) => {
+                    connection.release();
+                    if (error) {
+                        console.error('Error querying comments:', error);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                        return;
+                    }
+
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(results));
+                });
+            });
+        });
+    } 
+
+    // USED TO create a new plant collection
+    if (req.method === 'POST' && req.url === '/api/createCollection') {
+        headerNotModified = false; 
+        pool.getConnection((err, connection) => {
+            if (err) {
+                console.error('Error getting connection from pool:', err);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                return;
+            }
+    
+            connection.query('INSERT INTO plant_collections (client_id, name, creation_time, modification_time) VALUES (?, ?, NOW(), NOW())', 
+                            [sessionData.userId, 'New Collection'], 
+                            (insertError, insertResults) => {
+                connection.release();
+                if (insertError) {
+                    console.error('Error inserting collection data:', insertError);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    return;
+                }
+
+                const insertedId = insertResults.insertId;
+    
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: true, collectionId: insertedId }));
+            });
+        });
+    }
+
+    // USED TO get the data of a specific collection
+    if (req.method === 'POST' && req.url === '/api/collectionData') {
+        headerNotModified = false; 
+        let data = '';
+        
+        req.on('data', chunk => {
+            data += chunk;
+        });
+
+        req.on('end', () => {
+            const collectionId  = JSON.parse(data);
+
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    return;
+                }
+
+                connection.query('SELECT plant_collections.*, clients.name as clientName FROM plant_collections JOIN clients ON clients.id = client_id WHERE collection_id = ? ', [collectionId.collectionId], (error, results) => {
+                    connection.release();
+                    if (error) {
+                        console.error('Error querying comments:', error);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                        return;
+                    }
+
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(results));
+                });
+            });
+        });
+    }
+    
+    // USED TO get all the plant collections of a user
+    if (req.method === 'POST' && req.url === '/api/clientCollections') {
+        headerNotModified = false; 
+        let data = '';
+        
+        req.on('data', chunk => {
+            data += chunk;
+        });
+
+        req.on('end', () => {
+            const clientId  = JSON.parse(data);
+
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    return;
+                }
+
+                connection.query('SELECT * FROM plant_collections WHERE client_id = ?', [clientId.clientId], (error, results) => {
+                    connection.release();
+                    if (error) {
+                        console.error('Error querying comments:', error);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                        return;
+                    }
+
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(results));
+                });
+            });
+        });
+    }
+
     // USED FOR updating the user data
     if (req.method === 'POST' && req.url === '/api/updateUser') {
         headerNotModified = false; 
@@ -198,6 +438,8 @@ const server = http.createServer((req, res) => {
         req.on('end', () => {
             const formData = JSON.parse(body);
         
+            console.log(formData);
+
             pool.getConnection((err, connection) => {
                 if (err) {
                     console.error('Error getting connection from pool:', err);
@@ -206,8 +448,8 @@ const server = http.createServer((req, res) => {
                     return;
                 }
         
-                const { name, occupation, city, street, number, facebookLink, githubLink, instagramLink, twitterLink } = formData;
-  
+                const { name, occupation, city, street, number, facebook, github, Instagram, twitter } = formData;
+
                 connection.query('SELECT * FROM clients_details WHERE client_id = ?', [sessionData.userId], (selectError, selectResults) => {
                     if (selectError) {
                         console.error('Error checking if user exists:', selectError);
@@ -219,7 +461,7 @@ const server = http.createServer((req, res) => {
         
                     if (selectResults.length > 0) {
                         connection.query('UPDATE clients_details SET name = ? ,occupation = ?, city = ?, street = ?, house_number = ?, facebook_link = ?, github_link = ?, instagram_link = ?, twitter_link = ? WHERE client_id = ?', 
-                                        [name, occupation, city, street, number, facebookLink, githubLink, instagramLink, twitterLink, sessionData.userId], 
+                                        [name, occupation, city, street, number, facebook, github, Instagram, twitter, sessionData.userId], 
                                         (updateError, updateResults) => {
                             connection.release();
                             if (updateError) {
@@ -246,7 +488,7 @@ const server = http.createServer((req, res) => {
                         });
                     } else {
                         connection.query('INSERT INTO clients_details (client_id, name, occupation, city, street, house_number, facebook_link, github_link, instagram_link, twitter_link) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
-                                        [sessionData.userId, name, occupation, city, street, number, facebookLink, githubLink, instagramLink, twitterLink], 
+                                        [sessionData.userId, name, occupation, city, street, number, facebook, github, Instagram, twitter], 
                                         (insertError, insertResults) => {
                             connection.release();
                             if (insertError) {
@@ -500,8 +742,11 @@ const server = http.createServer((req, res) => {
 
     // USED FOR LOGGING OUT
     if(req.method === 'POST' && req.url === '/error404Return'){
-        headerNotModified = false;        
-        res.writeHead(200, { 'Content-Type': 'text/plain', 'isAdmin': sessionData.isAdmin });
+        headerNotModified = false;      
+        
+        let isAdmin = sessionData && sessionData.isAdmin ? sessionData.isAdmin : false;
+
+        res.writeHead(200, { 'Content-Type': 'text/plain', 'isAdmin': isAdmin });
         res.end('Error404 Back To Page');
     }
 
@@ -673,7 +918,7 @@ const server = http.createServer((req, res) => {
                             connection.release();
                             return;
                         } 
-                        
+
                         // Insert new user
                         connection.query('INSERT INTO clients (email, name, password) VALUES (?, ?, ?)', [Email, Name, hashedPassword], (err, results, fields) => {
                             if (err) {
@@ -683,6 +928,20 @@ const server = http.createServer((req, res) => {
                                 connection.release();
                                 return;
                             }
+
+                            console.log('Inserted ID:', results.insertId); 
+
+                            connection.query('INSERT INTO clients_details (client_id, name) VALUES (?, ?)', 
+                            [results.insertId, Name], 
+                            (insertError, insertResults) => {
+                                connection.release();
+                                if (insertError) {
+                                    console.error('Error inserting user data:', insertError);
+                                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                                    return;
+                                }
+                            });
                         
                             console.log('New user registered successfully');
                             res.writeHead(200, { 'Content-Type': 'text/plain' });
