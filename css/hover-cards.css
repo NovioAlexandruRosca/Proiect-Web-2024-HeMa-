@@ -4,6 +4,7 @@ figure {
     overflow: hidden;
     margin: 20px;
     font-family: 'Dancing Script', sans-serif;
+    cursor: url(../images/cursors/PottedPlantNS.cur),auto;
 }
 
 figure > * {

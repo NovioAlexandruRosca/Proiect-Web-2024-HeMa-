@@ -39,8 +39,8 @@ function addFigure() {
     });
 
     newFigure.addEventListener('click', function() {
-      window.location.href = "./collection.html";
       sessionStorage.setItem('data-collection-id', newFigure.getAttribute('data-collection-id'));
+      window.location.href = "./collection.html";
     });
 
     const collectionsDiv = document.querySelector(".collectionsPlace");
@@ -48,6 +48,7 @@ function addFigure() {
   
 
     checkCollections();
+    updateWrapperTransform();
 
 }
 
@@ -312,8 +313,8 @@ async function fetchClientCollections(clientId) {
             newFigure.setAttribute('data-collection-id', item.collection_id);
 
             newFigure.addEventListener('click', function() {
-                window.location.href = "./collection.html";
                 sessionStorage.setItem('data-collection-id', newFigure.getAttribute('data-collection-id'));
+                window.location.href = "./collection.html";
             });
 
             const collectionsDiv = document.querySelector(".collectionsPlace");
@@ -523,3 +524,27 @@ window.addEventListener('scroll', () => {
 
     divToMove.style.top = newTop + 'px';
 });
+
+function countFigures() {
+  const figures = document.querySelectorAll('figure');
+  
+  return figures.length;
+}
+
+function updateWrapperTransform() {
+  const figuresCount = countFigures();
+
+  const number = Math.ceil(figuresCount / 3) - 1;
+  const verticalTranslation1 = 22 + 20 * number;
+  const verticalTranslation2 = 10 + 15 * number;
+
+  const wrapper = document.querySelector('.f-wrapper--2');
+  wrapper.style.transform = `translate(0px, ${verticalTranslation1}px)`;
+
+  const wrapper1 = document.querySelector('.f-wrapper--1');
+  wrapper1.style.transform = `translate(0px, ${verticalTranslation2}px)`;
+}
+
+setTimeout(() => {
+  updateWrapperTransform();
+}, 1000);

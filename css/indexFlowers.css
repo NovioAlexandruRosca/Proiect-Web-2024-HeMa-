@@ -1,0 +1,30 @@
+.f-wrapper--1 {
+    transform: translate(0px, +32px);
+    left: 90%;
+}
+
+.f-wrapper--2 {
+    transform: translate(0px, +50px);
+    left:9%;
+}
+
+.f-wrapper--3 {
+    transform:  rotate(-15deg) translate(-20px, -70px);
+    z-index: 3;
+}
+
+@media screen and (max-width: 1300px) {
+    .f-wrapper--1 {
+        transform: translate(0px, +130px);
+    }
+    
+    .f-wrapper--2 {
+        transform: translate(0px, +185px);
+    }
+    
+    .f-wrapper--3 {
+        transform:  rotate(-15deg) translate(-20px, -250px);
+    }
+}
+
+  

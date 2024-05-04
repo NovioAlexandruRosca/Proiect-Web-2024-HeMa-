@@ -76,6 +76,14 @@
     margin-bottom: 20px;
 }
 
+a{
+  cursor: url(../images/cursors/PottedPlantNS.cur),auto;
+}
+
+#updateDataButton:hover {
+  opacity: 0.7;
+} 
+
 .container {
     border: 1px solid black;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
@@ -96,6 +104,7 @@
 }
 
 #addPlantButton {
+  cursor: url(../images/cursors/PottedPlantNS.cur),auto;
     position: fixed;
     right: 20px;
     top: 120px;
@@ -258,6 +267,7 @@
   }
 
   #updateDataButton{
+    transition: all 0.3s;
     box-shadow: 0px 0px 20px rgba(0,0,0,0.4);
     border-radius: 10px;
     font-family: 'Dancing Script', sans-serif;

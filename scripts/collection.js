@@ -4,25 +4,78 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function addFigure() {
-    let anchor = document.createElement('a');
-    anchor.href = "./PlantProfilePage.html"; 
 
-    let figure = document.createElement('figure');
+    fetch('/api/createPlantLayout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            clientId: clientID,
+            collectionId: collectionsID 
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json(); 
+        } else {
+            throw new Error('Failed to create plant layout: ' + response.status);
+        }
+    })
+    .then(data => {
+        console.log('Plant layout created successfully:', data.id); 
+        let anchor = document.createElement('a');
+        anchor.href = "./PlantProfilePage.html"; 
+        anchor.setAttribute('data-plant-id', data.id);
+        anchor.addEventListener('click', function(event) {
+            event.preventDefault(); 
+            sessionStorage.setItem('data-plant-id', anchor.getAttribute('data-plant-id')); 
+            window.location.href = './PlantProfilePage.html';
+        });
 
-    let img = document.createElement('img');
-    img.src = "../Images/website_Icon/LittleCactus.jpg";
-    img.alt = "Cute Plant";
+        let figure = document.createElement('figure');
+    
+        let img = document.createElement('img');
+        img.src = "../Images/website_Icon/LittleCactus.jpg";
+        img.alt = "Cute Plant";
+    
+        let caption = document.createElement('figcaption');
+        caption.textContent = 'Unnamed Plant';
+    
+        figure.appendChild(img);
+        figure.appendChild(caption);
+    
+        anchor.appendChild(figure);
+    
+        document.querySelector('.container').appendChild(anchor);
+        checkCollections();
 
-    let caption = document.createElement('figcaption');
-    caption.textContent = 'Cute Plant';
+        fetch('/api/modifyCollection', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ collectionId: collectionsID})
+        })
+        .then(response => {
+            if (response.ok) {
+                const currentDate = new Date();
+                const year = currentDate.getFullYear();
+                const month = currentDate.getMonth() + 1; 
+                const day = currentDate.getDate();
 
-    figure.appendChild(img);
-    figure.appendChild(caption);
+                const formattedDay = day < 10 ? '0' + day : day;
+                const fromattedMonth = month < 10 ? '0' + month : month;
 
-    anchor.appendChild(figure);
-
-    document.querySelector('.container').appendChild(anchor);
-    checkCollections();
+                document.getElementById('right').innerHTML  = document.getElementById('right').textContent.substring(0, 24) + '<br>Last Update: ' + formattedDay + '/' + fromattedMonth + '/' + year;
+            } else{
+                console.error('Failed to modify collection:', response.status);
+            }
+        });
+    })
+    .catch(error => {
+        console.error('Error creating plant layout:', error);
+    });
 }
 
 function checkCollections() {
@@ -164,6 +217,7 @@ form.addEventListener('submit', (event) => {
 });
 
 let clientID;
+let collectionsID;
 
 async function fetchCollectionData(collectionID) {
 
@@ -197,6 +251,7 @@ async function fetchCollectionData(collectionID) {
                 console.log(information);
 
                 clientID = information.client_id;
+                collectionsID = information.collection_id;
 
                 if(information.client_id != userID){
                     document.getElementById('edit').style.display = 'none';
@@ -233,11 +288,66 @@ async function fetchCollectionData(collectionID) {
     });
 }
 
+async function fetchCollectionPlants(collectionID){
+    fetch('/api/plantsOfCollection', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ collectionId: collectionID })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to fetch collection data');
+        }
+        return response.json();
+    })
+    .then(data => {
+        data.forEach(plant => {
+            console.log('Plant data:', plant);
+            createPlantLayout(plant);
+        });        
+    })
+    .catch(error => {
+        console.error('Error fetching collection data:', error);
+    });
+}
+
+function createPlantLayout(plantData) {
+    console.log('Plant layout created successfully:', plantData.plant_id);
+    let anchor = document.createElement('a');
+    anchor.href = "./PlantProfilePage.html"; 
+    anchor.setAttribute('data-plant-id', plantData.plant_id);
+    anchor.addEventListener('click', function(event) {
+        event.preventDefault(); 
+        sessionStorage.setItem('data-plant-id', anchor.getAttribute('data-plant-id')); 
+        window.location.href = './PlantProfilePage.html';
+    });
+
+    let figure = document.createElement('figure');
+
+    let img = document.createElement('img');
+    img.src = "../Images/website_Icon/LittleCactus.jpg";
+    img.alt = "Cute Plant";
+
+    let caption = document.createElement('figcaption');
+    caption.textContent = plantData.common_name || 'Unnamed Plant';
+
+    figure.appendChild(img);
+    figure.appendChild(caption);
+
+    anchor.appendChild(figure);
+
+    document.querySelector('.container').appendChild(anchor);
+    checkCollections();
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const collectionID = sessionStorage.getItem('data-collection-id'); 
   
     fetchCollectionData(collectionID);
+    fetchCollectionPlants(collectionID);
   });
   
 
@@ -253,7 +363,6 @@ window.addEventListener('scroll', () => {
     if (newTop <= 90) {
         newTop = 60 + scrollY;
     } 
-    console.log(newTop);
 
     divToMove.style.top = newTop + 'px';
 });
