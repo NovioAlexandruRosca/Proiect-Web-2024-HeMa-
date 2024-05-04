@@ -93,6 +93,10 @@ main{
     margin-left: 10px;
 }
 
+.user:hover{
+    color:white;
+}
+
 .content {
     font-size: 20px;
     margin-top: 5px;
@@ -166,3 +170,36 @@ main{
 .add-comment-btn:hover {
     background-color: #458b82;
 }
+
+@media (max-width: 1250px) {
+    .comment{
+        width:90%;
+    }
+    .comment-box{
+        width:90%;
+    }
+}
+
+@media (max-width: 520px) {
+    .user {
+        font-size: 19px;
+    }
+    .time{
+        margin-top: 0px;
+        margin-left: 0px;
+    }
+    .deleteComment{
+        right:5px;
+        scale: 0.8;
+    }
+}
+
+.floating-message {
+    display: none;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 1);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  

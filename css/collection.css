@@ -24,11 +24,22 @@
     font-size: 50px;
     border-radius: 32px 32px 0px 0px;
     background-color: #a0e090b9;
-    margin-top: 30px;
     justify-content: center;
     text-align: center;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
     padding: 20px 0px 20px 0px;
+}
+
+#detailsBox{
+  background-color: #a0e090b9;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
+  padding: 10px 0px 10px 0px;
+  justify-content: center;
+  text-align: center;
+  border: 1px solid black;
+  font-size: 50px;
+  border-radius: 0px 0px 32px 32px;
+  margin-bottom: 20px;
 }
 
 #line{
@@ -37,6 +48,15 @@
     height: 2px;
     width: 70%;
     background-color: black;
+}
+
+#whiteback{
+    margin-top: 30px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.63);
+    border-radius: 22px;
+    border: 2px solid black;
+    box-shadow: 0px 0px 20px rgba(0,0,0,1);
 }
 
 #descripton{
@@ -49,23 +69,25 @@
     justify-content: center;
     text-align: center;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
-    padding: 20px 0px 30px 0px;
+    padding: 20px 5px 30px 5px;
+
+    border-radius: 32px;
+
+    margin-bottom: 20px;
 }
 
 .container {
     border: 1px solid black;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
-    border-radius: 0px 0px 32px 32px;
+    border-radius: 32px;
     background-color: #a0e090b9;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     width: 100%; 
-    max-width: 1200px;
     text-align: center;
-    margin-bottom: 20px;
-    min-height: calc(100vh - 150px);
+    min-height: calc(100vh - 600px);
 }
 
 #addPlantButton:hover {
@@ -118,9 +140,24 @@
 }
 
 @media (max-width: 750px) {
-    #cont{
-        width:95%;
+    #whiteback{
+      width:95%;
     }
+    #cont{
+        width:100%;
+    }
+}
+
+#profile{
+  width:40%;
+}
+
+#edit{
+  width:30%;
+}
+
+#delete{
+  width:30%;
 }
 
 .format-btn {
@@ -149,6 +186,8 @@
     border: 1px solid black;
     display: flex;
     justify-content: space-evenly;
+    border-radius: 32px;
+    margin-bottom: 20px;
 }
 
 /* Hidden by default */
@@ -325,6 +364,13 @@ input[type="checkbox"]:checked + label {
     }
     #updateTitle{
         font-size: 24px;
+    }
+    #edit{
+      width:40%;
+    }
+    
+    #delete{
+      width:40%;
     }
     }
 

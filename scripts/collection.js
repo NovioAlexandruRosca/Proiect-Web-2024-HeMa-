@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
 function addFigure() {
     let anchor = document.createElement('a');
     anchor.href = "./PlantProfilePage.html"; 
-    anchor.setAttribute('target', '_blank'); 
 
     let figure = document.createElement('figure');
 
@@ -164,6 +163,8 @@ form.addEventListener('submit', (event) => {
   modal.style.display = 'none';
 });
 
+let clientID;
+
 async function fetchCollectionData(collectionID) {
 
 
@@ -195,8 +196,15 @@ async function fetchCollectionData(collectionID) {
 
                 console.log(information);
 
+                clientID = information.client_id;
+
                 if(information.client_id != userID){
-                    document.getElementById('collectionButtons').style.display = 'none';
+                    document.getElementById('edit').style.display = 'none';
+                    document.getElementById('delete').style.display = 'none';
+                    document.getElementById('addPlantButton').style.display = 'none';
+                  }
+                  else{
+                    document.getElementById('profile').style.display = 'none';
                   }
 
                 document.getElementById('titleText').textContent = information.name;
@@ -232,3 +240,28 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchCollectionData(collectionID);
   });
   
+
+const divToMove = document.getElementById('addPlantButton');
+const windowHeight = window.innerHeight;
+const divTopOffset = divToMove.offsetTop;
+
+window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+
+    let newTop = divTopOffset - scrollY;
+
+    if (newTop <= 90) {
+        newTop = 60 + scrollY;
+    } 
+    console.log(newTop);
+
+    divToMove.style.top = newTop + 'px';
+});
+
+const profileButton = document.getElementById('profile');
+
+profileButton.addEventListener('click', () => {
+
+    sessionStorage.setItem('clientID', clientID);
+    window.location.href = './profile.html'; 
+});
