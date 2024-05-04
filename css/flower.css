@@ -43,7 +43,7 @@
     bottom: 3vmin;
     left: -30%;
     transform: rotate(-50deg);
-    background-image: linear-gradient(to left bottom, #ff43b6 ,#4d1337);;
+    background-image: linear-gradient(to left bottom, #ff43b6 ,#4d1337);
 }
 
 .f-wrapper--2 .flower__leaf:not(:first-child){

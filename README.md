@@ -127,6 +127,40 @@ CREATE TABLE clients_details (
     twitter_link VARCHAR(255)
 );
 
+CREATE TABLE plants (
+    plant_id INT NOT NULL AUTO_INCREMENT,
+    owner_id INT NOT NULL,
+    collection_id INT NOT NULL,
+    collection_date DATE,
+    hashtags VARCHAR(255),
+    common_name VARCHAR(255),
+    scientific_name VARCHAR(255),
+    family VARCHAR(255),
+    genus VARCHAR(255),
+    species VARCHAR(255),
+    place_of_collection VARCHAR(255),
+    color VARCHAR(255),
+    PRIMARY KEY (plant_id),
+    FOREIGN KEY (owner_id)
+        REFERENCES clients(id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (collection_id)
+        REFERENCES plant_collections(collection_id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE plant_collections (
+    collection_id INT AUTO_INCREMENT PRIMARY KEY,
+    client_id INT NOT NULL,
+    name VARCHAR(255),
+    description TEXT,
+    is_shared BOOLEAN DEFAULT FALSE,
+    creation_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modification_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (client_id) REFERENCES clients(id)
+);
+
+
 ## Screenshots
 
 > ⚠️ ***KEEP IN MIND THAT THE ENTIRE WEBSITE IS RESPONSIVE, BUT TOO MANY SCREENSHOTS ARE NEEDED TO REPRESENT IT***

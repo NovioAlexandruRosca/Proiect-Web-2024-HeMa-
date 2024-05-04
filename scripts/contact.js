@@ -1,7 +1,7 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     const contactForm = document.getElementById('contact_form');
 
-    contactForm.addEventListener('submit', function (event) {
+    contactForm.addEventListener('submit', async function (event) {
 
         event.preventDefault();
 
@@ -12,36 +12,81 @@ document.addEventListener('DOMContentLoaded', function () {
         const subject = document.getElementById('subject_input').value;
 
         let auth = true;
+        const tasks = [];
 
         if(name == ""){
-            document.getElementById("name_input").placeholder = "Can't leave empty";
+            tasks.push(new Promise(resolve => {
+                document.getElementById("name_input").placeholder = "Can't leave empty";
+                setTimeout(() => {
+                    document.getElementById("name_input").placeholder = "My name is";
+                    resolve();
+                }, 3000);
+            }));
             auth = false;
         }
         if(phone == ""){
-            document.getElementById("telephone_input").placeholder = "Can't leave empty";
+            tasks.push(new Promise(resolve => {
+                document.getElementById("telephone_input").placeholder = "Can't leave empty";
+                setTimeout(() => {
+                    document.getElementById("telephone_input").placeholder = "my number is";
+                    resolve();
+                }, 3000);
+            }));
             auth = false;
         }else if(!isRomanianPhoneNumber(phone)){
-            document.getElementById("telephone_input").placeholder = "Use a Romanian Number";
-            document.getElementById("telephone_input").value = "";
+            tasks.push(new Promise(resolve => {
+                document.getElementById("telephone_input").placeholder = "Use a Romanian Number";
+                document.getElementById("telephone_input").value = "";
+                setTimeout(() => {
+                    document.getElementById("telephone_input").placeholder = "my number is";
+                    resolve();
+                }, 3000);
+            }));
             auth = false;
         }
         if(email == ""){
-            document.getElementById("das").placeholder = "Can't leave empty";
+            tasks.push(new Promise(resolve => {
+                document.getElementById("das").placeholder = "Can't leave empty";
+                setTimeout(() => {
+                    document.getElementById("das").placeholder = "my e-mail is";
+                    resolve();
+                }, 3000);
+            }));
             auth = false;
         }else if(!isValidEmail(email)){
-            document.getElementById("das").placeholder = "Use a Valid Email";
-            document.getElementById("das").value = "";
+            tasks.push(new Promise(resolve => {
+                document.getElementById("das").placeholder = "Use a Valid Email";
+                document.getElementById("das").value = "";
+                setTimeout(() => {
+                    document.getElementById("das").placeholder = "my e-mail is";
+                    resolve();
+                }, 3000);
+            }));
             auth = false;
         }
         if(message == ""){
-            document.getElementById("message_input").placeholder = "Can't leave empty";
+            tasks.push(new Promise(resolve => {
+                document.getElementById("message_input").placeholder = "Can't leave empty";
+                setTimeout(() => {
+                    document.getElementById("message_input").placeholder = "I'd like to chat about";
+                    resolve();
+                }, 3000);
+            }));
             auth = false;
         }
         if(subject == ""){
-            const optionElement = document.querySelector('option[value=""]');
-            optionElement.textContent = "You have to choose a subject";
+            tasks.push(new Promise(resolve => {
+                const optionElement = document.querySelector('option[value=""]');
+                optionElement.textContent = "You have to choose a subject";
+                setTimeout(() => {
+                    optionElement.textContent = "subject line";
+                    resolve();
+                }, 3000);
+            }));
             auth = false;
         }
+
+        await Promise.all(tasks);
 
         if(auth){
             fetch('/sendEmail', {
@@ -97,3 +142,7 @@ function isRomanianPhoneNumber(input) {
     
     return emailRegex.test(email);
   }
+
+  function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}

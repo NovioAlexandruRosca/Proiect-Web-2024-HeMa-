@@ -41,6 +41,108 @@ const server = http.createServer((req, res) => {
     const cookieValue = `sessionId=${sessionId}; HttpOnly; Max-Age=${24 * 60 * 60}`;
     res.setHeader('Set-Cookie', cookieValue);
 
+    // USED TO update the data of a specific plant
+    if(req.method === 'PUT' && req.url === '/api/updatePlant'){
+        headerNotModified = false;        
+        
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString(); 
+        });
+
+        req.on('end', () => {
+            const data = JSON.parse(body);
+
+            const formData = data.formData;
+            const plantID = data.plantID;
+            const {hashtags, dateOfCollection, commonName, scientificName, family, genus, species, place, color} = formData;
+
+
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    res.end('Internal Server Error');
+                    return;
+                }
+            
+                connection.query(`UPDATE plants
+                SET hashtags = ?, 
+                    collection_date = ?, 
+                    common_name = ?, 
+                    scientific_name = ?, 
+                    family = ?, 
+                    genus = ?, 
+                    species = ?, 
+                    place_of_collection = ?, 
+                    color = ?
+                WHERE plant_id = ?`, 
+                            [hashtags, dateOfCollection == '' ? null: dateOfCollection , commonName, scientificName, family, genus, species, place, color, plantID],
+                             (err, result) => {
+                if (err) {
+                    console.error('Error updating collection:', err);
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    res.end('Internal Server Error');
+                    connection.release();
+                    return;
+                }
+        
+                console.log(`Plant with ID ${plantID} updated successfully`);
+                res.writeHead(200, { 'Content-Type': 'text/plain' });
+                res.end('Collection updated successfully');
+                
+                connection.release();
+            });
+            });
+            
+        });
+
+    }
+
+    // USED TO update the latest time a collection was modified
+    if(req.method === 'PUT' && req.url === '/api/modifyCollection'){
+        headerNotModified = false;        
+        
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString(); 
+        });
+
+        req.on('end', () => {
+            const {collectionId} = JSON.parse(body);
+
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    res.end('Internal Server Error');
+                    return;
+                }
+
+                const modificationTime = new Date();
+            
+                connection.query('UPDATE plant_collections SET modification_time = ? WHERE collection_id = ?', 
+                             [ modificationTime, collectionId], 
+                             (err, result) => {
+                if (err) {
+                    console.error('Error updating collection:', err);
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    res.end('Internal Server Error');
+                    connection.release();
+                    return;
+                }
+        
+                console.log(`Collection with ID ${collectionId} updated successfully`);
+                res.writeHead(200, { 'Content-Type': 'text/plain' });
+                res.end('Collection updated successfully');
+                
+                connection.release();
+            });
+            });
+            
+        });
+
+    }
 
     // USED FOR deleting a blog
     if(req.method === 'PUT' && req.url === '/api/updateCollection'){
@@ -89,6 +191,44 @@ const server = http.createServer((req, res) => {
 
     }
 
+    // USED FOR deleting plants from a collection
+    if (req.method === 'DELETE' && req.url === '/api/deletePlant') {
+        headerNotModified = false;
+        let body = '';
+    
+        req.on('data', chunk => {
+            body += chunk;
+        });
+    
+        req.on('end', () => {
+            const requestData = JSON.parse(body);
+            const { plantId } = requestData;
+    
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    return;
+                }
+    
+                connection.query('DELETE FROM plants WHERE plant_id = ?', [plantId], (error, results) => {
+                    connection.release();
+                    if (error) {
+                        console.error('Error deleting plant:', error);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                        return;
+                    }
+    
+                    console.log(`Plant with ID ${plantId} deleted successfully`);
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: true }));
+                });
+            });
+        });
+    }
+    
     // USED FOR deleting a comment from a blog
     if(req.method === 'DELETE' && req.url === '/api/deleteCollection'){
         headerNotModified = false;        
@@ -284,6 +424,121 @@ const server = http.createServer((req, res) => {
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(jsonData);
             }
+        });
+    }
+
+    // USED FOR creating a plant layout(when you click the + sign in a collection)
+    if (req.method === 'POST' && req.url === '/api/createPlantLayout') {
+        headerNotModified = false;
+        let body = '';
+    
+        req.on('data', chunk => {
+        body += chunk;
+        });
+    
+        req.on('end', () => {
+        const requestData = JSON.parse(body);
+        const { clientId, collectionId } = requestData;
+
+
+        pool.getConnection((err, connection) => {
+            if (err) {
+                console.error('Error getting connection from pool:', err);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                return;
+            }
+
+            connection.query('INSERT INTO plants (owner_id, collection_id) VALUES (?, ?)', [clientId, collectionId], (error, results) => {
+                connection.release();
+                if (error) {
+                    console.error('Error inserting plant layout:', error);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    return;
+                }
+
+                const id = results.insertId;
+
+                console.log(`A plant with the collection_id: ${collectionId} and the clientId: ${clientId} has been added`);
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({id}));
+            });
+        });
+        });
+    }
+  
+    // USED FOR getting plants of a specific collection
+    if (req.method === 'POST' && req.url === '/api/plantsOfCollection') {
+        headerNotModified = false;
+        let body = '';
+
+        req.on('data', chunk => {
+            body += chunk;
+        });
+
+        req.on('end', () => {
+            const requestData = JSON.parse(body);
+            const { collectionId } = requestData;
+
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    return;
+                }
+
+                connection.query('SELECT * FROM plants WHERE collection_id = ?', [collectionId], (error, results) => {
+                    connection.release();
+                    if (error) {
+                        console.error('Error querying plants:', error);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                        return;
+                    }
+
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(results));
+                });
+            });
+        });
+    }
+
+     // USED FOR getting the details of a specific plant
+    if (req.method === 'POST' && req.url === '/api/plantData') {
+        headerNotModified = false;
+        let body = '';
+
+        req.on('data', chunk => {
+            body += chunk;
+        });
+
+        req.on('end', () => {
+            const requestData = JSON.parse(body);
+            const { plantId } = requestData;
+
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    return;
+                }
+
+                connection.query('SELECT plants.*, clients.name as user, plant_collections.name as title FROM plants JOIN clients on plants.owner_id = clients.id JOIN plant_collections ON plants.collection_id = plant_collections.collection_id WHERE plant_id = ?', [plantId], (error, results) => {
+                    connection.release();
+                    if (error) {
+                        console.error('Error querying plants:', error);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                        return;
+                    }
+
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(results[0]));
+                });
+            });
         });
     }
 

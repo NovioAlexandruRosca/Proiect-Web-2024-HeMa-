@@ -270,3 +270,32 @@
 .delay-8 {
 	animation-delay: 2.4s;
 }
+
+.f-wrapper--1 {
+    transform: translate(0px, +10px);
+    left: 90%;
+}
+
+.f-wrapper--2 {
+    transform: translate(0px, +26px);
+    left:9%;
+}
+
+.f-wrapper--3 {
+    transform:  rotate(-15deg) translate(-20px, -40px);
+    z-index: 3;
+}
+
+@media screen and (max-width: 1630px) {
+    .f-wrapper--1 {
+        transform: translate(0px, +35px);
+    }
+    
+    .f-wrapper--2 {
+        transform: translate(0px, +55px);
+    }
+    
+    .f-wrapper--3 {
+        transform:  rotate(-15deg) translate(-20px, -80px);
+    }
+}

@@ -1,0 +1,36 @@
+.f-wrapper--2 .flower__leaf--1 {
+    background-color: var(--color1);
+  }
+  
+  .f-wrapper--2 .f .flower__leaf--8 {
+    transform: rotate(-50deg);
+    background-image: linear-gradient(to left bottom, var(--color2), var(--color3));
+  }
+  
+  .f-wrapper--2 .flower__leaf:not(:first-child) {
+    background-image: linear-gradient(to bottom, var(--color4), var(--color5), var(--color6) 99%);
+  }
+  
+  .f-wrapper--3 .flower__leaf--1 {
+    background-color: var(--color7);
+  }
+  
+  .f-wrapper--3 .f .flower__leaf--8 {
+    background-image: linear-gradient(to left bottom, var(--color8), var(--color9));
+  }
+  
+  .f-wrapper--3 .flower__leaf:not(:first-child) {
+    background-image: linear-gradient(to bottom, var(--color10), var(--color11), var(--color12) 99%);
+  }
+  
+  .f-wrapper--1 .flower__leaf--1 {
+    background-color: var(--color13);
+  }
+  
+  .f-wrapper--1 .f .flower__leaf--8 {
+    background-image: linear-gradient(to left bottom, var(--color14), var(--color15));
+  }
+  
+  .f-wrapper--1 .flower__leaf:not(:first-child) {
+    background-image: linear-gradient(to bottom, var(--color16), var(--color17), var(--color18) 99%);
+  }
