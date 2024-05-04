@@ -35,90 +35,79 @@
         </div>
       </div>
 
-    <main class="plant-profile-main image-background">
         <main>
-            <div class="main-container image-background">
-                <div class="user-profile-card w-70">
-                    <div class="photo-profile w-100">
-                        <div class="logo-image" id="plant-image">
-                            <img src="../Images/website_Icon/LittleCactus.jpg" alt="Plant Image" style="width: 100%; border-radius: var(--border-radius);">
-                        </div>
-        
-                        <!-- Hashtags, Collection Name, etc. -->
-                        <div class="form-group w-100">
-                            <label class="label">Hashtags</label>
-                            <p id="hashtags" class="form-control">#Green #Herb #Healthy</p>
-                        </div>
-                        <div class="form-group w-100">
-                            <label class="label">Collection Name</label>
-                            <p id="collection-name" class="form-control">Herbal Garden 2024</p>
-                        </div>
-                        <div class="form-group w-100">
-                            <label class="label">Date Of Collection</label>
-                            <p id="date-collection" class="form-control">April 10, 2024</p>
-                        </div>
-                        <div class="form-group w-100">
-                            <label class="label">Collector Name</label>
-                            <p id="collector" class="form-control">John Doe</p>
-                        </div>
+         <div id="whiteback"> 
+            <div id="plantTitle">
+                <p>Plant Details</p>
+            </div>
+            <div id="plantButtons">
+                <button class="button button1" onclick="location.href = './html/collection.html'">View My Garden</button>
+                <button class="button button2" id="edit-plant-button">Edit Plant</button>
+                <button class="button button2" id="delete-plant-button">Delete Plant</button>
+            </div>
+            <div class="user-profile-card w-70">
+                <div class="photo-profile w-100">
+                    <div class="logo-image" id="plant-image">
+                        <img src="../Images/website_Icon/LittleCactus.jpg" alt="Plant Image" style="width: 100%; border-radius: var(--border-radius);">
                     </div>
-        
-                    <div class="info-profile w-100">
-                        <!-- Plant Details -->
-                        <div class="form-group w-100">
-                            <label class="label">Common Name</label>
-                            <p id="common-name" class="form-control">Lavender</p>
-                        </div>
-                        <div class="form-group w-100">
-                            <label class="label">Scientific Name</label>
-                            <p id="scientific-name" class="form-control">Lavandula</p>
-                        </div>
-                        <div class="form-group w-100">
-                            <label class="label">Family</label>
-                            <p id="family" class="form-control">Lamiaceae</p>
-                        </div>
-                        <div class="form-group w-100">
-                            <label class="label">Genus</label>
-                            <p id="genus" class="form-control">Lavandula</p>
-                        </div>
-                        <div class="form-group w-100">
-                            <label class="label">Species</label>
-                            <p id="species" class="form-control">L. angustifolia</p>
-                        </div>
-                        <div class="form-group w-100">
-                            <label class="label">Place</label>
-                            <p id="place" class="form-control">Mediterranean</p>
-                        </div>
-                        <div class="form-group w-100">
-                            <label class="label">Color</label>
-                            <p id="color-plant" class="form-control">Violet</p>
-                        </div>
-        
-                        <!-- Action Buttons -->
-                        <div class="container-buttons w-100">
-                            <div class="form-group w-100">
-                                <button class="button button1" onclick="location.href = '../html/collection.html'">View My Garden</button>
-                            </div>
-                            <div class="form-group w-100">
-                                <button class="button button2" id="edit-plant-button">Edit Plant</button>
-                            </div>
-                            <div class="form-group w-100">
-                                <button class="button button2" id="delete-plant-button">Delete Plant</button>
-                            </div>
-                        </div>
+    
+                    <div class="form-group w-100">
+                        <label class="label">Hashtags</label>
+                        <p id="hashtags" class="form-control">#Green #Herb #Healthy</p>
+                    </div>
+                    <div class="form-group w-100">
+                        <label class="label">Collection Name</label>
+                        <p id="collection-name" class="form-control">Herbal Garden 2024</p>
+                    </div>
+                    <div class="form-group w-100">
+                        <label class="label">Date Of Collection</label>
+                        <p id="date-collection" class="form-control">April 10, 2024</p>
+                    </div>
+                    <div class="form-group w-100">
+                        <label class="label">Collector Name</label>
+                        <p id="collector" class="form-control">John Doe</p>
+                    </div>
+                </div>
+    
+                <div class="info-profile w-100">
+                    <div class="form-group w-100">
+                        <label class="label">Common Name</label>
+                        <p id="common-name" class="form-control">Lavender</p>
+                    </div>
+                    <div class="form-group w-100">
+                        <label class="label">Scientific Name</label>
+                        <p id="scientific-name" class="form-control">Lavandula</p>
+                    </div>
+                    <div class="form-group w-100">
+                        <label class="label">Family</label>
+                        <p id="family" class="form-control">Lamiaceae</p>
+                    </div>
+                    <div class="form-group w-100">
+                        <label class="label">Genus</label>
+                        <p id="genus" class="form-control">Lavandula</p>
+                    </div>
+                    <div class="form-group w-100">
+                        <label class="label">Species</label>
+                        <p id="species" class="form-control">L. angustifolia</p>
+                    </div>
+                    <div class="form-group w-100">
+                        <label class="label">Place</label>
+                        <p id="place" class="form-control">Mediterranean</p>
+                    </div>
+                    <div class="form-group w-100">
+                        <label class="label">Color</label>
+                        <p id="color-plant" class="form-control">Violet</p>
                     </div>
                 </div>
             </div>
+         <div> 
         </main>
-        
-        
-    </main>
+    
     <footer>
         <img id = "github" class="socialMediaIcon" src="../images/social_media/github.png" alt="Logo Small">
         <p class="gradient_Text">© 2024 HeMa. All rights reserved.</p>
         <img id = "uaic" class="socialMediaIcon" src="../images/social_media/uaic_logo_small.png" alt="Logo Small">
     </footer>
-    <script src="../scripts/script.js"></script>
     <script src="../scripts/footer.js"></script>
     <script src="../scripts/navBar.js"></script>
 </body>

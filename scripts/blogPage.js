@@ -270,6 +270,9 @@ function renderComments(comments) {
 }
 
 function createCommentElement(commentData) {
+
+console.log(commentData.user_id);
+
   const commentElement = document.createElement('div');
   commentElement.classList.add('comment');
   commentElement.id = commentData.id;
@@ -313,6 +316,36 @@ function createCommentElement(commentData) {
   const userSpan = document.createElement('span');
   userSpan.classList.add('user');
   userSpan.textContent = `${commentData.user_name}:`;
+  userSpan.setAttribute('userID', commentData.user_id);
+
+  userSpan.addEventListener('click', () => {
+    const userID = userSpan.getAttribute('userID');
+    sessionStorage.setItem('clientID', userID);
+    window.location.href = './profile.html';
+    });
+
+    const floatingMessage = document.querySelector('.floating-message');
+
+    userSpan.addEventListener('mousemove', (event) => {
+
+    floatingMessage.textContent = 'Visit the profile of this user';
+
+    const mouseX = event.clientX;
+    const mouseY = event.clientY;
+
+    const scrollX = document.documentElement.scrollLeft;
+    const scrollY = document.documentElement.scrollTop;
+
+    floatingMessage.style.left = mouseX + scrollX + 30 + 'px'; 
+    floatingMessage.style.top = mouseY + scrollY + 'px';
+
+    floatingMessage.style.display = 'block';
+    });
+
+    userSpan.addEventListener('mouseleave', () => {
+    floatingMessage.style.display = 'none';
+    });
+
 
   const timeDiv = document.createElement('div');
   timeDiv.classList.add('time');

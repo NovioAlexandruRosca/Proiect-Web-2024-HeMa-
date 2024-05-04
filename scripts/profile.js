@@ -236,6 +236,7 @@ async function fetchClientData(clientId) {
             document.getElementById('followButton').style.display = 'none';
           }else{
             document.getElementById('editButton').style.display = 'none';
+            document.getElementById('addPlantButton').style.display = 'none';
           }
     
           facebookButton.setAttribute('link', data[0].facebook_link || '');
@@ -329,10 +330,196 @@ async function fetchClientCollections(clientId) {
   
 }
 
+async function fetchClientRelationship(clientId){
+    
+    fetch('/api/checkRelationship', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ clientId: clientId })
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Failed to check relationship');
+        }
+    })
+    .then(data => {
+        console.log(data);
+        if (data.exists) {
+            followButton.textContent = "Unfollow";
+        } else {
+            followButton.textContent = "Follow";
+        }
+    })
+    .catch(error => {
+        console.error('Error checking relationship:', error);
+    });
+
+}
+
+async function fetchClientFollowing(clientId){
+
+  fetch('/api/getFollowing', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ clientId: clientId })
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Failed to check relationship');
+        }
+    })
+    .then(data => {
+
+        if(data.length == 0){
+          fetch('/api/userName', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ clientId: clientId })
+          })
+          .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Name couldnt be procured');
+            }
+          })
+          .then(data => {
+          document.getElementById('no-followers-message').textContent = `${data[0].name} doesnt follow anyone yet.`;
+          });
+        }else{
+          document.getElementById('no-followers-message').style.display = 'none';
+        }
+      
+        data.forEach(follower => {
+          const img = document.createElement('img');
+          img.classList.add('friend');
+          img.src = '../images/background/friend.png';
+          img.alt = 'Friend';
+          img.width = 100;
+          img.height = 100;
+          img.setAttribute('data-followed-id', follower.followed_id);
+
+          const floatingMessage = document.querySelector('.floating-message');
+
+          img.addEventListener('mousemove', (event) => {
+
+            fetch('/api/userName', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ clientId: follower.followed_id })
+            })
+            .then(response => {
+              if (response.ok) {
+                  return response.json();
+              } else {
+                  throw new Error('Name couldnt be procured');
+              }
+            })
+            .then(data => {
+              floatingMessage.textContent = `Visit ${data[0].name}'s Profile`;
+            });
+
+          const mouseX = event.clientX;
+          const mouseY = event.clientY;
+
+          const scrollX = document.documentElement.scrollLeft;
+          const scrollY = document.documentElement.scrollTop;
+
+          floatingMessage.style.left = mouseX + scrollX + 30 + 'px'; 
+          floatingMessage.style.top = mouseY + scrollY + 'px';
+
+          floatingMessage.style.display = 'block';
+          });
+
+          img.addEventListener('mouseleave', () => {
+          floatingMessage.style.display = 'none';
+          });
+
+
+          document.getElementById('friends').appendChild(img);
+
+          img.addEventListener('click', () => {
+            const followedId = img.getAttribute('data-followed-id');
+            sessionStorage.setItem('clientID', followedId);
+            window.location.href = './profile.html';
+        });
+      });
+    })
+    .catch(error => {
+        console.error('Error checking relationship:', error);
+    });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   const clientId = sessionStorage.getItem('clientID'); 
 
   fetchClientData(clientId);
   fetchClientCollections(clientId);
+  fetchClientRelationship(clientId);
+  fetchClientFollowing(clientId);
+});
+
+
+const followButton = document.getElementById('followButton');
+
+followButton.addEventListener('click', () => {
+    const clientIdToFollow = getClientIdToFollow();
+    
+    fetch('/api/follow', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ clientId: clientIdToFollow })
+    })
+    .then(response => {
+      if (response.ok) {
+          return response.json();
+      } else {
+          console.error('Failed to send follow request:', response.status);
+      }
+    })
+    .then(data => {
+        if (data.deleted) {
+          followButton.textContent = "Follow";
+      } else {
+          followButton.textContent = "Unfollow";
+      }
+    })
+    .catch(error => {
+        console.error('Error sending follow request:', error);
+    });
+});
+
+function getClientIdToFollow() {
+    return sessionStorage.getItem('clientID');
+}
+
+const divToMove = document.getElementById('addPlantButton');
+const windowHeight = window.innerHeight;
+const divTopOffset = divToMove.offsetTop;
+
+window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+
+    let newTop = divTopOffset - scrollY;
+
+    if (newTop <= 90) {
+        newTop = 60 + scrollY;
+    } 
+    console.log(newTop);
+
+    divToMove.style.top = newTop + 'px';
 });

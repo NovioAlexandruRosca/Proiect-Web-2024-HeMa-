@@ -287,6 +287,198 @@ const server = http.createServer((req, res) => {
         });
     }
 
+    // USED TO create a relation between 2 clients(following)
+    if(req.method === 'POST' && req.url === '/api/follow') {
+        headerNotModified = false;
+    
+        let data = '';
+        
+        req.on('data', chunk => {
+            data += chunk;
+        });
+    
+        req.on('end', () => {
+            const requestData = JSON.parse(data);
+            const followerId = sessionData.userId;
+            const followedId = requestData.clientId;
+
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    return;
+                }
+    
+                const selectQuery = 'SELECT * FROM followers WHERE follower_id = ? AND followed_id = ?';
+                const selectValues = [followerId, followedId];
+    
+                connection.query(selectQuery, selectValues, (selectError, selectResults) => {
+                    if (selectError) {
+                        console.error('Error checking follow relationship:', selectError);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                        connection.release();
+                        return;
+                    }
+    
+                    if (selectResults.length > 0) {
+                        const deleteQuery = 'DELETE FROM followers WHERE follower_id = ? AND followed_id = ?';
+                        const deleteValues = [followerId, followedId];
+    
+                        connection.query(deleteQuery, deleteValues, (deleteError, deleteResult) => {
+                            connection.release();
+                            if (deleteError) {
+                                console.error('Error deleting follow relationship:', deleteError);
+                                res.writeHead(500, { 'Content-Type': 'application/json' });
+                                res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                                return;
+                            }
+    
+                            res.writeHead(200, { 'Content-Type': 'application/json' });
+                            res.end(JSON.stringify({ deleted: true }));
+                        });
+                    } else {
+                        const insertQuery = 'INSERT INTO followers (follower_id, followed_id) VALUES (?, ?)';
+                        const insertValues = [followerId, followedId];
+    
+                        connection.query(insertQuery, insertValues, (insertError, insertResult) => {
+                            connection.release();
+                            if (insertError) {
+                                console.error('Error inserting follow relationship:', insertError);
+                                res.writeHead(500, { 'Content-Type': 'application/json' });
+                                res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                                return;
+                            }
+    
+                            res.writeHead(200, { 'Content-Type': 'application/json' });
+                            res.end(JSON.stringify({ deleted: false }));
+                        });
+                    }
+                });
+            });
+            
+        });
+    }
+    
+    //USED TO check if two clients are following eachother
+    if (req.method === 'POST' && req.url === '/api/userName') {
+        headerNotModified = false; 
+        let data = '';
+        
+        req.on('data', chunk => {
+            data += chunk;
+        });
+    
+        req.on('end', () => {
+            const requestData = JSON.parse(data);
+            const id = requestData.clientId;
+    
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    return;
+                }
+    
+                connection.query('SELECT name FROM clients WHERE id = ?', [id], (error, results) => {
+                    connection.release();
+                    if (error) {
+                        console.error('Error querying relationship:', error);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                        return;
+                    }
+    
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(results));
+                });
+            });
+        });
+    }
+
+    //USED TO check if two clients are following eachother
+    if (req.method === 'POST' && req.url === '/api/checkRelationship') {
+        headerNotModified = false; 
+        let data = '';
+        
+        req.on('data', chunk => {
+            data += chunk;
+        });
+    
+        req.on('end', () => {
+            const requestData = JSON.parse(data);
+            const followerId = sessionData.userId;
+            const followedId = requestData.clientId;
+    
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    return;
+                }
+    
+                connection.query('SELECT * FROM followers WHERE follower_id = ? AND followed_id = ?', [followerId, followedId], (error, results) => {
+                    connection.release();
+                    if (error) {
+                        console.error('Error querying relationship:', error);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                        return;
+                    }
+    
+                    let exists = false;
+
+                    if (results.length > 0) {
+                        exists = true;
+                    }
+    
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ exists }));
+                });
+            });
+        });
+    }
+
+    //USED TO get all the clients a specific client follows
+    if (req.method === 'POST' && req.url === '/api/getFollowing') {
+        headerNotModified = false; 
+        let data = '';
+        
+        req.on('data', chunk => {
+            data += chunk;
+        });
+    
+        req.on('end', () => {
+            const requestData = JSON.parse(data);
+            const followedId = requestData.clientId;
+    
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    return;
+                }
+    
+                connection.query('SELECT * FROM followers WHERE follower_id = ?', [followedId], (error, results) => {
+                    connection.release();
+                    if (error) {
+                        console.error('Error querying relationship:', error);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                        return;
+                    }
+    
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(results));
+                });
+            });
+        });
+    }
+
     // USED FOR getting the details of a client when he goes in his profile
     if (req.method === 'POST' && req.url === '/api/clientData') {
         headerNotModified = false; 
