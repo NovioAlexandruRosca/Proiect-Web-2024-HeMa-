@@ -116,6 +116,7 @@ h2 {
 }
 
 .cta__text-column a:hover{
+	cursor: url(../images/cursors/PottedPlantNS.cur),auto;
 	background: hsl(128, 63%, 43%);
 	box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
 }

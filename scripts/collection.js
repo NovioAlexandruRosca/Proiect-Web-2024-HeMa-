@@ -5,6 +5,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function addFigure() {
 
+    const requestData = {
+        clientId: clientID,
+        badgeNumber: 2
+      };
+  
+      fetch('/api/modifyBadge', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+      })
+      .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Failed to modify badge value');
+        }
+      })
+      .then(data => {
+        console.log('Badge value modified successfully:', data);
+      })
+      .catch(error => {
+        console.error('Error modifying badge value:', error);
+      });
+
     fetch('/api/createPlantLayout', {
         method: 'POST',
         headers: {

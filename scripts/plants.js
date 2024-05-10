@@ -330,3 +330,70 @@ form.addEventListener('submit', (event) => {
 
   modal.style.display = 'none';
 });
+
+
+function handleImageUpload() {
+    if(plantsclientID == connectedclientID)
+        document.getElementById('fileInput').click(); 
+  }
+  
+  function displayImage(input) {
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const fileType = file.type;
+
+        if (fileType.startsWith('image/')) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                document.getElementById('plantAvatar').src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            document.getElementById('overlay').style.display = 'block';
+            
+            setTimeout(function() {
+                let opacity = 1;
+                const interval = setInterval(function() {
+                    opacity -= 0.05;
+                    document.getElementById('overlay').style.opacity = opacity;
+                    if (opacity <= 0) {
+                        clearInterval(interval);
+                        document.getElementById('overlay').style.display = 'none';
+                    }
+                }, 50); 
+            }, 1000);
+
+            document.getElementById('overlay').style.opacity = 1;
+            input.value = '';
+        }
+    }
+  }
+
+  document.getElementById('plant-image').addEventListener('mouseenter', function() {
+    if (plantsclientID != connectedclientID) {
+        document.getElementById('plantAvatar').style.scale = 'none';
+    }
+});
+  
+  document.getElementById('plant-image').addEventListener('mousemove', (event) => {
+    if(plantsclientID == connectedclientID){
+        floatingMessage.textContent = "Change avatar";
+
+        const mouseX = event.clientX;
+        const mouseY = event.clientY;
+
+        const scrollX = document.documentElement.scrollLeft;
+        const scrollY = document.documentElement.scrollTop;
+
+        floatingMessage.style.left = mouseX + scrollX + 30 + 'px'; 
+        floatingMessage.style.top = mouseY + scrollY + 'px';
+
+        floatingMessage.style.display = 'block';
+
+        document.getElementById('plant-image').addEventListener('mouseleave', () => {
+        floatingMessage.style.display = 'none';
+        });
+    }
+});

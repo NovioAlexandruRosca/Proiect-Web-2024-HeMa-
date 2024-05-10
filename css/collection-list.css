@@ -83,6 +83,13 @@ button:hover, a:hover {
     margin: 20px 0; 
 }
 
+#avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    transition: all 0.2s;
+}
+
 #circleAvatar{
     border: 5px solid rgb(11, 56, 25);
     box-shadow: 0px 0px 20px rgba(0,0,0,1);
@@ -91,6 +98,7 @@ button:hover, a:hover {
     height: 150px;
     width: 150px;
     margin-right: 30px;
+    transition: all 0.2s;
 }
 
 #circleData{
@@ -194,7 +202,7 @@ button:hover, a:hover {
 
     width:50px;
 
-    transition: opacity 0.3s ease;
+    transition: all 0.3s ease;
     cursor: url(../images/cursors/PottedPlantNS.cur),auto;
 }
 
@@ -213,14 +221,16 @@ button:hover, a:hover {
 }
 
 .friend{
+    filter: drop-shadow(0px 4px 4px rgba(139, 69, 19, 0.5)); 
     border:5px solid black;
     border-radius: 360px;
     margin-left: 2px;
     margin-right: 2px;
+    transition: all 0.2s;
 }
 
 .friend:hover{
-    opacity: 0.9;
+    scale:1.1;
     box-shadow: 0px 0px 20px rgba(0,0,0,1);
 }
 
@@ -422,3 +432,40 @@ button:hover, a:hover {
     top:60px;
     z-index: 3;
 }
+
+
+#circleAvatar:hover #avatar{
+    scale:1.1;
+}
+
+#overlay {
+    z-index: 1000;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  #popup-message {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .badge{
+    transition: all 0.2s;
+    filter: drop-shadow(0px 4px 4px rgba(139, 69, 19, 0.5)); 
+    filter: grayscale(100%) brightness(50%);
+  }
+
+  .badge:hover{
+    scale: 1.1;
+  }

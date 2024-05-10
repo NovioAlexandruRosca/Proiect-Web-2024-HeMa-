@@ -110,12 +110,12 @@ CREATE TABLE comments (
     posted_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     KEY post_id_fk (post_id),
-    CONSTRAINT post_id_fk FOREIGN KEY (post_id) REFERENCES posts(id)
+    CONSTRAINT post_id_fk FOREIGN KEY (post_id) REFERENCES blog_posts(id)
 );
 
 CREATE TABLE clients_details (
     client_id INT PRIMARY KEY,
-    FOREIGN KEY (client_id) REFERENCES clients(id),
+    FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE,
     name VARCHAR(255),
     occupation VARCHAR(255),
     city VARCHAR(255),
@@ -160,6 +160,16 @@ CREATE TABLE plant_collections (
     FOREIGN KEY (client_id) REFERENCES clients(id)
 );
 
+CREATE TABLE badges (
+    client_id INT NOT NULL,
+    badge1 VARCHAR(255) DEFAULT NULL,
+    badge2 VARCHAR(255) DEFAULT NULL,
+    badge3 VARCHAR(255) DEFAULT NULL,
+    badge4 VARCHAR(255) DEFAULT NULL,
+    badge5 VARCHAR(255) DEFAULT NULL,
+    PRIMARY KEY (client_id),
+    FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
+);
 
 ## Screenshots
 

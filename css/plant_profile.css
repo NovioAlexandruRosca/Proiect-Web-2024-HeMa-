@@ -104,7 +104,7 @@ main{
 .form-control {
     background: none;
     border: 0;
-    border-bottom: 2px solid var(--primary-color);
+    border-bottom: 3px solid var(--primary-color);
     padding: 0.5rem 0;
     margin-bottom: 1rem;
     width: 100%;
@@ -367,4 +367,47 @@ main{
 
 #color-plant{
     font-size: 23px;
+}
+
+#plantAvatar {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    transition: all 0.3s;
+}
+
+#plant-image{
+    background-color: rgb(11, 56, 25);
+    border: 5px solid rgb(11, 56, 25);
+    box-shadow: 0px 0px 20px rgba(0,0,0,1);
+    border-radius: 10px;
+    overflow: hidden;
+    height: 235px;
+    width: 235px;
+    transition: all 0.2s;
+}
+
+#plant-image:hover #plantAvatar{
+    scale:1.1;
+}
+
+#overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#popup-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }

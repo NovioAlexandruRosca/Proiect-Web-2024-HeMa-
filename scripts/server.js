@@ -427,6 +427,89 @@ const server = http.createServer((req, res) => {
         });
     }
 
+    // USED FOR modifying badge value
+    if (req.method === 'POST' && req.url === '/api/modifyBadge') {
+        headerNotModified = false;
+        let body = '';
+
+        req.on('data', chunk => {
+            body += chunk;
+        });
+
+        req.on('end', () => {
+            const requestData = JSON.parse(body);
+            const { clientId, badgeNumber } = requestData;
+
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    return;
+                }
+
+                const updateBadgeQuery = `UPDATE badges SET badge${badgeNumber} = 1 WHERE client_id = ?`;
+
+                connection.query(updateBadgeQuery, [clientId], (error, results) => {
+                    connection.release();
+
+                    if (error) {
+                        console.error('Error updating badge value:', error);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                        return;
+                    }
+
+                    console.log(`Badge ${badgeNumber} value updated successfully for client ${clientId}`);
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: true }));
+                });
+            });
+        });
+    }
+
+    // USED FOR fetching badge data
+    if (req.method === 'POST' && req.url === '/api/badges') {
+        headerNotModified = false;
+        let body = '';
+
+        req.on('data', chunk => {
+            body += chunk;
+        });
+
+        req.on('end', () => {
+            const requestData = JSON.parse(body);
+            const { clientId } = requestData;
+
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    return;
+                }
+
+                connection.query('SELECT badge1, badge2, badge3, badge4, badge5 FROM badges WHERE client_id = ?', [clientId], (error, results) => {
+                    connection.release();
+
+                    if (error) {
+                        console.error('Error fetching badge data:', error);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                        return;
+                    }
+
+                    const badgeData = results[0];
+
+                    console.log('Badge data fetched successfully:', badgeData);
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(badgeData));
+                });
+            });
+
+        });
+    }
+
     // USED FOR creating a plant layout(when you click the + sign in a collection)
     if (req.method === 'POST' && req.url === '/api/createPlantLayout') {
         headerNotModified = false;
@@ -1380,6 +1463,18 @@ const server = http.createServer((req, res) => {
 
                             connection.query('INSERT INTO clients_details (client_id, name) VALUES (?, ?)', 
                             [results.insertId, Name], 
+                            (insertError, insertResults) => {
+                                connection.release();
+                                if (insertError) {
+                                    console.error('Error inserting user data:', insertError);
+                                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                                    return;
+                                }
+                            });
+
+                            connection.query('INSERT INTO badges (client_id) VALUES (?)', 
+                            [results.insertId], 
                             (insertError, insertResults) => {
                                 connection.release();
                                 if (insertError) {

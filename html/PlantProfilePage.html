@@ -77,7 +77,11 @@
             <div class="user-profile-card w-70">
                 <div class="photo-profile w-100">
                     <div class="logo-image" id="plant-image">
-                        <img src="../Images/website_Icon/LittleCactus.jpg" alt="Plant Image" style="width: 100%; border-radius: var(--border-radius);">
+                        <div id="overlay">
+                            <div id="popup-message">You need to choose an image</div>
+                          </div>
+                        <img id="plantAvatar" src="../Images/website_Icon/LittleCactus.jpg" alt="Plant Image" width="235" style="border-radius: var(--border-radius);" onclick="handleImageUpload()">
+                        <input type="file" id="fileInput" style="display: none;" onchange="displayImage(this)">
                     </div>
     
                     <div class="form-group w-100">
