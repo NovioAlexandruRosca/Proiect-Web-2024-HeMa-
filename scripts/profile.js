@@ -38,6 +38,36 @@ function addFigure() {
         console.error('Error creating collection:', error);
     });
 
+
+    const requestData = {
+      clientId: userProfileID,
+      badgeNumber: 1
+    };
+
+    fetch('/api/modifyBadge', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    })
+    .then(response => {
+      if (response.ok) {
+          return response.json();
+      } else {
+          throw new Error('Failed to modify badge value');
+      }
+    })
+    .then(data => {
+      console.log('Badge value modified successfully:', data);
+    })
+    .catch(error => {
+      console.error('Error modifying badge value:', error);
+    });
+
+    document.getElementById('badge1').style.filter = 'grayscale(0%) brightness(100%)';
+    document.getElementById('badge1').setAttribute('on', '1');
+
     newFigure.addEventListener('click', function() {
       sessionStorage.setItem('data-collection-id', newFigure.getAttribute('data-collection-id'));
       window.location.href = "./collection.html";
@@ -90,7 +120,6 @@ const twitterButton = document.getElementById('tw');
         }
     });
 });
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -152,6 +181,34 @@ const form = document.querySelector('form');
 form.addEventListener('submit', (event) => {
   event.preventDefault();
 
+  const requestData = {
+    clientId: userProfileID,
+    badgeNumber: 3
+  };
+
+  fetch('/api/modifyBadge', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(requestData)
+  })
+  .then(response => {
+    if (response.ok) {
+        return response.json();
+    } else {
+        throw new Error('Failed to modify badge value');
+    }
+  })
+  .then(data => {
+    console.log('Badge value modified successfully:', data);
+    document.getElementById('badge3').style.filter = 'grayscale(0%) brightness(100%)';
+    document.getElementById('badge3').setAttribute('on', '1');
+  })
+  .catch(error => {
+    console.error('Error modifying badge value:', error);
+  });
+
   const formData = new FormData(form);
   const formDataJson = {};
   formData.forEach((value, key) => {
@@ -203,7 +260,8 @@ form.addEventListener('submit', (event) => {
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-let userID;
+let userID;     // ID UL PERSOANEI CONECTATE RIGHT NOW
+let userProfileID;  // ID UL AL CAREI PERSOANE E PROFILUL
 
 async function fetchClientData(clientId) {
 
@@ -233,6 +291,8 @@ async function fetchClientData(clientId) {
           
           console.log(data[0].client_id, userID);
     
+          userProfileID = data[0].client_id;
+
           if(data[0].client_id == userID){
             document.getElementById('followButton').style.display = 'none';
           }else{
@@ -470,6 +530,7 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchClientCollections(clientId);
   fetchClientRelationship(clientId);
   fetchClientFollowing(clientId);
+  fetchBadges(clientId);
 });
 
 
@@ -535,8 +596,8 @@ function updateWrapperTransform() {
   const figuresCount = countFigures();
 
   const number = Math.ceil(figuresCount / 3) - 1;
-  const verticalTranslation1 = 22 + 20 * number;
-  const verticalTranslation2 = 10 + 15 * number;
+  const verticalTranslation1 = 36 + 20 * number;
+  const verticalTranslation2 = 20 + 15 * number;
 
   const wrapper = document.querySelector('.f-wrapper--2');
   wrapper.style.transform = `translate(0px, ${verticalTranslation1}px)`;
@@ -548,3 +609,151 @@ function updateWrapperTransform() {
 setTimeout(() => {
   updateWrapperTransform();
 }, 1000);
+
+
+
+
+function handleImageUpload() {
+  if (userProfileID == userID) {
+  document.getElementById('fileInput').click(); 
+  }
+}
+
+function displayImage(input) {
+  if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const fileType = file.type;
+
+      if (fileType.startsWith('image/')) {
+          const reader = new FileReader();
+
+          reader.onload = function (e) {
+              document.getElementById('avatar').src = e.target.result;
+          };
+
+          reader.readAsDataURL(file);
+      } else {
+          document.getElementById('overlay').style.display = 'block';
+              
+          setTimeout(function() {
+              let opacity = 1;
+              const interval = setInterval(function() {
+                  opacity -= 0.05;
+                  document.getElementById('overlay').style.opacity = opacity;
+                  if (opacity <= 0) {
+                      clearInterval(interval);
+                      document.getElementById('overlay').style.display = 'none';
+                  }
+              }, 50); 
+          }, 1000);
+
+          document.getElementById('overlay').style.opacity = 1;
+          input.value = '';
+      }
+  }
+}
+
+document.getElementById('circleAvatar').addEventListener('mouseenter', function() {
+  if (userProfileID != userID) {
+      document.getElementById('avatar').style.scale = 'none';
+  }
+});
+
+const floatingMessage = document.querySelector('.floating-message');
+
+document.getElementById('circleAvatar').addEventListener('mousemove', (event) => {
+  if(userProfileID == userID){
+      floatingMessage.textContent = "Change avatar";
+
+      const mouseX = event.clientX;
+      const mouseY = event.clientY;
+
+      const scrollX = document.documentElement.scrollLeft;
+      const scrollY = document.documentElement.scrollTop;
+
+      floatingMessage.style.left = mouseX + scrollX + 30 + 'px'; 
+      floatingMessage.style.top = mouseY + scrollY + 'px';
+
+      floatingMessage.style.display = 'block';
+
+      document.getElementById('circleAvatar').addEventListener('mouseleave', () => {
+      floatingMessage.style.display = 'none';
+      });
+  }
+});
+
+
+const badgeMessages = [
+  "Create Your First Collection",
+  "Create Your First Plant",
+  "Edit Your Profile",
+  "Add Your First Friend",
+  "Share Your First Collection"
+];
+
+document.querySelectorAll('.badge').forEach((badge, index) => {
+
+  badge.addEventListener('mousemove', (event) => {
+
+      let message = badgeMessages[index];
+
+      if(badge.getAttribute('on') == '0'){
+        message = '???';
+      }
+
+      if(userID != userProfileID){
+        message = '???';
+      }
+
+      floatingMessage.textContent = message;
+
+      const mouseX = event.clientX;
+      const mouseY = event.clientY;
+
+      const scrollX = document.documentElement.scrollLeft;
+      const scrollY = document.documentElement.scrollTop;
+
+      floatingMessage.style.left = mouseX + scrollX + 30 + 'px'; 
+      floatingMessage.style.top = mouseY + scrollY + 'px';
+
+      floatingMessage.style.display = 'block';
+
+      badge.addEventListener('mouseleave', () => {
+      floatingMessage.style.display = 'none';
+      });
+
+  });
+});
+
+async function fetchBadges(clientId){
+
+  fetch('/api/badges', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ clientId: clientId })
+  })
+  .then(response => {
+    if (response.ok) {
+        return response.json();
+    } else {
+        throw new Error('Error getting the badge data');
+    }
+  })
+  .then(data => {
+    console.log(data);
+    updateBadges(data);
+  }).catch(error => {
+    console.error('Error checking relationship:', error);
+  });
+}
+
+function updateBadges(badgeData) {
+  document.querySelectorAll('.badge').forEach((badge, index) => {
+    if (badgeData[`badge${index + 1}`] === '1') {
+      badge.style.filter = 'grayscale(0%) brightness(100%)';
+      badge.setAttribute('on', '1');
+    }
+  });
+}

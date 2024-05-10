@@ -74,7 +74,11 @@
                     <div class="collections  collection-particularity">
                         <div id="profileInfo">
                             <div id="circleAvatar">
-                                <img id="avatar" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" width="150">
+                                <div id="overlay">
+                                    <div id="popup-message">You need to choose an image</div>
+                                  </div>
+                                <img id="avatar" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" width="150" onclick="handleImageUpload()">
+                                <input type="file" id="fileInput" style="display: none;" onchange="displayImage(this)">
                             </div>
                             <div id="circleData">
                                 <h2 id="userName"></h2>
@@ -126,6 +130,21 @@
                     <div id="friends">
                         <!-- <img class="friend" src="../images/background/friend.png" alt="Mountains" width="100" height="100">  -->
                     </div>
+                </div>
+            </div>
+            <div class="card collections-card">
+                <h2 class="collections-title">Badges</h2>
+                <div class="collections">
+                    <div class="line"></div>
+                    
+                    <div id="badgeDiv">
+                        <img id="badge1" class="badge" src="../images/website_Icon/badge.png" alt="Mountains" width="100" height="100" on="0">
+                        <img id="badge2" class="badge" src="../images/website_Icon/badge.png" alt="Mountains" width="100" height="100" on="0">
+                        <img id="badge3" class="badge" src="../images/website_Icon/badge.png" alt="Mountains" width="100" height="100" on="0">
+                        <img id="badge4" class="badge" src="../images/website_Icon/badge.png" alt="Mountains" width="100" height="100" on="0">
+                        <img id="badge5" class="badge" src="../images/website_Icon/badge.png" alt="Mountains" width="100" height="100" on="0">
+                    </div>
+
                 </div>
             </div>
         </div>
