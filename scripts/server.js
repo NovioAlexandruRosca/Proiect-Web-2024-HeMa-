@@ -2,12 +2,13 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const sendEmail = require('./sendMail');
+const sendResetPasswordLink = require('./sendResetPasswordLink');
 const querystring = require('querystring');
 const mysql = require('mysql2');
 const { parse } = require('querystring');
 require('dotenv').config();
 const bcrypt = require('bcrypt');
-
+const crypto = require('crypto');
 
 // DATA NEEDED TO CONNECT TO THE DATABASE
 const pool = mysql.createPool({
@@ -40,6 +41,45 @@ const server = http.createServer((req, res) => {
 
     const cookieValue = `sessionId=${sessionId}; HttpOnly; Max-Age=${24 * 60 * 60}`;
     res.setHeader('Set-Cookie', cookieValue);
+
+    //USED TO update the password of a client
+    if (req.method === 'PUT' && req.url === '/api/updatePassword') {
+        headerNotModified = false; 
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+
+        req.on('end', async () => {
+            const {Password,Email} = JSON.parse(body);
+            const hashedPassword = await bcrypt.hash(Password, 10);
+
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    res.end('Internal Server Error');
+                    return;
+                }
+
+                const updateQuery = 'UPDATE clients SET password = ? WHERE email = ?';
+
+                connection.query(updateQuery, [hashedPassword, Email], (error, results) => {
+                    connection.release();
+
+                    if (error) {
+                        console.error('Error updating password:', error);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                        return;
+                    }
+
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ message: 'Password updated successfully' }));
+                });
+            });
+        });
+    }
 
     // USED TO update the data of a specific plant
     if(req.method === 'PUT' && req.url === '/api/updatePlant'){
@@ -424,6 +464,69 @@ const server = http.createServer((req, res) => {
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(jsonData);
             }
+        });
+    }
+
+    // USED FOR reseting password
+    if (req.method === 'POST' && req.url === '/api/reset-password') {
+        headerNotModified = false; 
+        let body = '';
+
+        req.on('data', chunk => {
+            body += chunk;
+        });
+
+        req.on('end', () => {
+            const requestData = JSON.parse(body);
+            const { email } = requestData;
+
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    res.end('Internal Server Error');
+                    return;
+                }
+                
+                connection.query('Select * from clients where email = ?', [email], (err, results, fields) => {
+                    if (err) {
+                        console.error('Error executing query:', err);
+                        res.writeHead(500, { 'Content-Type': 'text/plain' });
+                        res.end('Internal Server Error');
+                        return;
+                    }
+
+                   if (results.length === 0) {
+                        res.writeHead(404, { 'Content-Type': 'text/plain' });
+                        res.end('Email not found');
+                    } else {
+                        const token = generateToken(32);
+
+                        const insertQuery = 'INSERT INTO PasswordResetTokens (email, token) VALUES (?, ?)';
+                        connection.query(insertQuery, [email, token], (error, results) => {
+                            connection.release();
+                            if (error) {
+                                console.error('Error executing query:', err);
+                                res.writeHead(500);
+                                res.end('Error sending email');
+                            } else {
+                                sendResetPasswordLink(email, token, (error) => {
+                                    if (error) {
+                                        res.writeHead(500);
+                                        res.end('Error sending email');
+                                    } else {
+                    
+                                        console.log("Email sent");
+        
+                                        res.writeHead(200);
+                                        res.end('Email sent successfully');
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            });
         });
     }
 
@@ -1548,47 +1651,118 @@ const server = http.createServer((req, res) => {
     if(headerNotModified){
         let filePath = null;
 
-        if(req.url == '../Documentatie/Documentatie.html'){
-            filePath = 'Documentatie/Documentatie.html';
-        }else if(getContentType(req.url) == 'text/html'){
-            filePath = './html' + req.url;
-        }else if(req.url == '/'){
-            filePath = './html/landingPage.html';
-        }
+        //CHECKS FOR THE SPECIAL CASE WHEN YOU GET AN URL AND NEED TO RETURN THE TOKEN AS WELL(MINIMZE IT)
+        if(req.url.includes(`resetPassword.html`)){
+            let filePath = path.join(__dirname, '../html/resetPassword.html');
 
-        // If they aren't logged in they should be able to see anything but the 3 pages from the second part of the if
-        if (!sessionData) {
-            if(getContentType(req.url) == 'text/html' && (filePath != './html/landingPage.html' && filePath != './html/login.html' && filePath != './html/register.html'))
-                filePath = './html/landingPage.html';
-        }
+            const tokenStartIndex = req.url.indexOf('token=') + 'token='.length;
+            const tokenEndIndex = req.url.indexOf('$email=');
+            const token = req.url.substring(tokenStartIndex, tokenEndIndex) || 'default';
+            const email = req.url.split('email=')[1] || 'default';
+            console.log('Token:', token);
+            console.log('Email:', email);
 
-        if(sessionData){
-           if(getContentType(req.url) == 'text/html')
-                if(sessionData.isAdmin == 'True' && (filePath != './html/admin.html' && filePath != './html/generateReports.html' && filePath != './html/listOfClients.html' && filePath != './html/landingPage.html' && filePath != './html/login.html' && filePath != './html/register.html'))
-                    filePath = './html/error404.html';
-                else if(sessionData.isAdmin == 'False' && (filePath == './html/admin.html' || filePath == './html/generateReports.html' || filePath == './html/listOfClients.html'))
-                    filePath = './html/error404.html';
-        }
-
-        filePath = path.join(__dirname, '..', filePath || req.url);
-
-        const contentType = getContentType(filePath);
-        fs.readFile(filePath, (err, content) => {
-            if (err) {
-                if (err.code === 'ENOENT') {
-                    fs.readFile('./html/error404.html', (err, content) =>{
-                        res.writeHead(404, { 'Content-Type': 'text/html' });
-                        res.end(content, 'utf-8');
-                    });
-                } else {
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
                     res.writeHead(500);
-                    res.end(`Server Error: ${err.code}`);
+                    res.end('Internal Server Error');
+                    return;
                 }
-            } else {
-                res.writeHead(200, { 'Content-Type': contentType });
-                res.end(content, 'utf-8');
+
+                const selectQuery = 'SELECT * FROM PasswordResetTokens WHERE token = ? AND email = ?';
+                connection.query(selectQuery, [token, email], (error, results) => {
+                    if (error) {
+                        console.error('Error executing query:', error);
+                        res.writeHead(500);
+                        res.end('Internal Server Error');
+                        connection.release();
+                    } else {
+                        let errorDeleting = false;
+                        if (results.length === 0) {
+                            filePath = path.join(__dirname, '../html/error404.html');
+                        }else{
+                            const expirationTime = new Date(results[0].created_at);
+                            expirationTime.setHours(expirationTime.getHours() + 1);
+                            const currentTime = new Date();
+
+                            if(currentTime > expirationTime){
+                                filePath = path.join(__dirname, '../html/error404.html');
+                            }else{
+                                const deleteQuery = 'DELETE FROM PasswordResetTokens WHERE email = ?';
+                                connection.query(deleteQuery, [email], (deleteError, deleteResults) => {
+                                    connection.release();
+                                    if (deleteError) {
+                                        console.error('Error executing delete query:', deleteError);
+                                        res.writeHead(500);
+                                        res.end('Internal Server Error');
+                                        errorDeleting = true;
+                                    }
+                                });
+                            }
+                        }
+                        if(!errorDeleting){
+                            fs.readFile(filePath, (err, content) => {
+                                if (err) {
+                                    if (err.code === 'ENOENT') {
+                                        res.writeHead(404, { 'Content-Type': 'text/html' });
+                                        res.end('404 Not Found');
+                                    } else {
+                                        res.writeHead(500);
+                                        res.end(`Server Error: ${err.code}`);
+                                    }
+                                } else {
+                                    res.writeHead(200, { 'Content-Type': 'text/html', 'email': email });
+                                    res.end(content, 'utf-8');
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        }else{  // HERE WAS THE BEGINING OF THE NORMAL PART
+            if(req.url == '../Documentatie/Documentatie.html'){
+                filePath = 'Documentatie/Documentatie.html';
+            }else if(getContentType(req.url) == 'text/html'){
+                filePath = './html' + req.url;
+            }else if(req.url == '/'){
+                filePath = './html/landingPage.html';
             }
-        });
+
+            // If they aren't logged in they should be able to see anything but the 4 pages from the second part of the if
+            if (!sessionData) {
+                if(getContentType(req.url) == 'text/html' && (filePath != './html/landingPage.html' && filePath != './html/login.html' && filePath != './html/register.html' && filePath != './html/resetPassword.html'))
+                    filePath = './html/landingPage.html';
+            }
+
+            if(sessionData){
+            if(getContentType(req.url) == 'text/html')
+                    if(sessionData.isAdmin == 'True' && (filePath != './html/admin.html' && filePath != './html/generateReports.html' && filePath != './html/listOfClients.html' && filePath != './html/landingPage.html' && filePath != './html/login.html' && filePath != './html/register.html'))
+                        filePath = './html/error404.html';
+                    else if(sessionData.isAdmin == 'False' && (filePath == './html/admin.html' || filePath == './html/generateReports.html' || filePath == './html/listOfClients.html'))
+                        filePath = './html/error404.html';
+            }
+
+            filePath = path.join(__dirname, '..', filePath || req.url);
+
+            const contentType = getContentType(filePath);
+            fs.readFile(filePath, (err, content) => {
+                if (err) {
+                    if (err.code === 'ENOENT') {
+                        fs.readFile('./html/error404.html', (err, content) =>{
+                            res.writeHead(404, { 'Content-Type': 'text/html' });
+                            res.end(content, 'utf-8');
+                        });
+                    } else {
+                        res.writeHead(500);
+                        res.end(`Server Error: ${err.code}`);
+                    }
+                } else {
+                    res.writeHead(200, { 'Content-Type': contentType });
+                    res.end(content, 'utf-8');
+                }
+            });
+        }
     }
     headerNotModified = true;
 });
@@ -1701,4 +1875,10 @@ function addSection(postId, title, description) {
             }
         });
     });
+}
+
+function generateToken(length) {
+    return crypto.randomBytes(Math.ceil(length / 2))
+        .toString('hex') 
+        .slice(0, length);
 }

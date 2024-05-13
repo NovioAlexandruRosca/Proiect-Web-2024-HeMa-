@@ -469,3 +469,40 @@ button:hover, a:hover {
   .badge:hover{
     scale: 1.1;
   }
+
+  .minimize-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    }
+
+    .card {
+        position: relative;
+    }
+
+    .rotated {
+        transform: rotate(180deg);
+    }
+
+    #collectionList{
+        display: flex;
+        align-items: center;
+    }
+
+    #figurePlace{
+        display: flex;
+        flex-direction: row;
+    }
+
+    @media (max-width: 560px) {
+    .sg{
+        height:50px;
+    }
+    .minimize-button {
+        position: relative;
+        right:0%;
+        }
+    .collections-title{
+        transform: translate(0px,-10px);
+    }
+    }

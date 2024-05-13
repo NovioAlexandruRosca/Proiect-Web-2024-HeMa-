@@ -96,7 +96,7 @@ async function fetchPlantData(plantID){
 
                 hashtags.textContent = data.hashtags;
                 collectionName.textContent = data.title;
-                dateOfCollection.textContent = data.collection_date;
+                dateOfCollection.textContent = data.collection_date.substring(0, 10);
                 collectorName.textContent = data.user;
                 // commonName.textContent = data.common_name;
                 // scientificName.textContent = data.scientific_name;
@@ -313,7 +313,7 @@ form.addEventListener('submit', (event) => {
         handleDataForElement(color, formDataJson.color);
 
         hashtags.textContent = formDataJson.hashtags;
-        dateOfCollection.textContent = formDataJson.dataOfCollection;
+        dateOfCollection.textContent = formDataJson.dateOfCollection;
         commonName.textContent = formDataJson.commonName;
         scientificName.textContent = formDataJson.scientificName;
         family.textContent = formDataJson.family;
