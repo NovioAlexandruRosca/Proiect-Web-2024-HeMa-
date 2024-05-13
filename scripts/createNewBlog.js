@@ -117,8 +117,8 @@ document.getElementById('Save').addEventListener('click', async function(){
 });
 
 
-const clientId = 'febfff4e0c2ffca';
-const accessToken = 'f233c67d1dc02e8d1855c3ac867e9e0fc4c7d0fc';
+const clientId = '465816d0363c545';
+const accessToken = 'b7d510630a75bd5fcdd96a7b79276b77f8a19b6a';
 
 
 async function uploadImageToImgur(imageFile) {
@@ -150,8 +150,9 @@ async function uploadImageToImgur(imageFile) {
 async function fetchImgurCredits() {
     try {
         const response = await fetch('https://api.imgur.com/3/credits', {
+            method: 'GET',
             headers: {
-                Authorization: `Client-ID ${clientId}`,
+                Authorization: `Bearer ${accessToken}`,
             },
         });
 

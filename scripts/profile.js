@@ -354,31 +354,35 @@ async function fetchClientCollections(clientId) {
               console.error('Failed to add comment:', response.status);
           }
       }).then(data => {
-          
+
           data.forEach(item => {
-            const newFigure = document.createElement("figure");
-            
-            const newImage = document.createElement("img");
-            newImage.src = "../images/background/card2.jpg";
-            newImage.alt = "New Image";
-            newImage.width = 250; 
-            newImage.height = 300; 
-            
-            const newCaption = document.createElement("figcaption");
-            newCaption.textContent = item.name || ''; 
-            
-            newFigure.appendChild(newImage);
-            newFigure.appendChild(newCaption);
-            
-            newFigure.setAttribute('data-collection-id', item.collection_id);
+              console.log(item);
+              if((userProfileID != userID && item.is_shared == 1) || userProfileID == userID){
 
-            newFigure.addEventListener('click', function() {
-                sessionStorage.setItem('data-collection-id', newFigure.getAttribute('data-collection-id'));
-                window.location.href = "./collection.html";
-            });
+                const newFigure = document.createElement("figure");
+                
+                const newImage = document.createElement("img");
+                newImage.src = "../images/background/card2.jpg";
+                newImage.alt = "New Image";
+                newImage.width = 250; 
+                newImage.height = 300; 
+                
+                const newCaption = document.createElement("figcaption");
+                newCaption.textContent = item.name || ''; 
+                
+                newFigure.appendChild(newImage);
+                newFigure.appendChild(newCaption);
+                
+                newFigure.setAttribute('data-collection-id', item.collection_id);
 
-            const collectionsDiv = document.querySelector(".collectionsPlace");
-            collectionsDiv.appendChild(newFigure);
+                newFigure.addEventListener('click', function() {
+                    sessionStorage.setItem('data-collection-id', newFigure.getAttribute('data-collection-id'));
+                    window.location.href = "./collection.html";
+                });
+
+                const collectionsDiv = document.querySelector(".collectionsPlace");
+                collectionsDiv.appendChild(newFigure);
+            }
             
         });
             checkCollections();
@@ -539,6 +543,35 @@ const followButton = document.getElementById('followButton');
 followButton.addEventListener('click', () => {
     const clientIdToFollow = getClientIdToFollow();
     
+    const requestData = {
+      clientId: userID,
+      badgeNumber: 4
+    };
+  
+    fetch('/api/modifyBadge', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    })
+    .then(response => {
+      if (response.ok) {
+          return response.json();
+      } else {
+          throw new Error('Failed to modify badge value');
+      }
+    })
+    .then(data => {
+      console.log('Badge value modified successfully:', data);
+      document.getElementById('badge3').style.filter = 'grayscale(0%) brightness(100%)';
+      document.getElementById('badge3').setAttribute('on', '1');
+    })
+    .catch(error => {
+      console.error('Error modifying badge value:', error);
+    });
+
+
     fetch('/api/follow', {
         method: 'POST',
         headers: {
@@ -563,6 +596,8 @@ followButton.addEventListener('click', () => {
     .catch(error => {
         console.error('Error sending follow request:', error);
     });
+
+
 });
 
 function getClientIdToFollow() {
@@ -581,7 +616,6 @@ window.addEventListener('scroll', () => {
     if (newTop <= 90) {
         newTop = 60 + scrollY;
     } 
-    console.log(newTop);
 
     divToMove.style.top = newTop + 'px';
 });
@@ -756,4 +790,49 @@ function updateBadges(badgeData) {
       badge.setAttribute('on', '1');
     }
   });
+}
+
+const noFollowersMessage = document.getElementById('no-followers-message');
+let displayValue;
+
+function toggleRotationFriends(element) {
+  element.classList.toggle('rotated');
+
+  if (element.classList.contains('rotated')) {
+    document.getElementById('friends').style.display = 'block';
+    noFollowersMessage.style.display = displayValue;
+  } else {
+    document.getElementById('friends').style.display = 'none';
+    displayValue = window.getComputedStyle(noFollowersMessage).getPropertyValue('display');
+    noFollowersMessage.style.display = 'none';
+  }
+
+}
+
+const noCollectionsMessage = document.querySelector('.no-collections-message');;
+let displayValueCollection;
+
+function toggleRotationPlants(element) {
+  element.classList.toggle('rotated');
+
+  if (element.classList.contains('rotated')) {
+    document.getElementById('figurePlace').style.display = 'flex';
+    noCollectionsMessage.style.display = displayValueCollection;
+  } else {
+    document.getElementById('figurePlace').style.display = 'none';
+    displayValueCollection = window.getComputedStyle(noCollectionsMessage).getPropertyValue('display');
+    noCollectionsMessage.style.display = 'none';
+  }
+
+}
+
+function toggleRotationBadge(element) {
+  element.classList.toggle('rotated');
+
+  if (element.classList.contains('rotated')) {
+    document.getElementById('badgeDiv').style.display = 'block';
+  } else {
+    document.getElementById('badgeDiv').style.display = 'none';
+  }
+
 }

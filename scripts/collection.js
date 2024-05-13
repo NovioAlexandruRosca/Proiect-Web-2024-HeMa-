@@ -194,6 +194,35 @@ form.addEventListener('submit', (event) => {
   const formData = new FormData(form);
   const formDataJson = {};
   formData.forEach((value, key) => {
+
+    if(key == 'isShared' && value == '1'){
+        const requestData = {
+            clientId: clientID,
+            badgeNumber: 5
+          };
+      
+          fetch('/api/modifyBadge', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+          })
+          .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to modify badge value');
+            }
+          })
+          .then(data => {
+            console.log('Badge value modified successfully:', data);
+          })
+          .catch(error => {
+            console.error('Error modifying badge value:', error);
+          });
+    }
+
     formDataJson[key] = value;
   });
 

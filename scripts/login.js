@@ -26,6 +26,11 @@ document.getElementById("Password").addEventListener("click", () => {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
+
+    if(localStorage.getItem('clientIsAdmin') == 'true'){
+        document.getElementById('resetPassword').style.display = 'none';
+    }
+
     const loginForm = document.getElementById('login_form');
 
     loginForm.addEventListener('submit', function (event) {
@@ -64,6 +69,8 @@ document.addEventListener('DOMContentLoaded', function () {
             .then((response) => {
                 if (response.status === 401) {
                     document.getElementById("Error_Message").innerText = "Invalid Credentials!";
+                }else if(response.status === 500){
+                    document.getElementById("Error_Message").innerText = "Internal Error!";
                 }
                 else if(response.status === 200){
                     const logicType = response.headers.get('isAdmin');
@@ -79,4 +86,52 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     });
+});
+
+const modal = document.getElementById("resetPasswordModal");
+const btn = document.getElementById("resetPassword");
+const span = document.getElementsByClassName("close")[0];
+
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+const resetPasswordForm = document.getElementById("resetPasswordForm");
+
+resetPasswordForm.addEventListener('submit', function(event) {
+  event.preventDefault(); 
+  
+  let formData = new FormData(resetPasswordForm);
+  let email = formData.get('resetEmail');
+
+  fetch('/api/reset-password', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email: email })
+  })
+  .then(response => {
+      if (response.ok) {
+          console.log('Password reset email sent successfully.');
+          document.getElementById("resetPasswordForm").reset(); 
+          modal.style.display = "none";
+          document.getElementById("Error_Message").innerText = "Check Emails!";
+      } else if (response.status === 500) {
+          document.getElementById("Error_Message").innerText = "Internal Error!";
+      } else if (response.status === 404) {
+          document.getElementById("Error_Message").innerText = "Email not found";
+      } else {
+          console.error('Error sending password reset email.');
+      }
+  })
+  .catch(error => {
+      console.error('An error occurred:', error);
+  });
 });
