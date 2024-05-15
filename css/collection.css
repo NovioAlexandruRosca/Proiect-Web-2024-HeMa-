@@ -76,6 +76,113 @@
     margin-bottom: 20px;
 }
 
+#titleDiv{
+  width:90%;
+}
+
+#searchMiniTitle{
+  display: flex;
+  flex-direction: row;
+}
+
+#leftDiv{
+    font-size: 20px;
+    width:49%;
+}
+
+#rightDiv{
+  font-size: 20px;
+    width:49%;
+}
+
+#innersearch{
+  position: relative;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  font-size: 30px;
+  text-align: center;
+}
+
+#searchTitle{
+  display: none;
+  position: relative;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 40px;
+  flex-direction: column;
+  align-items: center;
+}
+
+#search{
+  position: relative;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  border: 1px solid black;
+  font-size: 30px;
+  background-color: #a0e090b9;
+  text-align: center;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
+  padding: 20px 5px 30px 5px;
+
+  border-radius: 32px;
+
+  margin-bottom: 20px;
+}
+
+option{
+  text-align: center;
+}
+
+option:hover{
+  cursor: url(../images/cursors/PottedPlantNS.cur),auto;
+}
+
+select{
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  border-radius: 10px;
+  border:2px solid black;
+  font-family: 'Dancing Script', sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 10px;
+  width:250px;
+  margin:5px 20px;
+
+  background-color: #fff; 
+}
+
+#start-date{
+  border-radius: 10px;
+  border:2px solid black;
+  font-family: 'Dancing Script', sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 10px;
+  width:400px;
+  margin:5px 20px;
+
+  background-color: #fff; 
+}
+
+#end-date{
+  border-radius: 10px;
+  border:2px solid black;
+  font-family: 'Dancing Script', sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 10px;
+  width:400px;
+  margin:5px 20px;
+
+  background-color: #fff; 
+}
+
+
 a{
   cursor: url(../images/cursors/PottedPlantNS.cur),auto;
 }
@@ -366,6 +473,15 @@ input[type="checkbox"]:checked + label {
   }
 
   @media (max-width: 670px) {
+    #leftDiv{
+      display: none;
+    }
+    #rightDiv{
+      display: none;
+    }
+    select{
+      width:90%;
+    }
     input{
         width: 80%;
     }
@@ -431,3 +547,21 @@ input[type="checkbox"]:checked + label {
     } 
 
 }
+
+.rotated {
+  transform: rotate(180deg);
+}
+
+.minimize-button {
+  position: absolute;
+  top: -13%;
+  right: 0;
+  }
+
+  @media (max-width: 560px) {
+    .minimize-button {
+        position: relative;
+        right:0%;
+        top:-50%;
+        }
+    }

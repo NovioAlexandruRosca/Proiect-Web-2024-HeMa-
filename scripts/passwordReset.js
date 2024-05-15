@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if(password != username){
             document.getElementById('Error_Message').innerText = "The passwords dont match!";
+            auth = false;
         }
 
         if(auth)

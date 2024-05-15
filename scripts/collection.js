@@ -358,10 +358,20 @@ async function fetchCollectionPlants(collectionID){
         return response.json();
     })
     .then(data => {
-        data.forEach(plant => {
-            console.log('Plant data:', plant);
-            createPlantLayout(plant);
-        });        
+        console.log(data);
+        if(data){
+            createPlantSelect(data, 'family');
+            createPlantSelect(data, 'genus');
+            createPlantSelect(data, 'species');
+            // createPlantSelect(data, 'collection_date');
+            createPlantSelect(data, 'hashtags');
+            createPlantSelect(data, 'place_of_collection');
+            createPlantSelectColor(data);
+            data.forEach(plant => {
+                console.log('Plant data:', plant);
+                createPlantLayout(plant);
+            });   
+        }     
     })
     .catch(error => {
         console.error('Error fetching collection data:', error);
@@ -393,16 +403,80 @@ function createPlantLayout(plantData) {
 
     anchor.appendChild(figure);
 
+    for (const [key, value] of Object.entries(plantData)) {
+        anchor.setAttribute(`data-${key}`, value);
+    }
+
     document.querySelector('.container').appendChild(anchor);
     checkCollections();
 }
 
 
-document.addEventListener('DOMContentLoaded', () => {
+
+document.addEventListener('DOMContentLoaded', async() => {
     const collectionID = sessionStorage.getItem('data-collection-id'); 
   
+    const searchDiv = document.getElementById('innersearch');
+
+    searchDiv.addEventListener('change', function() {
+        
+        const anchors = document.querySelectorAll('.container a');
+        console.log(searchDiv.children);
+
+
+        anchors.forEach(anchor => {
+            let hideElement = false;
+
+                [...searchDiv.children].forEach(target => {
+                    if (target.tagName === 'SELECT') {
+                        const selectId = target.id.slice(0, -7); 
+                        const anchorDataValue = anchor.getAttribute(`data-${selectId}`);
+                        const selectedValue = target.value;
+
+                        if(selectId == 'hashtags'){
+                            if (selectedValue && selectedValue !== '' && !anchorDataValue.includes(selectedValue)) {
+                                hideElement = true;
+                            }
+                        }else{
+                            if (selectedValue && selectedValue !== '' && anchorDataValue !== selectedValue) {
+                                hideElement = true;
+                            }
+                        }
+                    }
+
+            });
+
+                const date = anchor.getAttribute(`data-collection_date`).substring(0,10);
+
+                const startingDate = document.getElementById('start-date').value;
+                const endingDate = document.getElementById('end-date').value;
+
+                if(startingDate && startingDate > date){
+                    hideElement = true;
+                }
+                if(endingDate && endingDate < date){
+                    hideElement = true;
+                }
+
+                if(startingDate|| endingDate){
+                    if(date == 'null' || date == ''){
+                        console.log("yes1");
+                        hideElement = true;
+                    }
+                }
+
+                if(hideElement){
+                    anchor.style.display = 'none';
+                }else{
+                    anchor.style.display = 'flex';
+                }
+
+            });
+
+    });
+
     fetchCollectionData(collectionID);
-    fetchCollectionPlants(collectionID);
+    fetchCollectionPlants(collectionID);    
   });
   
 
@@ -429,3 +503,100 @@ profileButton.addEventListener('click', () => {
     sessionStorage.setItem('clientID', clientID);
     window.location.href = './profile.html'; 
 });
+
+
+function createPlantSelectColor(plants) {
+    const searchDiv = document.getElementById('innersearch');
+    const selectElement = document.createElement('select');
+
+    selectElement.id = 'color-select';
+    selectElement.name = 'color-select';
+
+    const defaultOption = document.createElement('option');
+    defaultOption.value = ''; 
+    defaultOption.text = 'Color'; 
+    selectElement.appendChild(defaultOption);
+
+    const uniqueColors = [...new Set(plants.map(plant => plant.color).filter(color => color))];
+
+    uniqueColors.forEach(color  => {
+        const option = document.createElement('option');
+        option.value = color;
+        option.text = color;
+        option.style.backgroundColor = color; 
+        selectElement.appendChild(option);
+        
+    });
+
+    console.log(selectElement);
+
+    searchDiv.appendChild(selectElement);
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function createPlantSelect(plants, attribute) {
+    const searchDiv = document.getElementById('innersearch');
+    const selectElement = document.createElement('select');
+    selectElement.id = `${attribute}-select`;
+    selectElement.name = `${attribute}-select`;
+
+    const defaultOption = document.createElement('option');
+    defaultOption.value = ''; 
+    if(attribute == 'place_of_collection')
+    {
+        defaultOption.text = `Collection Location`; 
+    }else if(attribute == 'collection_date'){
+        defaultOption.text = `Date Of Collection`; 
+    }
+    else{
+        defaultOption.text = `${capitalizeFirstLetter(attribute)}`;
+    } 
+    selectElement.appendChild(defaultOption);
+
+    let uniqueValues = [];
+    if (attribute === 'hashtags' && plants.some(plant => plant[attribute])) {
+        uniqueValues = [...new Set(plants.flatMap(plant => plant[attribute].split('#').map(tag => tag.trim()).filter(tag => tag !== '')))];
+    } else {
+        uniqueValues = [...new Set(plants.map(plant => plant[attribute]).filter(value => value !== null && value !== ''))];
+    }
+
+    uniqueValues.forEach(value => {
+        const option = document.createElement('option');
+        if(attribute == 'collection_date')
+        {
+            option.value = value.substring(0,10);
+            option.text = value.substring(0,10); 
+        }
+        else{
+            option.value = value;
+            option.text = value;
+        } 
+        
+        selectElement.appendChild(option);
+    });
+
+    searchDiv.appendChild(selectElement);
+}
+
+
+let displayValueCollection;
+
+function toggleRotation(element) {
+  element.classList.toggle('rotated');
+
+  if (element.classList.contains('rotated')) {
+    document.getElementById('innersearch').style.display = 'flex';
+    document.getElementById('searchMiniTitle').style.display = 'flex';
+    document.getElementById('searchTitle').style.display = 'none';
+    document.getElementById('rotatingArrow').style.top = '-13%';
+  } else {
+    document.getElementById('innersearch').style.display = 'none';
+    document.getElementById('searchMiniTitle').style.display = 'none';
+    document.getElementById('searchTitle').style.display = 'flex';
+    document.getElementById('rotatingArrow').style.top = '+10%';
+  }
+
+}
