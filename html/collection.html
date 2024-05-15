@@ -76,11 +76,34 @@
                 <div id="line"></div>
                 <p id="descriptionText"></p>
             </div>
+
             <div id="collectionButtons">
               <button class="format-btn" id="edit">Edit Collection</button>
               <button class="format-btn" id="profile">See Profile</button>
               <button class="format-btn" id="delete">Delete Collection</button>
             </div>
+
+            <div id="search">
+              <div class="minimize-button rotated" id="rotatingArrow" onclick="toggleRotation(this)">
+                <svg class="sg" width="100px" height="100px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z" fill="#000000"/>
+                </svg>
+            </div>
+              <div id="titleDiv">
+                <div id="searchTitle">
+                  <p>Plant Searching</p>
+                  <div id="line"></div></div>
+                <div id="searchMiniTitle">
+                  <div id="leftDiv"><p>Collection Starting Date</p></div>
+                  <div id="rightDiv"><p>Collection Ending Date</p></div>
+                </div>
+              </div>
+              <div id="innersearch">
+                <input type="date" id="start-date" name="start-date">
+                <input type="date" id="end-date" name="end-date">
+              </div>
+            </div>
+
             <div class="container" id="collectionContainer">
                 <p class="no-collections-message">No plants have been added yet.</p>
             </div>

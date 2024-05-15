@@ -36,7 +36,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function handleDataForElement(element, data) {
     if (data != '' && data != null) {
-        element.textContent = data;
+        if (element.id === 'color-plant') {
+            element.style.backgroundColor = data;
+            element.textContent = data;
+        } else {
+            element.textContent = data;
+        }
         element.style.display = 'block';
         const closestLabel = element.closest('.form-group').querySelector('label');
         if (closestLabel) {
@@ -96,7 +101,10 @@ async function fetchPlantData(plantID){
 
                 hashtags.textContent = data.hashtags;
                 collectionName.textContent = data.title;
-                dateOfCollection.textContent = data.collection_date.substring(0, 10);
+                if(data.collection_date)
+                    dateOfCollection.textContent = data.collection_date.substring(0, 10);
+                else
+                    dateOfCollection.textContent = '';
                 collectorName.textContent = data.user;
                 // commonName.textContent = data.common_name;
                 // scientificName.textContent = data.scientific_name;
