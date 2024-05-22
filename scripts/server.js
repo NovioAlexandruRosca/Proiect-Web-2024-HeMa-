@@ -231,6 +231,56 @@ const server = http.createServer((req, res) => {
 
     }
 
+    // USED FOR incrementing the number of visits a plant has gotten
+    if(req.method === 'PUT' && req.url === '/api/updatePlantVisits'){
+        headerNotModified = false;        
+        
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString(); 
+        });
+
+        req.on('end', async () => {
+            try {
+              const data = JSON.parse(body); 
+              const plantId = data.plantId; 
+      
+              const sql = `UPDATE plants SET number_of_visits = number_of_visits + 1 WHERE plant_id = ?`;
+      
+              pool.getConnection((err, connection) => {
+                if (err) {
+                  console.error('Error getting connection from pool:', err);
+                  res.writeHead(500, { 'Content-Type': 'text/plain' });
+                  res.end('Internal Server Error');
+                  return;
+                }
+      
+                connection.query(sql, [plantId], (err, results) => {
+                  if (err) {
+                    console.error('Error executing query:', err);
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    res.end('Internal Server Error');
+                  } else {
+                    if (results.affectedRows === 1) {
+                      res.writeHead(200, { 'Content-Type': 'text/plain' });
+                      res.end('Number of visits updated successfully');
+                    } else {
+                      res.writeHead(404, { 'Content-Type': 'text/plain' });
+                      res.end('Plant not found');
+                    }
+                  }
+                  connection.release(); 
+                });
+              });
+            } catch (err) {
+              console.error(err);
+              res.writeHead(500, { 'Content-Type': 'text/plain' });
+              res.end('Internal Server Error');
+            }
+          });
+
+    }
+
     // USED FOR deleting plants from a collection
     if (req.method === 'DELETE' && req.url === '/api/deletePlant') {
         headerNotModified = false;
@@ -434,6 +484,20 @@ const server = http.createServer((req, res) => {
 
     }
 
+    if(req.method === 'GET' && req.url === '/rss'){
+        headerNotModified = false;     
+        const rssPath = path.join(__dirname, '../rss/rss.xml');
+        try {
+            const data = fs.readFileSync(rssPath);
+            res.writeHead(200, { 'Content-Type': 'application/rss+xml' });
+            res.end(data);
+        } catch (err) {
+            console.error('Error reading RSS file:', err);
+            res.writeHead(500, { 'Content-Type': 'text/plain' });
+            res.end('Error reading RSS file: ' + err.message);
+        }
+    }
+
     // USED FOR getting the users name
     if(req.method === 'GET' && req.url === '/api/user'){
         headerNotModified = false;        
@@ -464,6 +528,74 @@ const server = http.createServer((req, res) => {
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(jsonData);
             }
+        });
+    }
+
+    // USED FOR getting the id of the most popular plant
+    if (req.method === 'GET' && req.url === '/api/mostPopularPlantId') {
+        headerNotModified = false;
+      
+        pool.getConnection((err, connection) => {
+          if (err) {
+            console.error('Error getting connection from pool:', err);
+            res.writeHead(500, { 'Content-Type': 'text/plain' });
+            res.end('Internal Server Error');
+            return;
+          }
+      
+          connection.query('SELECT plant_id FROM plants ORDER BY number_of_visits DESC LIMIT 1', (err, results, fields) => {
+            if (err) {
+              console.error('Error executing query:', err);
+              res.writeHead(500, { 'Content-Type': 'text/plain' });
+              res.end('Internal Server Error');
+              return;
+            }
+      
+            if (results.length > 0) {
+              const firstPlantId = results[0].plant_id; 
+              console.log(firstPlantId);
+              res.writeHead(200, { 'Content-Type': 'text/plain' });
+              res.end(JSON.stringify({ plantId: firstPlantId })); 
+            } else {
+              res.writeHead(404, { 'Content-Type': 'text/plain' });
+              res.end('No plants found'); 
+            }
+          });
+      
+          connection.release(); 
+        });
+    }
+
+    // USED FOR getting the 10 most popular plants in the database
+    if (req.method === 'GET' && req.url === '/api/mostPopularPlants') {
+        headerNotModified = false;
+      
+        pool.getConnection((err, connection) => {
+          if (err) {
+            console.error('Error getting connection from pool:', err);
+            res.writeHead(500, { 'Content-Type': 'text/plain' });
+            res.end('Internal Server Error');
+            return;
+          }
+      
+          connection.query('SELECT * FROM plants ORDER BY number_of_visits DESC LIMIT 10', (err, results, fields) => {
+            if (err) {
+              console.error('Error executing query:', err);
+              res.writeHead(500, { 'Content-Type': 'text/plain' });
+              res.end('Internal Server Error');
+              return;
+            }
+      
+            if (results.length > 0) {
+              res.writeHead(200, { 'Content-Type': 'text/plain' });
+              res.end(JSON.stringify(results)); 
+            } else {
+              res.writeHead(404, { 'Content-Type': 'text/plain' });
+              res.end('No plants found'); 
+            }
+          });
+      
+          connection.release(); 
         });
     }
 
@@ -675,7 +807,7 @@ const server = http.createServer((req, res) => {
                     return;
                 }
 
-                connection.query('SELECT * FROM plants WHERE collection_id = ?', [collectionId], (error, results) => {
+                connection.query('SELECT plant_id, owner_id, collection_id, collection_date, hashtags, common_name, scientific_name, family, genus, species, place_of_collection, color FROM plants WHERE collection_id = ?', [collectionId], (error, results) => {
                     connection.release();
                     if (error) {
                         console.error('Error querying plants:', error);
@@ -1254,8 +1386,7 @@ const server = http.createServer((req, res) => {
             try {
                 const postData = JSON.parse(body);
                 const postId = postData.postId;
-    
-                // Get a connection from the pool
+
                 pool.getConnection((err, connection) => {
                     if (err) {
                         console.error('Error getting connection from pool:', err);
@@ -1263,8 +1394,7 @@ const server = http.createServer((req, res) => {
                         res.end('Internal Server Error');
                         return;
                     }
-    
-                    // Query the database for blog post data and client name
+
                     connection.query('SELECT b.id, b.user_id, b.title, b.description, c.name AS client_name, b.post_date FROM blog_posts b INNER JOIN clients c ON b.user_id = c.id WHERE b.id = ?', [postId], async (error, results) => {
                         if (error) {
                             console.error('Error querying blog post data:', error);
@@ -1283,7 +1413,6 @@ const server = http.createServer((req, res) => {
     
                         const postData = results[0];
     
-                        // Query the database for blog post sections
                         connection.query('SELECT * FROM blog_post_sections WHERE post_id = ?', [postId], async (error1, sections) => {
                             if (error1) {
                                 console.error('Error querying blog post sections:', error1);
@@ -1293,10 +1422,8 @@ const server = http.createServer((req, res) => {
                                 return;
                             }
     
-                            // Iterate over sections to fetch associated images
                             for (let i = 0; i < sections.length; i++) {
                                 const section = sections[i];
-                                // Query the database for images associated with this section
                                 const images = await new Promise((resolve, reject) => {
                                     connection.query('SELECT image_url FROM section_images WHERE section_id = ?', [section.id], (error2, results) => {
                                         if (error2) {
@@ -1304,17 +1431,14 @@ const server = http.createServer((req, res) => {
                                             reject(error2);
                                             return;
                                         }
-                                        resolve(results.map(result => result.image_url));
+                                        resolve(results.map(result => result.image_url.toString('base64')));
                                     });
                                 });
-                                // Add images to the section object
                                 section.images = images;
                             }
     
-                            // Release the connection back to the pool
                             connection.release();
     
-                            // Send the response back to the client
                             const responseData = {
                                 post: postData,
                                 sections: sections
@@ -1769,7 +1893,7 @@ const server = http.createServer((req, res) => {
 
 // WE MAKE THE SERVER LISTEN FOR REQUESTS
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
+server.listen(PORT, async () => {
     console.log(`Server running at http://localhost:${PORT}/`);
 });
 
@@ -1841,19 +1965,18 @@ function parseCookies(cookieHeader) {
     return cookies;
 }
 
-// Define a function to add a blog post
+// Function to add a blog post
 function addBlogPost(title, description, userId, username) {
     return new Promise((resolve, reject) => {
         const currentDate = new Date().toISOString().slice(0, 10);
-        // Perform database insertion operation
         pool.query('INSERT INTO blog_posts (title, description, post_date, user_id, user_name) VALUES (?, ?, ?, ?, ?)', [title, description, currentDate, userId, username], (error, results) => {
             if (error) {
                 console.error('Error adding blog post:', error);
-                reject(error); // Reject the promise if there's an error
+                reject(error);
             } else {
-                const postId = results.insertId; // Obtain the postId from the results
+                const postId = results.insertId;
                 console.log('Blog post added successfully. Post ID:', postId);
-                resolve(postId); // Resolve the promise with the postId
+                resolve(postId); 
             }
         });
     });

@@ -30,3 +30,24 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('viewProfile').addEventListener('click', () => {
     sessionStorage.setItem('clientID', userID);
   });
+
+  document.getElementById('plantOfTheWeek').addEventListener('click', (event) => {
+    event.preventDefault();
+
+    fetch('/api/mostPopularPlantId', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json()) 
+    .then(data => {
+      console.log(data);
+        console.log(data.plantId);
+        sessionStorage.setItem('data-plant-id', data.plantId); 
+        window.location.href = './PlantProfilePage.html';
+    })
+    .catch(error => {
+      console.error('Error fetching most popular plant ID:', error);
+    });
+  });

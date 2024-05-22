@@ -47,7 +47,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         const [year, month, day] = responseData.post.post_date.substring(0, 10).split('-');
 
-        // Create title, date, and signature elements
         const titleDiv = document.createElement('div');
         titleDiv.id = 'titleHowToPress';
         titleDiv.innerHTML = `<h1>${responseData.post.title}</h1>
@@ -68,12 +67,11 @@ document.addEventListener('DOMContentLoaded', async function() {
         sectionDiv.appendChild(titleElement);
         sectionDiv.appendChild(descriptionElement);
 
-        // // Add images to the section
-        // section.images.forEach(imageUrl => {
-        //     const imageElement = document.createElement('img');
-        //     imageElement.src = imageUrl;
-        //     sectionDiv.appendChild(imageElement);
-        // });
+        section.images.forEach(base64Image => {
+            const imageElement = document.createElement('img');
+            imageElement.src = `data:image/jpeg;base64,${base64Image}`;
+            sectionDiv.appendChild(imageElement);
+        });
 
         container.insertBefore(sectionDiv, addNewButton);
         });
@@ -82,14 +80,12 @@ document.addEventListener('DOMContentLoaded', async function() {
         buttonsDiv.id = 'interactivity';
         container.appendChild(buttonsDiv);
 
-        // Add the "Back" button at the end of the container
         const backButtonDiv = document.createElement('div');
         backButtonDiv.id = 'AddNew';
         backButtonDiv.innerHTML = '<a href="./blog.html"><p>Back</p></a>';
         buttonsDiv.appendChild(backButtonDiv);
 
         if(userID == responseData.post.user_id){
-          // Add the "Delete" button at the end of the container
           const deleteButtonDiv = document.createElement('div');
           deleteButtonDiv.id = 'Delete';
           deleteButtonDiv.innerHTML = '<p>Delete</p>';

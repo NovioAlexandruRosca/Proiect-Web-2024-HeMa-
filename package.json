@@ -4,8 +4,7 @@
     "dotenv": "^16.4.5",
     "mysql2": "^3.9.3",
     "node-cron": "^3.0.3",
-    "nodemailer": "^6.9.13",
-    "rss-generator": "^0.0.3"
+    "nodemailer": "^6.9.13"
   },
   "name": "proiect-web-2024-hema-",
   "description": "March 25, 2024 - Present",

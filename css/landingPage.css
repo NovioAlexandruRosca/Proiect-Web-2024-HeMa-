@@ -148,6 +148,7 @@ header h1{
   }
   
   .slider-wrapper {
+    height: 420px;
     position: relative;
   }
   

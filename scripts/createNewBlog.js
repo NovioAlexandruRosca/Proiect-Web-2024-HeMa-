@@ -22,8 +22,8 @@ document.getElementById('AddNewSection').addEventListener('click', function(){
 });
 
 function deleteSection(button) {
-    let section = button.closest('.blog-post'); // Find the parent section
-    section.remove(); // Remove the section
+    let section = button.closest('.blog-post'); 
+    section.remove(); 
 }
 
 
@@ -43,10 +43,13 @@ async function addPictures(button) {
 
         let imgElement = document.createElement("img");
 
-        imgElement.src = URL.createObjectURL(fileInput.files[i]);
+        const reader = new FileReader();
 
-        const imageUrl = await uploadImageToImgur(fileInput.files[i]);
-        console.log('Uploaded image URL:', imageUrl);
+        reader.addEventListener('load', () => {
+            imgElement.src = reader.result;
+        });
+
+        reader.readAsDataURL(fileInput.files[i]);
 
         imgElement.style.width = "200px";
         imgElement.style.marginTop = "10px";
@@ -64,19 +67,15 @@ async function addPictures(button) {
 
 document.getElementById('Save').addEventListener('click', async function(){
 
-    // Create an array to store the blog post data
     let postData = [];
 
-    // Iterate over each blog-post element
     let blogPosts = document.querySelectorAll('.blog-post');
     blogPosts.forEach(function(post, index) {
-        // Get the title and description inputs
         let titleInput = post.querySelector('.nameInput').value;
         let descriptionInput = post.querySelector('.descriptionInput').value;
 
         let imageUrls = [];
 
-        // Get the images added
         let images = post.querySelectorAll('.image img');
         images.forEach(function(img, imgIndex) {
             imageUrls.push(img.src);
@@ -90,7 +89,6 @@ document.getElementById('Save').addEventListener('click', async function(){
     });
 
     try {
-        // Send the postData array to the server
         const response = await fetch('/saveBlogPosts', {
             method: 'POST',
             headers: {
@@ -99,15 +97,7 @@ document.getElementById('Save').addEventListener('click', async function(){
             body: JSON.stringify(postData)
         });
 
-        if (response.ok) {
-            // Get the URLs of the first images from the server response
-            const firstImageUrls = await response.json();
-
-            // Open a new window/tab for each first image URL received from the server
-            firstImageUrls.forEach(imageUrl => {
-                window.open(imageUrl);
-            });
-        } else {
+        if (!response.ok) {
             console.error('Failed to save blog posts:', response.statusText);
         }
     } catch (error) {
@@ -116,64 +106,3 @@ document.getElementById('Save').addEventListener('click', async function(){
     window.location.href = './blog.html';
 });
 
-
-const clientId = '465816d0363c545';
-const accessToken = 'b7d510630a75bd5fcdd96a7b79276b77f8a19b6a';
-
-
-async function uploadImageToImgur(imageFile) {
-    const formData = new FormData();
-    formData.append('image', imageFile);
-
-    try {
-        const response = await fetch('https://api.imgur.com/3/image', {
-            method: 'POST',
-            headers: {
-                Authorization: `Client-ID ${clientId}`,
-            },
-            body: formData,
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            return data.data.link;
-        } else {
-            console.error('Failed to upload image to Imgur:', response.statusText);
-            return null;
-        }
-    } catch (error) {
-        console.error('Error uploading image to Imgur:', error);
-        return null;
-    }
-}
-
-async function fetchImgurCredits() {
-    try {
-        const response = await fetch('https://api.imgur.com/3/credits', {
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            return data.data;
-        } else {
-            console.error('Failed to fetch Imgur credits:', response.statusText);
-            return null;
-        }
-    } catch (error) {
-        console.error('Error fetching Imgur credits:', error);
-        return null;
-    }
-}
-
-fetchImgurCredits()
-    .then(credits => {
-        if (credits) {
-            console.log('Remaining Imgur credits:', credits);
-        } else {
-            console.log('Failed to fetch Imgur credits.');
-        }
-    });
