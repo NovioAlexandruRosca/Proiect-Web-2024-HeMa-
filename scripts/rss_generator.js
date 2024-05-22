@@ -1,37 +1,62 @@
-const RSS = require('rss-generator');
 const fs = require('fs').promises;
+const path = require('path');
 require('dotenv').config();
 
 const port = process.env.PORT || 5500;
 
-const planteClasament = [
-    { nume: 'Lavanda', popularitate: 100 },
-    { nume: 'Rozmarin', popularitate: 80 },
-    { nume: 'Musetel', popularitate: 70 },
-    { nume: 'Busuioc', popularitate: 50 },
-    { nume: 'Floare de colt', popularitate: 40 },
-    { nume: 'Lavanda', popularitate: 10 },
-];
 async function generateRSS() {
-    const feed = new RSS({
-        title: 'Cele mai populare plante',
-        description: 'Lista celor mai populare plante din aplicația noastră',
-        feed_url: 'http:/plantemistoraudetot/rss',
-        site_url: `http://localhost:${port}`
-    });
 
-    planteClasament.forEach(planta => {
-        feed.item({
-            title: planta.nume,
-            description: `Popularitate: ${planta.popularitate}`,
-            url: `http://example.com/plante/${planta.nume}`
-        });
-    });
+    const response = await fetch(`http://localhost:${port}/api/mostPopularPlants`);
+    const plants = await response.json();
 
-    const xml = feed.xml();
+    const items = plants.map(plant => {
+        let description = "<description>";
+        if (plant.scientific_name) {
+          description += `Scientific Name: ${plant.scientific_name}\n`;
+        }
+        if (plant.family) {
+          description += `Part of the Family: ${plant.family}\n`;
+        }
+        if (plant.genus) {
+          description += `And the Genus: ${plant.genus}\n`;
+        }
+        if (plant.species) {
+          description += `Species of: ${plant.species}\n`;
+        }
+        if (plant.place_of_collection) {
+          description += `Collected at: ${plant.place_of_collection}\n`;
+        }
+        if (plant.number_of_visits) {
+          description += `Popularity: ${plant.number_of_visits} visits until now!\n`;
+        }
+
+        description += `</description>`;
+    
+        if(!plant.common_name)
+            return ``;
+
+        const guid = `plant-${plant.id}`; 
+
+        return `
+          <item>
+            <title>${plant.common_name}</title>
+            ${description}
+          </item>
+        `;
+      });
+    
+      const rss = `<?xml version="1.0" encoding="UTF-8" ?>
+      <rss version="2.0">
+        <channel>
+          <title>Most popular plants on our platform</title>
+          <description>Down below you can find a list of our most renowned plants on our botanical platform!</description>
+          <link>http://localhost:${port}</link>
+          ${items.join('')}
+        </channel>
+      </rss>`;
 
     try {
-        await fs.writeFile('./rss/rss.xml', xml);
+        await fs.writeFile('./rss/rss.xml', rss);
         console.log('RSS-Generator: The RSS file was successfully created');
     } catch (err) {
         console.error('RSS-Generator: Error writing RSS file:', err);

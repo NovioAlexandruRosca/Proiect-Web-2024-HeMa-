@@ -31,8 +31,30 @@ const form = document.querySelector('form');
 document.addEventListener('DOMContentLoaded', () => {
     plantID = sessionStorage.getItem('data-plant-id'); 
     
+    updatePlantVisit(plantID);
     fetchPlantData(plantID);
 });
+
+async function updatePlantVisit(plantId) {
+    try {
+      const response = await fetch(`/api/updatePlantVisits`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ plantId }) 
+      });
+  
+      if (response.ok) {
+        const data = await response.text();
+        console.log(data); 
+      } else {
+        console.error('Error updating plant visit:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
 function handleDataForElement(element, data) {
     if (data != '' && data != null) {
@@ -278,63 +300,114 @@ form.addEventListener('submit', (event) => {
 
   const formData = new FormData(form);
 
-  const formDataJson = {};
-  formData.forEach((value, key) => {
-    formDataJson[key] = value;
-  });
 
-  fetch('/api/updatePlant', {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-        formData: formDataJson,
-        plantID: plantID
-    })
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Failed to submit form');
-    }else{
-        fetch('/api/modifyCollection', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ collectionId: collectionID})
-        })
-        .then(response => {
-            if (!response.ok) {
-                console.error('Failed to modify collection:', response.status);
-            }
-        });
+formData.forEach((value, key) => {
+        if(key == "commonName"){
+          const trefleToken = "YeJ9rZCmWhqwEJ9f1d06MWdO048SvVcewd7nJlWt4TU";
+        
+          const url = 'https://api.allorigins.win/get?url=' + encodeURIComponent(`https://trefle.io/api/v1/plants/search?token=${trefleToken}&q=${value}`);
+        
+          fetch(url)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Failed to fetch plant data');
+              }
+              return response.json();
+            })
+            .then(data => {
+        
+              const responseData = JSON.parse(data.contents);
+              if(responseData.data.length == 0){
+                  console.log("No plant");
+              }else
+              {
+                console.log(responseData.data[0].scientific_name);
+                console.log(responseData.data[0].family);
+                console.log(responseData.data[0].genus);
+                console.log(responseData.data[0].slug);
+                console.log(responseData.data[0].image_url);
 
-        console.log(formDataJson);
+                  const formDataJson = {};
+                  formData.forEach((value, key) => {
+                    formDataJson[key] = value;
+                  });
 
-        handleDataForElement(commonName, formDataJson.commonName);
-        handleDataForElement(scientificName, formDataJson.scientificName);
-        handleDataForElement(family, formDataJson.family);
-        handleDataForElement(genus, formDataJson.genus);
-        handleDataForElement(species, formDataJson.species);
-        handleDataForElement(place, formDataJson.place);
-        handleDataForElement(color, formDataJson.color);
+                if(formDataJson.scientificName == ""){
+                    formDataJson["scientificName"] = responseData.data[0].scientific_name;
+                }
+                if(formDataJson.family == ""){
+                    formDataJson["family"] = responseData.data[0].family;
+                }
+                if(formDataJson.genus == ""){
+                    formDataJson["genus"] = responseData.data[0].genus;
+                }
+                if(formDataJson.species == ""){
+                    formDataJson["species"] = responseData.data[0].slug;
+                }
 
-        hashtags.textContent = formDataJson.hashtags;
-        dateOfCollection.textContent = formDataJson.dateOfCollection;
-        commonName.textContent = formDataJson.commonName;
-        scientificName.textContent = formDataJson.scientificName;
-        family.textContent = formDataJson.family;
-        genus.textContent = formDataJson.genus;
-        species.textContent = formDataJson.species;
-        place.textContent = formDataJson.place;
-        color.textContent = formDataJson.color;
-    }
-    console.log('Form submitted successfully');
-  })
-  .catch(error => {
-    console.error('Error submitting form:', error);
-  });
+                document.getElementById('plantAvatar').src = responseData.data[0].image_url;
+
+                fetch('/api/updatePlant', {
+                    method: 'PUT',
+                    headers: {
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        formData: formDataJson,
+                        plantID: plantID
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                    throw new Error('Failed to submit form');
+                    }else{
+                        fetch('/api/modifyCollection', {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ collectionId: collectionID})
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                console.error('Failed to modify collection:', response.status);
+                            }
+                        });
+
+                        console.log(formDataJson);
+
+                        handleDataForElement(commonName, formDataJson.commonName);
+                        handleDataForElement(scientificName, formDataJson.scientificName);
+                        handleDataForElement(family, formDataJson.family);
+                        handleDataForElement(genus, formDataJson.genus);
+                        handleDataForElement(species, formDataJson.species);
+                        handleDataForElement(place, formDataJson.place);
+                        handleDataForElement(color, formDataJson.color);
+
+                        hashtags.textContent = formDataJson.hashtags;
+                        dateOfCollection.textContent = formDataJson.dateOfCollection;
+                        commonName.textContent = formDataJson.commonName;
+                        scientificName.textContent = formDataJson.scientificName;
+                        family.textContent = formDataJson.family;
+                        genus.textContent = formDataJson.genus;
+                        species.textContent = formDataJson.species;
+                        place.textContent = formDataJson.place;
+                        color.textContent = formDataJson.color;
+                    }
+                    console.log('Form submitted successfully');
+                })
+                .catch(error => {
+                    console.error('Error submitting form:', error);
+                });
+                
+
+              }
+            })
+            .catch(error => {
+              console.error('Error fetching plant data:', error);
+            });
+        }
+    });
 
   modal.style.display = 'none';
 });

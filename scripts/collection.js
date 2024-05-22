@@ -446,18 +446,19 @@ document.addEventListener('DOMContentLoaded', async() => {
 
             });
 
-                const date = anchor.getAttribute(`data-collection_date`).substring(0,10);
+                const date = anchor.getAttribute('data-collection_date') ? anchor.getAttribute('data-collection_date').substring(0, 10) : null;
 
                 const startingDate = document.getElementById('start-date').value;
                 const endingDate = document.getElementById('end-date').value;
 
-                if(startingDate && startingDate > date){
-                    hideElement = true;
+                if(date){
+                    if(startingDate && startingDate > date){
+                        hideElement = true;
+                    }
+                    if(endingDate && endingDate < date){
+                        hideElement = true;
+                    }
                 }
-                if(endingDate && endingDate < date){
-                    hideElement = true;
-                }
-
                 if(startingDate|| endingDate){
                     if(date == 'null' || date == ''){
                         console.log("yes1");
@@ -472,6 +473,32 @@ document.addEventListener('DOMContentLoaded', async() => {
                 }
 
             });
+
+            const container = document.querySelector('.container');
+            let visibleCount = 0;
+
+            container.childNodes.forEach(child => {
+                if (child.nodeType === 1 && getComputedStyle(child).display !== 'none') {
+                    visibleCount++;
+                }
+            });
+
+            console.log('Number of visible child elements:', visibleCount);
+            
+            let containera = document.getElementById('collectionContainer');
+            let messageExists = containera.querySelector('.no-collections-message');
+            let message = document.createElement('p');
+            message.className = 'no-collections-message';
+            message.textContent = 'No collections made yet.';
+            containera.appendChild(message);
+            
+            let figuresExist = visibleCount > 0;
+
+            console.log(figuresExist, messageExists);
+
+            if (messageExists) {
+                messageExists.style.display = figuresExist ? 'none' : 'block';
+            }
 
     });
 
@@ -557,11 +584,28 @@ function createPlantSelect(plants, attribute) {
     selectElement.appendChild(defaultOption);
 
     let uniqueValues = [];
+    let valueCounts = {};
     if (attribute === 'hashtags' && plants.some(plant => plant[attribute])) {
-        uniqueValues = [...new Set(plants.flatMap(plant => plant[attribute].split('#').map(tag => tag.trim()).filter(tag => tag !== '')))];
+        uniqueValues = [...new Set(plants.flatMap(plant => {
+            return plant[attribute] ? plant[attribute].split('#').map(tag => tag?.trim() || '').filter(tag => tag !== '') : [];
+          }))];
+          const tags = plants.flatMap(plant => plant[attribute] ? plant[attribute].split('#').map(tag => tag?.trim() || '') : []);
+          tags.forEach(tag => {
+            valueCounts[tag] = (valueCounts[tag] || 0) + 1;
+          });
     } else {
         uniqueValues = [...new Set(plants.map(plant => plant[attribute]).filter(value => value !== null && value !== ''))];
+        plants.forEach(plant => {
+            const value = plant[attribute];
+            if (value !== null && value !== '') {
+                valueCounts[value] = (valueCounts[value] || 0) + 1;
+            }
+        });
     }
+
+    console.log('Counts of unique values:');
+    console.log(valueCounts);
+
 
     uniqueValues.forEach(value => {
         const option = document.createElement('option');
@@ -572,7 +616,7 @@ function createPlantSelect(plants, attribute) {
         }
         else{
             option.value = value;
-            option.text = value;
+            option.text = `${value} ${valueCounts[value] > 1 ? "(" + valueCounts[value] + ")" : ''}`;
         } 
         
         selectElement.appendChild(option);
