@@ -33,11 +33,15 @@ const generateSessionId = () => {
 };
 
 // WE CREATE THE BASE OF THE SERVER
-const server = http.createServer((req, res) => {
+const server = http.createServer(async (req, res) => {
 
     const cookies = parseCookies(req.headers.cookie)
     const sessionId = cookies.sessionId;
-    const sessionData = getSession(sessionId);
+
+    getSession(sessionId)
+    .then(sessionData => {
+
+    // const sessionData = getSession(sessionId);
 
     const cookieValue = `sessionId=${sessionId}; HttpOnly; Max-Age=${24 * 60 * 60}`;
     res.setHeader('Set-Cookie', cookieValue);
@@ -531,6 +535,69 @@ const server = http.createServer((req, res) => {
         });
     }
 
+    // USED FOR activating an account
+    if (req.method === 'GET' && req.url.includes('/api/activateAccount')) {
+        headerNotModified = false; 
+        const queryParams = new URLSearchParams(req.url.split('?')[1] || '');
+        let token = queryParams.get('token');
+        const tokenParts = token.split('$email=');
+        token = tokenParts[0];
+        const email = tokenParts[1];
+    
+        if (token && email) {
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, {'Content-Type': 'application/json'});
+                    res.end(JSON.stringify({ message: 'Internal Server Error' }));
+                    return;
+                }
+    
+                const sqlSelect = `SELECT token FROM emailactivationTable WHERE email = ? AND token = ? AND created_at >= NOW() - INTERVAL 1 HOUR`;
+                connection.query(sqlSelect, [email, token], (error, results) => {
+                    if (error) {
+                        console.error('Error querying database:', error);
+                        res.writeHead(500, {'Content-Type': 'application/json'});
+                        res.end(JSON.stringify({ message: 'Internal Server Error' }));
+                        connection.release();
+                        return;
+                    }
+    
+                    if (results.length > 0) {
+                        const sqlUpdate = `UPDATE clients SET validated = 1 WHERE email = ?`;
+                        connection.query(sqlUpdate, [email], (updateError, updateResults) => {
+                            if (updateError) {
+                                console.error('Error updating database:', updateError);
+                                res.writeHead(500, {'Content-Type': 'application/json'});
+                                res.end(JSON.stringify({ message: 'Internal Server Error' }));
+                                connection.release();
+                                return;
+                            }
+    
+                            const sqlDelete = `DELETE FROM emailactivationTable WHERE email = ?`;
+                            connection.query(sqlDelete, [email], (deleteError, deleteResults) => {
+                                if (deleteError) {
+                                    console.error('Error deleting rows from database:', deleteError);
+                                }
+    
+                                connection.release();
+                                res.writeHead(302, { 'Location': '/login.html' });
+                                res.end();
+                            });
+                        });
+                    } else {
+                        res.writeHead(400, {'Content-Type': 'application/json'});
+                        res.end(JSON.stringify({ message: 'Invalid token or token expired' }));
+                        connection.release();
+                    }
+                });
+            });
+        } else {
+            res.writeHead(400, {'Content-Type': 'application/json'});
+            res.end(JSON.stringify({ message: 'Invalid token or email' }));
+        }
+    }
+    
     // USED FOR getting the id of the most popular plant
     if (req.method === 'GET' && req.url === '/api/mostPopularPlantId') {
         headerNotModified = false;
@@ -599,6 +666,43 @@ const server = http.createServer((req, res) => {
         });
     }
 
+    // USED FOR getting all the plants from the database
+    if (req.method === 'GET' && req.url === '/api/allPlants') {
+        headerNotModified = false;
+      
+        pool.getConnection((err, connection) => {
+          if (err) {
+            console.error('Error getting connection from pool:', err);
+            res.writeHead(500, { 'Content-Type': 'text/plain' });
+            res.end('Internal Server Error');
+            return;
+          }
+      
+          connection.query('SELECT p.plant_id, p.owner_id, p.collection_id, p.hashtags, p.common_name, p.scientific_name, p.family, p.genus, p.species ' +
+            'FROM plants p ' +
+            'JOIN plant_collections pc ON p.collection_id = pc.collection_id ' +
+            'WHERE pc.is_shared = 1;', (err, results, fields) => {
+                if (err) {
+                    console.error('Error executing query:', err);
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    res.end('Internal Server Error');
+                    return;
+                }
+
+                if (results.length > 0) {
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(results)); 
+                } else {
+                    res.writeHead(404, { 'Content-Type': 'text/plain' });
+                    res.end('No shared plants found'); 
+                }
+                });
+
+      
+          connection.release(); 
+        });
+    }
+
     // USED FOR reseting password
     if (req.method === 'POST' && req.url === '/api/reset-password') {
         headerNotModified = false; 
@@ -642,7 +746,7 @@ const server = http.createServer((req, res) => {
                                 res.writeHead(500);
                                 res.end('Error sending email');
                             } else {
-                                sendResetPasswordLink(email, token, (error) => {
+                                sendResetPasswordLink(email, token, 1, (error) => {
                                     if (error) {
                                         res.writeHead(500);
                                         res.end('Error sending email');
@@ -1431,7 +1535,8 @@ const server = http.createServer((req, res) => {
                                             reject(error2);
                                             return;
                                         }
-                                        resolve(results.map(result => result.image_url.toString('base64')));
+                                        const encodedImages = results.map(result => `${result.image_url}`);
+                                        resolve(encodedImages);
                                     });
                                 });
                                 section.images = images;
@@ -1493,6 +1598,248 @@ const server = http.createServer((req, res) => {
                 console.error('Error parsing JSON:', error);
                 res.writeHead(400, { 'Content-Type': 'text/plain' });
                 res.end('Bad Request');
+            }
+        });
+    }
+
+    // USED FOR storing a user's avatar
+    if (req.method === 'POST' && req.url === '/api/uploadAvatar') {
+        headerNotModified = false;   
+        let body = '';
+
+        req.on('data', (chunk) => {
+            body += chunk;
+        });
+
+        req.on('end', async () => {
+            try {
+                const postData = JSON.parse(body);
+                const { clientId, avatar } = postData;
+    
+                pool.getConnection((err, connection) => {
+                    if (err) {
+                        console.error('Error getting connection from pool:', err);
+                        res.writeHead(500, { 'Content-Type': 'text/plain' });
+                        res.end('Internal Server Error');
+                        return;
+                    }
+    
+                    const updateQuery = 'UPDATE clients_details SET avatar = ? WHERE client_id = ?';
+                    connection.query(updateQuery, [avatar, clientId], (error, results) => {
+                        connection.release(); 
+    
+                        if (error) {
+                            console.error('Error updating avatar:', error);
+                            res.writeHead(500, { 'Content-Type': 'text/plain' });
+                            res.end('Internal Server Error');
+                        } else {
+                            console.log('Avatar updated successfully');
+                            res.writeHead(200, { 'Content-Type': 'text/plain' });
+                            res.end('Avatar added successfully');
+                        }
+                    });
+                });
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+                res.writeHead(400, { 'Content-Type': 'text/plain' });
+                res.end('Bad Request');
+            }
+        });
+    }
+
+    // USED FOR getting the user's avatar
+    if (req.method === 'POST' && req.url === '/api/avatar') {
+        headerNotModified = false;
+    
+        let body = '';
+    
+        req.on('data', (chunk) => {
+            body += chunk;
+        });
+    
+        req.on('end', async () => {
+            try {
+                const postData = JSON.parse(body);
+                const clientId = postData.clientId;
+    
+                pool.getConnection((err, connection) => {
+                    if (err) {
+                        console.error('Error getting connection from pool:', err);
+                        res.writeHead(500, { 'Content-Type': 'text/plain' });
+                        res.end('Internal Server Error');
+                        return;
+                    }
+    
+                    const selectQuery = 'SELECT avatar FROM clients_details WHERE client_id = ?';
+                    connection.query(selectQuery, [clientId], (error, results) => {
+                        connection.release();
+    
+                        if (error) {
+                            console.error('Error retrieving avatar:', error);
+                            res.writeHead(500, { 'Content-Type': 'text/plain' });
+                            res.end('Internal Server Error');
+                        } else {
+                            if (results.length > 0) {
+                                const avatar = results[0].avatar;
+                                res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+                                res.end(JSON.stringify({ image: `${avatar}` }));
+                            } else {
+                                res.writeHead(404, { 'Content-Type': 'text/plain' });
+                                res.end('Avatar not found');
+                            }
+                        }
+                    });
+                });
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+                res.writeHead(400, { 'Content-Type': 'text/plain' });
+                res.end('Bad Request');
+            }
+        });
+    }
+
+    // USED FOR storing a plants's avatar
+    if (req.method === 'POST' && req.url === '/api/uploadPlantAvatar') {
+        headerNotModified = false;   
+        let body = '';
+
+        req.on('data', (chunk) => {
+            body += chunk;
+        });
+
+        req.on('end', async () => {
+            try {
+                const postData = JSON.parse(body);
+                const { plantId, avatar } = postData;
+    
+                pool.getConnection((err, connection) => {
+                    if (err) {
+                        console.error('Error getting connection from pool:', err);
+                        res.writeHead(500, { 'Content-Type': 'text/plain' });
+                        res.end('Internal Server Error');
+                        return;
+                    }
+    
+                    const updateQuery = 'UPDATE plants SET picture = ? WHERE plant_id = ?';
+                    connection.query(updateQuery, [avatar, plantId], (error, results) => {
+                        connection.release(); 
+    
+                        if (error) {
+                            console.error('Error updating plant avatar:', error);
+                            res.writeHead(500, { 'Content-Type': 'text/plain' });
+                            res.end('Internal Server Error');
+                        } else {
+                            console.log('Plant Avatar updated successfully');
+                            res.writeHead(200, { 'Content-Type': 'text/plain' });
+                            res.end('Plant Avatar added successfully');
+                        }
+                    });
+                });
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+                res.writeHead(400, { 'Content-Type': 'text/plain' });
+                res.end('Bad Request');
+            }
+        });
+    }
+
+    // USED FOR getting a plants cover
+    if (req.method === 'POST' && req.url === '/api/plantAvatar') {
+        headerNotModified = false;
+    
+        let body = '';
+    
+        req.on('data', (chunk) => {
+            body += chunk;
+        });
+    
+        req.on('end', async () => {
+            try {
+                const postData = JSON.parse(body);
+                const plantId = postData.plantId;
+    
+                pool.getConnection((err, connection) => {
+                    if (err) {
+                        console.error('Error getting connection from pool:', err);
+                        res.writeHead(500, { 'Content-Type': 'text/plain' });
+                        res.end('Internal Server Error');
+                        return;
+                    }
+    
+                    const selectQuery = 'SELECT picture FROM plants WHERE plant_id = ?';
+                    connection.query(selectQuery, [plantId], (error, results) => {
+                        connection.release();
+    
+                        if (error) {
+                            console.error('Error retrieving avatar:', error);
+                            res.writeHead(500, { 'Content-Type': 'text/plain' });
+                            res.end('Internal Server Error');
+                        } else {
+                            if (results.length > 0) {
+                                const avatar = results[0].picture;
+                                res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+                                res.end(JSON.stringify({ image: `${avatar}` }));
+                            } else {
+                                res.writeHead(404, { 'Content-Type': 'text/plain' });
+                                res.end('Avatar not found');
+                            }
+                        }
+                    });
+                });
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+                res.writeHead(400, { 'Content-Type': 'text/plain' });
+                res.end('Bad Request');
+            }
+        });
+    }
+
+    // USED FOR getting the id of a plant from a collection
+    if (req.method === 'POST' && req.url === '/api/getPlantId') {
+        headerNotModified = false;
+        let body = '';
+    
+        req.on('data', (chunk) => {
+            body += chunk;
+        });
+    
+        req.on('end', async () => {
+            try {
+                const postData = JSON.parse(body);
+                const { collectionId } = postData;
+    
+                pool.getConnection((err, connection) => {
+                    if (err) {
+                        console.error('Error getting connection from pool:', err);
+                        res.writeHead(500, { 'Content-Type': 'text/plain' });
+                        res.end('Internal Server Error');
+                        return;
+                    }
+    
+                    const selectQuery = 'SELECT plant_id FROM plants WHERE collection_id = ? AND picture IS NOT NULL ORDER BY plant_id LIMIT 1';
+                    connection.query(selectQuery, [collectionId], (error, results) => {
+                        connection.release();
+    
+                        if (error) {
+                            console.error('Error querying database:', error);
+                            res.writeHead(500, { 'Content-Type': 'text/plain' });
+                            res.end('Internal Server Error');
+                        } else {
+                            if (results.length === 0) {
+                                res.writeHead(404, { 'Content-Type': 'text/plain' });
+                                res.end('Plant ID not found for the provided collection ID');
+                            } else {
+                                const plantId = results[0].plant_id;
+                                res.writeHead(200, { 'Content-Type': 'application/json' });
+                                res.end(JSON.stringify({ plantId }));
+                            }
+                        }
+                    });
+                });
+            } catch (error) {
+                console.error('Error parsing JSON or querying database:', error);
+                res.writeHead(500, { 'Content-Type': 'text/plain' });
+                res.end('Internal Server Error');
             }
         });
     }
@@ -1566,7 +1913,8 @@ const server = http.createServer((req, res) => {
                                     res.setHeader('Set-Cookie', cookieValue);
 
                                     const userData = {sessionId: sessionId, userId: results[0].id, username: results[0].name, isAdmin: 'True'};
-                                    setSessionData(sessionId, userData);
+                                    setSessionData(sessionId, userData.userId, userData.isAdmin);
+                                    // setSessionData(sessionId, userData);
                                     console.log(userData);
 
                                     console.log(`Admin with ID ${userData.userId} authenticated successfully`);
@@ -1601,19 +1949,27 @@ const server = http.createServer((req, res) => {
 
                                 if (isPasswordValid) {
 
-                                    const sessionId = createSession();
-                                    
-                                    //cookies
-                                    const cookieValue = `sessionId=${sessionId}; HttpOnly; Max-Age=${24 * 60 * 60}`;
-                                    res.setHeader('Set-Cookie', cookieValue);
+                                    if(results[0].validated == "0"){
 
-                                    const userData = {sessionId: sessionId, userId: results[0].id, username: results[0].name, isAdmin: 'False'};
-                                    setSessionData(sessionId, userData);
-                                    console.log(userData);
+                                        console.log('You have to activate your account');
+                                        res.writeHead(403, { 'Content-Type': 'text/plain' });
+                                        res.end('Forbidden');
+                                    }else{
+                                        const sessionId = createSession();
+                                        
+                                        //cookies
+                                        const cookieValue = `sessionId=${sessionId}; HttpOnly; Max-Age=${24 * 60 * 60}`;
+                                        res.setHeader('Set-Cookie', cookieValue);
 
-                                    console.log(`User with ID ${userData.userId} authenticated successfully`);
-                                    res.writeHead(200, { 'Content-Type': 'text/plain', 'isAdmin': 'No' });
-                                    res.end('OK');
+                                        const userData = {sessionId: sessionId, userId: results[0].id, username: results[0].name, isAdmin: 'False'};
+                                        setSessionData(sessionId, userData.userId, userData.isAdmin);
+                                        // setSessionData(sessionId, userData);
+                                        console.log(userData);
+
+                                        console.log(`User with ID ${userData.userId} authenticated successfully`);
+                                        res.writeHead(200, { 'Content-Type': 'text/plain', 'isAdmin': 'No' });
+                                        res.end('OK');
+                                    }
                                 }else{
                                     console.log('User not found or incorrect credentials');
                                     res.writeHead(401, { 'Content-Type': 'text/plain' });
@@ -1712,11 +2068,31 @@ const server = http.createServer((req, res) => {
                                 }
                             });
                         
-                            console.log('New user registered successfully');
-                            res.writeHead(200, { 'Content-Type': 'text/plain' });
-                            res.end('OK');
+
+                            const token = generateToken(32);
+
+                            const insertQuery = 'INSERT INTO EmailActivationTable (email, token) VALUES (?, ?)';
+                            connection.query(insertQuery, [Email, token], (error, results) => {
+                                connection.release();
+                                if (error) {
+                                    console.error('Error executing query:', err);
+                                    res.writeHead(500);
+                                    res.end('Error sending email');
+                                } else {
+                                    sendResetPasswordLink(Email, token, 2, (error) => {
+                                        if (error) {
+                                            res.writeHead(500);
+                                            res.end('Error sending email');
+                                        } else {
                         
-                            connection.release();
+                                            console.log('New user registered successfully');
+                                            res.writeHead(200, { 'Content-Type': 'text/plain' });
+                                            res.end('OK');
+                                        }
+                                    });
+                                }
+                            });
+                    
                         });
                     });
                 });
@@ -1870,6 +2246,9 @@ const server = http.createServer((req, res) => {
             filePath = path.join(__dirname, '..', filePath || req.url);
 
             const contentType = getContentType(filePath);
+
+            filePath = filePath.split('?')[0];
+
             fs.readFile(filePath, (err, content) => {
                 if (err) {
                     if (err.code === 'ENOENT') {
@@ -1889,6 +2268,12 @@ const server = http.createServer((req, res) => {
         }
     }
     headerNotModified = true;
+
+    }).catch(error => {
+        console.error('Error fetching session data:', error.message);
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.end('Internal Server Error');
+    });
 });
 
 // WE MAKE THE SERVER LISTEN FOR REQUESTS
@@ -1911,7 +2296,12 @@ process.on('SIGINT', () => {
 });
 
 function getContentType(filePath) {
-    const extname = path.extname(filePath).toLowerCase();
+    let extname = path.extname(filePath).toLowerCase();
+    
+    if(extname.startsWith('.html?id=')){
+        extname = '.html'
+    }
+
     switch (extname) {
         case '.html':
             return 'text/html';
@@ -1932,26 +2322,114 @@ function getContentType(filePath) {
 }
 
 // Function to create session
+// const createSession = () => {
+//     const sessionId = generateSessionId();
+//     sessions[sessionId] = {};
+//     return sessionId;
+// };
+
 const createSession = () => {
     const sessionId = generateSessionId();
-    sessions[sessionId] = {};
+    const clientId = -1;
+  
+    const sql = 'INSERT INTO sessions (session_id, client_id) VALUES (?, ?)';
+    const values = [sessionId, clientId];
+  
+    pool.getConnection((err, connection) => {
+      if (err) {
+        console.error('Error getting connection from pool:', err);
+        return;
+      }
+  
+      connection.query(sql, values, (error, results) => {
+        connection.release(); 
+  
+        if (error) {
+          console.error('Error inserting session into database:', error);
+        } else {
+          console.log('Session inserted into database with ID:', sessionId);
+        }
+      });
+    });
     return sessionId;
-};
+  };
 
 // Function to get session
-const getSession = (sessionId) => {
-    return sessions[sessionId];
-};
+// const getSession = (sessionId) => {
+//     return sessions[sessionId];
+// };
+
+const getSession = async (sessionId) => {
+    const [rows, fields] = await pool.promise().query(
+      `SELECT s.session_id, 
+              IF(s.isAdmin = 'True', a.id, c.id) AS userId,
+              IF(s.isAdmin = 'True', a.name, c.name) AS username,
+              s.isAdmin
+       FROM sessions s
+       LEFT JOIN clients c ON s.client_id = c.id
+       LEFT JOIN admins a ON s.client_id = a.id AND s.isAdmin = 'True'
+       WHERE s.session_id = ? LIMIT 1`,
+      [sessionId]
+    );
+  
+    return rows.length > 0 ? rows[0] : null;
+  };
+  
 
 // Function to set session data
-const setSessionData = (sessionId, data) => {
-    sessions[sessionId] = data;
-};
+// const setSessionData = (sessionId, data) => {
+//     sessions[sessionId] = data;
+// };
+
+const setSessionData = (sessionId, clientId, isAdmin) => {
+    console.log(sessionId, clientId, isAdmin);
+    const sql = 'UPDATE sessions SET client_id = ?, isAdmin = ? WHERE session_id = ?';
+    const values = [clientId, isAdmin, sessionId];
+  
+    pool.getConnection((err, connection) => {
+      if (err) {
+        console.error('Error getting connection from pool:', err);
+        return;
+      }
+  
+      connection.query(sql, values, (error, results) => {
+        connection.release(); 
+  
+        if (error) {
+          console.error('Error updating session data:', error);
+        } else {
+          console.log('Session data updated for sessionId:', sessionId);
+        }
+      });
+    });
+  };
 
 // Function to destroy session
+// const destroySession = (sessionId) => {
+//     delete sessions[sessionId];
+// };
+
 const destroySession = (sessionId) => {
-    delete sessions[sessionId];
-};
+    const sql = 'DELETE FROM sessions WHERE session_id = ?';
+    const values = [sessionId];
+  
+    pool.getConnection((err, connection) => {
+      if (err) {
+        console.error('Error getting connection from pool:', err);
+        return;
+      }
+  
+      connection.query(sql, values, (error, results) => {
+        connection.release();
+  
+        if (error) {
+          console.error('Error deleting session:', error);
+        } else {
+          console.log('Session deleted for sessionId:', sessionId);
+        }
+      });
+    });
+  };
 
 // Function to parse cookies from the request headers
 function parseCookies(cookieHeader) {

@@ -55,8 +55,8 @@ function addFigure() {
         anchor.setAttribute('data-plant-id', data.id);
         anchor.addEventListener('click', function(event) {
             event.preventDefault(); 
-            sessionStorage.setItem('data-plant-id', anchor.getAttribute('data-plant-id')); 
-            window.location.href = './PlantProfilePage.html';
+            // sessionStorage.setItem('data-plant-id', anchor.getAttribute('data-plant-id')); 
+            window.location.href = './PlantProfilePage.html?id=' + anchor.getAttribute('data-plant-id');
         });
 
         let figure = document.createElement('figure');
@@ -378,22 +378,49 @@ async function fetchCollectionPlants(collectionID){
     });
 }
 
-function createPlantLayout(plantData) {
+async function createPlantLayout(plantData) {
     console.log('Plant layout created successfully:', plantData.plant_id);
     let anchor = document.createElement('a');
     anchor.href = "./PlantProfilePage.html"; 
     anchor.setAttribute('data-plant-id', plantData.plant_id);
     anchor.addEventListener('click', function(event) {
         event.preventDefault(); 
-        sessionStorage.setItem('data-plant-id', anchor.getAttribute('data-plant-id')); 
-        window.location.href = './PlantProfilePage.html';
+        // sessionStorage.setItem('data-plant-id', anchor.getAttribute('data-plant-id')); 
+        window.location.href = './PlantProfilePage.html?id=' + anchor.getAttribute('data-plant-id');
     });
 
     let figure = document.createElement('figure');
 
     let img = document.createElement('img');
-    img.src = "../Images/website_Icon/LittleCactus.jpg";
-    img.alt = "Cute Plant";
+    img.style.width = '235px';
+    img.style.height = '235px';
+    img.style.objectFit = 'cover';
+
+    try {
+        const response = await fetch(`/api/plantAvatar`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ plantId: plantData.plant_id })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch avatar');
+        }
+  
+        const imageUrl = await response.json();
+  
+        img.alt = "Cute Plant";
+
+        if (imageUrl.image != `null`) {
+            img.src = imageUrl.image;
+        }else{
+            img.src = "../Images/website_Icon/LittleCactus.jpg";
+        }
+    } catch (error) {
+        console.error('Error fetching avatar:', error);
+    }
 
     let caption = document.createElement('figcaption');
     caption.textContent = plantData.common_name || 'Unnamed Plant';

@@ -36,10 +36,12 @@ async function generateRSS() {
             return ``;
 
         const guid = `plant-${plant.id}`; 
+        const link = `http://localhost:5500/PlantProfilePage.html?id=${plant.plant_id}`;
 
         return `
           <item>
             <title>${plant.common_name}</title>
+            <link>${link}</link>
             ${description}
           </item>
         `;

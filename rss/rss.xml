@@ -7,54 +7,104 @@
           
           <item>
             <title>Rose</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=1</link>
             <description>Scientific Name: Rose
 Part of the Family: Rose
 And the Genus: Rose
 Species of: Rose
 Collected at: Iasi
-Popularity: 5 visits until now!
+Popularity: 32 visits until now!
+</description>
+          </item>
+        
+          <item>
+            <title>Rose</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=25</link>
+            <description>Scientific Name: Rosa arvensis
+Part of the Family: Rose
+And the Genus: Rose
+Species of: rosa-arvensis
+Collected at: Cluj
+Popularity: 11 visits until now!
+</description>
+          </item>
+        
+          <item>
+            <title>Hydrangea</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=16</link>
+            <description>Scientific Name: Hydrangea paniculata
+Part of the Family: Hydrangeaceae
+And the Genus: Hydrangea
+Species of: hydrangea-paniculata
+Popularity: 6 visits until now!
 </description>
           </item>
         
           <item>
             <title>Mint</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=24</link>
+            <description>Scientific Name: Mentha aquatica
+Part of the Family: Lamiaceae
+And the Genus: Mentha
+Species of: mentha-aquatica
+Popularity: 6 visits until now!
+</description>
+          </item>
+        
+          <item>
+            <title>Mint</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=3</link>
             <description>Scientific Name: Mentha
 Part of the Family: Lamiaceae
 And the Genus: Mentha
 Species of: Mentha spicata
 Collected at: Bucharest
-Popularity: 2 visits until now!
+Popularity: 5 visits until now!
 </description>
           </item>
         
           <item>
-            <title>Ierbacees</title>
-            <description>Scientific Name: Ierbacees
-Part of the Family: Ierbacees
-And the Genus: Ierbacees
-Species of: Ierbacees
-Collected at: Ierbacees
-Popularity: 1 visits until now!
+            <title>Tulips</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=28</link>
+            <description>Scientific Name: Tulipa sylvestris
+Part of the Family: Liliaceae
+And the Genus: Tulipa
+Species of: tulipa-sylvestris
+Collected at: Botragy
+Popularity: 5 visits until now!
 </description>
           </item>
         
           <item>
-            <title>Lily</title>
-            <description>Scientific Name: LOL
-Part of the Family: Asparagaceae
-And the Genus: Maianthemum
-Species of: maianthemum-bifolium
-Popularity: 1 visits until now!
+            <title>Cactus</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=17</link>
+            <description>Scientific Name: Cylindropuntia imbricata
+Part of the Family: Cactaceae
+And the Genus: Cylindropuntia
+Species of: cylindropuntia-imbricata
+Popularity: 3 visits until now!
+</description>
+          </item>
+        
+          <item>
+            <title>Succulent</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=27</link>
+            <description>Scientific Name: Crataegus succulenta
+Part of the Family: Rosaceae
+And the Genus: Crataegus
+Species of: crataegus-succulenta
+Popularity: 3 visits until now!
 </description>
           </item>
         
           <item>
             <title>Mint</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=31</link>
             <description>Scientific Name: Mentha aquatica
 Part of the Family: Lamiaceae
 And the Genus: Mentha
 Species of: mentha-aquatica
-Popularity: 1 visits until now!
+Popularity: 3 visits until now!
 </description>
           </item>
         

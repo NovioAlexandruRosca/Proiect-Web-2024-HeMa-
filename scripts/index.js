@@ -44,8 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(data => {
       console.log(data);
         console.log(data.plantId);
-        sessionStorage.setItem('data-plant-id', data.plantId); 
-        window.location.href = './PlantProfilePage.html';
+        // sessionStorage.setItem('data-plant-id', data.plantId); 
+        window.location.href = './PlantProfilePage.html?id=' + data.plantId;
     })
     .catch(error => {
       console.error('Error fetching most popular plant ID:', error);

@@ -67,8 +67,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById("Email").value = "";
                     document.getElementById("Error_Message").innerText = "Email already exists!";
                 }
-                else    
-                    window.location.href = "/login.html";
+                else{
+                    document.getElementById("Error_Message").innerText = "Activate Your Account From Your Email";
+                    setTimeout(() => {
+                        window.location.href = "/login.html";
+                    }, 4000);
+                }
             })
             .catch((error) => {
                 console.error('Error:', error);

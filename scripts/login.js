@@ -69,6 +69,8 @@ document.addEventListener('DOMContentLoaded', function () {
             .then((response) => {
                 if (response.status === 401) {
                     document.getElementById("Error_Message").innerText = "Invalid Credentials!";
+                }else if(response.status === 403){
+                    document.getElementById("Error_Message").innerText = "Activate Your Account!";
                 }else if(response.status === 500){
                     document.getElementById("Error_Message").innerText = "Internal Error!";
                 }
