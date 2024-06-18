@@ -564,4 +564,13 @@ input[type="checkbox"]:checked + label {
         right:0%;
         top:-50%;
         }
+      select{
+        width:300px;
+      }
+      #start-date{
+        width: 300px;
+      }
+      #end-date{
+        width: 300px;
+      }
     }

@@ -329,6 +329,33 @@ async function fetchClientData(clientId) {
   
 }
 
+async function fetchPlantId(collectionId) {
+  try {
+      const response = await fetch(`/api/getPlantId`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ collectionId })
+      });
+
+      if (response.status === 404) {
+        return null;
+      }
+
+      if (!response.ok) {
+          throw new Error('Failed to fetch plantId');
+      }
+
+      const data = await response.json();
+      const plantId = data.plantId;
+      return plantId;
+  } catch (error) {
+      console.error('Error fetching plantId:', error);
+      return null;
+  }
+}
+
 async function fetchClientCollections(clientId) {
 
   fetch('/api/id', {
@@ -355,17 +382,47 @@ async function fetchClientCollections(clientId) {
           }
       }).then(data => {
 
-          data.forEach(item => {
+              const promises = data.map(async item => {
               console.log(item);
               if((userProfileID != userID && item.is_shared == 1) || userProfileID == userID){
 
                 const newFigure = document.createElement("figure");
                 
+                const plantId = await fetchPlantId(item.collection_id);
+
                 const newImage = document.createElement("img");
-                newImage.src = "../images/background/card2.jpg";
                 newImage.alt = "New Image";
                 newImage.width = 250; 
                 newImage.height = 300; 
+                newImage.style.objectFit = 'cover';
+
+                if(plantId){
+                  try {
+                    const response = await fetch(`/api/plantAvatar`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ plantId: plantId })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch avatar');
+                    }
+              
+                    const imageUrl = await response.json();
+            
+                    if (imageUrl.image != `null`) {
+                      newImage.src = imageUrl.image;
+                    }else{
+                      newImage.src = "../images/background/card2.jpg";
+                    }
+                  } catch (error) {
+                      console.error('Error fetching avatar:', error);
+                  }
+                }else{
+                    newImage.src = "../images/background/card2.jpg";
+                }
                 
                 const newCaption = document.createElement("figcaption");
                 newCaption.textContent = item.name || ''; 
@@ -385,7 +442,9 @@ async function fetchClientCollections(clientId) {
             }
             
         });
-            checkCollections();
+            Promise.all(promises).then(() => {
+              checkCollections();
+            });
         })
         .catch(error => {
           console.error('Error submitting form:', error);
@@ -465,10 +524,35 @@ async function fetchClientFollowing(clientId){
           document.getElementById('no-followers-message').style.display = 'none';
         }
       
-        data.forEach(follower => {
+        data.forEach(async follower => {
           const img = document.createElement('img');
           img.classList.add('friend');
-          img.src = '../images/background/friend.png';
+
+
+          try {
+            const response = await fetch(`/api/avatar`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ clientId: follower.followed_id })
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to fetch avatar');
+            }
+      
+            const imageUrl = await response.json();
+      
+            if (imageUrl.image != `null`) {
+                img.src = imageUrl.image;
+            }else{
+                img.src = '../images/background/friend.png';
+            }
+        } catch (error) {
+            console.error('Error fetching avatar:', error);
+        }
+
           img.alt = 'Friend';
           img.width = 100;
           img.height = 100;
@@ -530,6 +614,7 @@ async function fetchClientFollowing(clientId){
 document.addEventListener('DOMContentLoaded', () => {
   const clientId = sessionStorage.getItem('clientID'); 
 
+  fetchAvatar(clientId);
   fetchClientData(clientId);
   fetchClientCollections(clientId);
   fetchClientRelationship(clientId);
@@ -537,6 +622,33 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchBadges(clientId);
 });
 
+async function fetchAvatar(clientId) {
+  try {
+      const response = await fetch(`/api/avatar`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ clientId: clientId })
+      });
+      
+      if (!response.ok) {
+          throw new Error('Failed to fetch avatar');
+      }
+
+      const imageUrl = await response.json();
+
+      if (imageUrl.image != `null`) {
+          const avatarElement = document.getElementById('avatar');
+          avatarElement.src = imageUrl.image;
+      }else{
+        const avatarElement = document.getElementById('avatar');
+          avatarElement.src = `https://bootdey.com/img/Content/avatar/avatar7.png`;
+      }
+  } catch (error) {
+      console.error('Error fetching avatar:', error);
+  }
+}
 
 const followButton = document.getElementById('followButton');
 
@@ -662,7 +774,23 @@ function displayImage(input) {
           const reader = new FileReader();
 
           reader.onload = function (e) {
+              const image = e.target.result;
               document.getElementById('avatar').src = e.target.result;
+
+              try {
+                const response = fetch('/api/uploadAvatar', {
+                  method: 'POST',
+                  body: JSON.stringify({ clientId: userID, avatar: image })
+                });
+  
+                if (!response.ok) {
+                  throw new Error('Failed to upload avatar');
+                }
+  
+                console.log('Avatar uploaded successfully');
+              } catch (error) {
+                console.error('Error uploading avatar:', error);
+              }
           };
 
           reader.readAsDataURL(file);

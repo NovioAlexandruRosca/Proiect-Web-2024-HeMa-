@@ -12,7 +12,7 @@ document.getElementById('AddNewSection').addEventListener('click', function(){
     <div class="image"></div> 
 
     <div class="organizeButtons">
-    <input type="file" class="fileInput" onchange="addPictures(this)">
+    <input type="file" class="fileInput" accept="image/*" onchange="addPictures(this)">
     <button onclick="deleteSection(this)">Delete</button> 
     </div>
 </div>`;
