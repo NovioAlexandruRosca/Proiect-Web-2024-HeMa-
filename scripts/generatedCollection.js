@@ -20,22 +20,39 @@ function fetchCollectionData() {
 }
 
 async function fetchCollectionPlants(collectionID){
-    fetch('/api/plantsOfCollection', {
+
+    const plantIdsString = localStorage.getItem('plantIds');
+
+    const plantDataPromises = [];
+
+    if (plantIdsString) {
+    const plantIds = JSON.parse(plantIdsString);
+
+    plantIds.forEach(plantID => {
+        const fetchPromise = fetch('/api/plantData', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ collectionId: collectionID })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to fetch collection data');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log(data);
-        if(data){
+        body: JSON.stringify({ plantId: plantID })
+        })
+        .then(response => response.json())
+        .then(data => {
+        console.log(`Data for plant ID ${plantID}:`, data);
+        return data; 
+        })
+        .catch(error => {
+        console.error(`Error fetching data for plant ID ${plantID}:`, error);
+        });
+
+        plantDataPromises.push(fetchPromise); 
+    });
+
+    Promise.all(plantDataPromises)
+        .then(data => {
+        console.log('All plant data:', data);
+
+        if (data) {
             createPlantSelect(data, 'family');
             createPlantSelect(data, 'genus');
             createPlantSelect(data, 'species');
@@ -43,15 +60,16 @@ async function fetchCollectionPlants(collectionID){
             createPlantSelect(data, 'hashtags');
             createPlantSelect(data, 'place_of_collection');
             createPlantSelectColor(data);
+            
             data.forEach(plant => {
-                console.log('Plant data:', plant);
-                createPlantLayout(plant);
-            });   
-        }     
-    })
-    .catch(error => {
-        console.error('Error fetching collection data:', error);
-    });
+            console.log('Plant data:', plant);
+            createPlantLayout(plant);
+            });
+        }
+        });
+    } else {
+    console.log('No plant IDs found in local storage.');
+    }
 }
 
 async function createPlantLayout(plantData) {
