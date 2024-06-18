@@ -29,10 +29,15 @@ const form = document.querySelector('form');
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    plantID = sessionStorage.getItem('data-plant-id'); 
+
+    plantID = document.location.href.split('?id=')[1];
+    console.log(plantID);
+
+    // plantID = sessionStorage.getItem('data-plant-id'); 
     
     updatePlantVisit(plantID);
     fetchPlantData(plantID);
+    fetchAvatar(plantID);
 });
 
 async function updatePlantVisit(plantId) {
@@ -143,6 +148,34 @@ async function fetchPlantData(plantID){
     }
 });
 }
+
+async function fetchAvatar(plantID) {
+    try {
+        const response = await fetch(`/api/plantAvatar`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ plantId: plantID })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch avatar');
+        }
+  
+        const imageUrl = await response.json();
+  
+        if (imageUrl.image != `null`) {
+            const avatarElement = document.getElementById('plantAvatar');
+            avatarElement.src = imageUrl.image;
+        }else{
+            const avatarElement = document.getElementById('plantAvatar');
+            avatarElement.src = `../Images/website_Icon/LittleCactus.jpg`;
+        }
+    } catch (error) {
+        console.error('Error fetching avatar:', error);
+    }
+  }
 
 /////////////////////
 
@@ -302,7 +335,7 @@ form.addEventListener('submit', (event) => {
 
 
 formData.forEach((value, key) => {
-        if(key == "commonName"){
+        if(key == "commonName" && value){
           const trefleToken = "YeJ9rZCmWhqwEJ9f1d06MWdO048SvVcewd7nJlWt4TU";
         
           const url = 'https://api.allorigins.win/get?url=' + encodeURIComponent(`https://trefle.io/api/v1/plants/search?token=${trefleToken}&q=${value}`);
@@ -345,7 +378,25 @@ formData.forEach((value, key) => {
                     formDataJson["species"] = responseData.data[0].slug;
                 }
 
-                document.getElementById('plantAvatar').src = responseData.data[0].image_url;
+                if(document.getElementById('plantAvatar').src == "http://localhost:5500/Images/website_Icon/LittleCactus.jpg"){
+
+                    document.getElementById('plantAvatar').src = responseData.data[0].image_url;
+
+                    try {
+                        const response = fetch('/api/uploadPlantAvatar', {
+                        method: 'POST',
+                        body: JSON.stringify({ plantId: plantID, avatar: responseData.data[0].image_url })
+                        });
+        
+                        if (!response.ok) {
+                        throw new Error('Failed to upload avatar');
+                        }
+        
+                        console.log('Avatar uploaded successfully');
+                    } catch (error) {
+                        console.error('Error uploading avatar:', error);
+                    }
+                }
 
                 fetch('/api/updatePlant', {
                     method: 'PUT',
@@ -427,7 +478,23 @@ function handleImageUpload() {
             const reader = new FileReader();
 
             reader.onload = function (e) {
+                const image = e.target.result;
                 document.getElementById('plantAvatar').src = e.target.result;
+
+                try {
+                    const response = fetch('/api/uploadPlantAvatar', {
+                      method: 'POST',
+                      body: JSON.stringify({ plantId: plantID, avatar: image })
+                    });
+      
+                    if (!response.ok) {
+                      throw new Error('Failed to upload avatar');
+                    }
+      
+                    console.log('Avatar uploaded successfully');
+                  } catch (error) {
+                    console.error('Error uploading avatar:', error);
+                  }
             };
 
             reader.readAsDataURL(file);

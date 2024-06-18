@@ -110,8 +110,8 @@ CREATE TABLE comments (
     posted_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     KEY post_id_fk (post_id),
-    CONSTRAINT post_id_fk FOREIGN KEY (post_id) REFERENCES blog_posts(id) ON DELETE CASCADE
-    CONSTRAINT user_id_fk FOREIGN KEY (user_id) REFERENCES clients(id) ON DELETE CASCADE;
+    CONSTRAINT post_id_fk FOREIGN KEY (post_id) REFERENCES blog_posts(id) ON DELETE CASCADE,
+    CONSTRAINT user_id_fk FOREIGN KEY (user_id) REFERENCES clients(id) ON DELETE CASCADE
 );
 
 CREATE TABLE clients_details (

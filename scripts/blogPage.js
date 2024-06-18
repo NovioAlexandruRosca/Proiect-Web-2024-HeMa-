@@ -67,11 +67,28 @@ document.addEventListener('DOMContentLoaded', async function() {
         sectionDiv.appendChild(titleElement);
         sectionDiv.appendChild(descriptionElement);
 
+        const imagesContainer = document.createElement('div');
+        imagesContainer.classList.add('images-container');
+        imagesContainer.style.display = 'flex';
+        imagesContainer.style.flexWrap = 'wrap';
+        imagesContainer.style.justifyContent = 'center'; 
+    imagesContainer.style.margin = '0 auto'; 
+
         section.images.forEach(base64Image => {
             const imageElement = document.createElement('img');
-            imageElement.src = `data:image/jpeg;base64,${base64Image}`;
-            sectionDiv.appendChild(imageElement);
+            imageElement.src = `${base64Image}`;
+            imageElement.style.width = "200px";
+            imageElement.style.marginTop = "10px";
+            imageElement.style.marginBottom = "10px";
+            imageElement.style.borderRadius = "32px";
+            imageElement.style.marginLeft = "5px";
+            imageElement.style.marginRight = "5px";
+            imageElement.style.border = "1px solid #E2F4C5";
+            imageElement.style.boxShadow = "0px 0px 20px rgba(0, 0, 0, 1)";
+            imagesContainer.appendChild(imageElement);
         });
+
+        sectionDiv.appendChild(imagesContainer);
 
         container.insertBefore(sectionDiv, addNewButton);
         });
