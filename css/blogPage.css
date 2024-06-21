@@ -116,7 +116,7 @@ main{
 
 .deleteComment{
     position: absolute;
-    right:10px;
+    right:50px;
     border-radius: 360px;
 }
 
@@ -125,6 +125,16 @@ main{
     background-color: #458b82;
 }
 
+.reportComment{
+    position: absolute;
+    right:10px;
+    border-radius: 360px;
+}
+
+.reportComment:hover{
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
+    background-color: #458b82;
+}
 
 
 .comment-box {
@@ -189,8 +199,12 @@ main{
         margin-left: 0px;
     }
     .deleteComment{
-        right:5px;
+        right:45px;
         scale: 0.8;
+    }
+    .reportComment{
+        right:5px;
+        scale:0.8;
     }
 }
 
@@ -204,3 +218,87 @@ main{
     font-size: 20px;
   }
   
+
+
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+}
+
+.modal-content {
+    background-color: #fefefed3;
+    margin: 60% auto; 
+    padding: 20px 40px;
+    border: 1px solid #888;
+    border-radius: 15px;
+    width: 80%; 
+    font-size: 30px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 58px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+#bt{
+    font-size: 30px;
+    font-family: 'Dancing Script', sans-serif;
+    padding: 5px 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+    background-color: #458b82;
+}
+
+input[type="radio"] {
+    display: none; /* Hide the actual radio buttons */
+}
+
+label {
+    display: block;
+    position: relative;
+    padding-left: 30px; /* Space for custom bullet point */
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+/* Custom bullet point */
+input[type="radio"] + span::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+/* Change bullet point color when selected */
+input[type="radio"]:checked + span::before {
+    background-color: #007bff;
+}
+
+/* Style for the text next to the bullet point */
+label span {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+}

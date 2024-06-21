@@ -218,6 +218,22 @@ a{
     z-index: 1;
 }
 
+#importPlantButton:hover {
+  opacity: 0.9; 
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
+}
+
+#importPlantButton{
+  cursor: url(../images/cursors/PottedPlantNS.cur),auto;
+    position: fixed;
+    right: 20px;
+    top: 190px;
+    z-index: 1;
+    font-size: 27px;
+}
+
+
+
 #noCollectionsMsg {
     font-size: 2rem; 
     font-weight: bold; 

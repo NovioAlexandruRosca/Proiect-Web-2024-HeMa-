@@ -9,17 +9,10 @@ const { parse } = require('querystring');
 require('dotenv').config();
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
+const devRouter = require('./dev/dev')
 
 // DATA NEEDED TO CONNECT TO THE DATABASE
-const pool = mysql.createPool({
-    host: process.env.DATABASEHOST,
-    user: process.env.DATABASEUSER,
-    password: process.env.DATABASEPASSWORD,
-    database: process.env.DATABASENAME,
-    waitForConnections: true,
-    connectionLimit: 20,
-    queueLimit: 0
-});
+const pool = require('./database')
 
 // This variable checks to see if the client request is for an html/css... file or is used for registering login, data fetching....
 let headerNotModified = true;
@@ -703,6 +696,37 @@ const server = http.createServer(async (req, res) => {
         });
     }
 
+    //USED FOR retreving all the favorite plants of a user
+    if (req.method === 'GET' && req.url === '/api/favoritePlants') {
+        headerNotModified = false;
+
+        const ownerId = sessionData.userId;
+
+        pool.getConnection((err, connection) => {
+            if (err) {
+                console.error('Error getting connection from pool:', err);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                return;
+            }
+
+            const query = 'SELECT * FROM plants WHERE owner_id = ? AND isFavorite = 1';
+            connection.query(query, [ownerId], (error, results) => {
+                connection.release();
+
+                if (error) {
+                    console.error('Error fetching favorite plants:', error);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    return;
+                }
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify(results));
+            });
+        });
+    }
+
     // USED FOR reseting password
     if (req.method === 'POST' && req.url === '/api/reset-password') {
         headerNotModified = false; 
@@ -1349,7 +1373,7 @@ const server = http.createServer(async (req, res) => {
                                 }
                     
                                 const userData = {sessionId: sessionData.sessionId, userId: sessionData.userId, username: name, isAdmin: sessionData.isAdmin};
-                                setSessionData(sessionId, userData);
+                                setSessionData(sessionId, userData.userId, userData.isAdmin);
 
                                 res.writeHead(200, { 'Content-Type': 'application/json' });
                                 res.end(JSON.stringify({ success: true }));
@@ -1376,7 +1400,7 @@ const server = http.createServer(async (req, res) => {
                                 }
                     
                                 const userData = {sessionId: sessionData.sessionId, userId: sessionData.userId, username: name, isAdmin: sessionData.isAdmin};
-                                setSessionData(sessionId, userData);
+                                setSessionData(sessionId, userData.userId, userData.isAdmin);
 
                                 res.writeHead(200, { 'Content-Type': 'application/json' });
                                 res.end(JSON.stringify({ success: true }));
@@ -1647,6 +1671,96 @@ const server = http.createServer(async (req, res) => {
         });
     }
 
+    // USED FOR reporting a user
+    if (req.method === 'POST' && req.url === '/api/reportComment') {
+        headerNotModified = false;   
+        let body = '';
+
+        req.on('data', (chunk) => {
+            body += chunk;
+        });
+
+        req.on('end', async () => {
+            try {
+                const postData = JSON.parse(body);
+                const { clientId, reportedUserName, reportedUserComment, motif } = postData;
+
+                console.log(clientId, reportedUserComment, reportedUserName, motif);
+
+                if (!clientId || !reportedUserName || !reportedUserComment || !motif) {
+                    res.writeHead(400, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'All fields are required' }));
+                    return;
+                }
+
+                pool.getConnection((err, connection) => {
+                    if (err) {
+                        console.error('Error getting connection from pool:', err);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                        return;
+                    }
+
+                    const insertQuery = 'INSERT INTO reports (client_id, reportedUserName, reportedUserComment, motif) VALUES (?, ?, ?, ?)';
+                    connection.query(insertQuery, [clientId, reportedUserName, reportedUserComment, motif], (error, results) => {
+                        connection.release();
+
+                        if (error) {
+                            console.error('Error inserting report:', error);
+                            res.writeHead(500, { 'Content-Type': 'application/json' });
+                            res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                        } else {
+                            console.log('Report inserted successfully');
+                            res.writeHead(200, { 'Content-Type': 'application/json' });
+                            res.end(JSON.stringify({ message: 'Report submitted successfully' }));
+                        }
+                    });
+                });
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Bad Request' }));
+            }
+        });
+    }
+
+    // USED FOR setting if a plant is favorite or not
+    if (req.method === 'POST' && req.url === '/api/updateFavorite') {
+        headerNotModified = false; 
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk;
+        });
+
+        req.on('end', () => {
+            const data = JSON.parse(body);
+            const { plantId, isFavorite } = data;
+
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    return;
+                }
+
+                const updateQuery = 'UPDATE plants SET isFavorite = ? WHERE plant_id = ?';
+                connection.query(updateQuery, [isFavorite, plantId], (error, results) => {
+                    connection.release();
+
+                    if (error) {
+                        console.error('Error updating favorite status:', error);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    } else {
+                        res.writeHead(200, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ message: 'Favorite status updated successfully' }));
+                    }
+                });
+            });
+        });
+    }
+
     // USED FOR getting the user's avatar
     if (req.method === 'POST' && req.url === '/api/avatar') {
         headerNotModified = false;
@@ -1866,7 +1980,7 @@ const server = http.createServer(async (req, res) => {
         }else{
             console.log(`User with ID ${sessionData.userId} Logged Out`);
         }
-        destroySession(sessionId);
+        destroySession(sessionData.userId);
         res.setHeader('Set-Cookie', 'sessionId=; HttpOnly; Max-Age=0');
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end('Logout successful');
@@ -2147,6 +2261,10 @@ const server = http.createServer(async (req, res) => {
         });
     }
 
+    if(!devRouter(req, res)){
+        headerNotModified = false;
+    }
+
     // OTHERWISE IF IT REQUESTED AN HTML,CSS,JS OR ANYTHING ELSE
     if(headerNotModified){
         let filePath = null;
@@ -2237,7 +2355,7 @@ const server = http.createServer(async (req, res) => {
 
             if(sessionData){
             if(getContentType(req.url) == 'text/html')
-                    if(sessionData.isAdmin == 'True' && (filePath != './html/admin.html' && filePath != './html/generateReports.html' && filePath != './html/listOfClients.html' && filePath != './html/landingPage.html' && filePath != './html/login.html' && filePath != './html/register.html'))
+                    if(sessionData.isAdmin == 'True' && (filePath != './html/admin.html' && filePath != './html/generateReports.html' && filePath != './html/listOfClients.html' && filePath != './html/landingPage.html' && filePath != './html/login.html' && filePath != './html/register.html' && filePath != './html/reportManager.html'))
                         filePath = './html/error404.html';
                     else if(sessionData.isAdmin == 'False' && (filePath == './html/admin.html' || filePath == './html/generateReports.html' || filePath == './html/listOfClients.html'))
                         filePath = './html/error404.html';
@@ -2270,9 +2388,12 @@ const server = http.createServer(async (req, res) => {
     headerNotModified = true;
 
     }).catch(error => {
-        console.error('Error fetching session data:', error.message);
-        res.writeHead(500, { 'Content-Type': 'text/plain' });
-        res.end('Internal Server Error');
+        // USED FOR ALL THE EXTERNAL API CALLS
+        if (devRouter(req, res)) {
+            console.error('Error fetching session data:', error.message);
+            res.writeHead(500, { 'Content-Type': 'text/plain' });
+            res.end('Internal Server Error');   
+        }
     });
 });
 
@@ -2382,7 +2503,7 @@ const getSession = async (sessionId) => {
 // };
 
 const setSessionData = (sessionId, clientId, isAdmin) => {
-    console.log(sessionId, clientId, isAdmin);
+    console.log( clientId, isAdmin, sessionId);
     const sql = 'UPDATE sessions SET client_id = ?, isAdmin = ? WHERE session_id = ?';
     const values = [clientId, isAdmin, sessionId];
   
@@ -2409,9 +2530,9 @@ const setSessionData = (sessionId, clientId, isAdmin) => {
 //     delete sessions[sessionId];
 // };
 
-const destroySession = (sessionId) => {
-    const sql = 'DELETE FROM sessions WHERE session_id = ?';
-    const values = [sessionId];
+const destroySession = (clientId) => {
+    const sql = 'DELETE FROM sessions WHERE client_id = ?';
+    const values = [clientId];
   
     pool.getConnection((err, connection) => {
       if (err) {
@@ -2425,7 +2546,7 @@ const destroySession = (sessionId) => {
         if (error) {
           console.error('Error deleting session:', error);
         } else {
-          console.log('Session deleted for sessionId:', sessionId);
+          console.log('Session deleted for clientId:', clientId);
         }
       });
     });

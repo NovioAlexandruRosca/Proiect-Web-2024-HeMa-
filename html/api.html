@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Token Generator | HeMa</title>
+    <link rel="stylesheet" href="../css/template.css">
+    <link rel="stylesheet" href="../css/cards.css">
+    <link rel="stylesheet" href="../css/aboutUsCards.css">
+    <link rel="stylesheet" href="../css/flower.css">
+    <link rel="stylesheet" href="../css/dynamicFlowers.css">
+    <link rel="stylesheet" href="../css/api.css">
+    <link rel="icon" href="../images/website_Icon/plant.png" type="image/x-icon">
+    <script src="../scripts/api.js"></script>
+</head>
+
+<body>
+    <div class="nav">
+        <input type="checkbox" id="nav-check">
+        <div class="nav-header">
+            <div class="nav-title">
+                <div class="left">
+                    <img id="plant_Logo" src="../images/website_Icon/plant.png" alt="Logo Small">
+                    <h3 class="gradient_Text">HeMa (Herbal Web Manager)</h3>
+                </div>
+            </div>
+        </div>
+        <div class="nav-btn">
+            <label for="nav-check">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a id="logout" href="landingPage.html">Logout</a>
+        </div>
+    </div>
+
+    <main>
+
+        <div class="about-main facts-section">
+
+            <header>
+                <div class="texxxt">
+                <h1>Join the community of nature-loving developers</h1>
+            </div>
+            </header>
+            <div id="tokenModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <button id="generateToken">Generate Token</button>
+                    <p>Remember to store your token securely!</p>
+                    <p>You can make only 200 calls per day</p>
+                    <p id="generatedToken"></p>
+                </div>
+            </div>
+
+            <div class="button-container">
+                <button id="generateTokenButton">Become A Developer</button>
+                <button id="fetchTokenButton">Remind Token</button>
+                <p id="fetchedTokenDisplay" class="code-block"></p>
+            </div>
+
+            <header>
+                <div class="texxxt">
+                <h2 id="h22">API Documentation</h2>
+                </div>
+            </header>
+
+
+
+            <div class="api-method-box" id = "firstBox">
+                <button class="api-method-title">POST</button>
+                <div class="api-method-content">
+
+                    <div class="api-box">
+                        <button class="api-box-title">Generate Token (POST /dev/generateToken)</button>
+                        <div class="api-box-content">
+                            <p><strong>Description:</strong> Endpoint to generate an API token.</p>
+                            <p><strong>Parameters:</strong> JSON object with clientId.</p>
+                            <p><strong>Returns:</strong> JSON response with generated token.</p>
+                            <p><strong>Authorization:</strong> None required.</p>
+                        </div>
+                    </div>
+                    <div class="api-box">
+                        <button class="api-box-title">Add Plant (POST /dev/addPlant)</button>
+                        <div class="api-box-content">
+                            <p><strong>Description:</strong> Endpoint to add a new plant.</p>
+                            <p><strong>Parameters:</strong> JSON object with (place_of_collection, collection_id, hashtags, common_name, scientific_name, family, genus, species)</p>
+                            <p><strong>Returns:</strong> JSON response confirming success or failure.</p>
+                            <p><strong>Authorization:</strong> Bearer token in the Authorization header.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+    
+            <div class="api-method-box">
+                <button class="api-method-title">GET</button>
+                <div class="api-method-content">
+
+                    <div class="api-box">
+                        <button class="api-box-title">Get Plant (GET /dev/getPlant)</button>
+                        <div class="api-box-content">
+                            <p><strong>Description:</strong> Endpoint to fetch details of a specific plant.</p>
+                            <p><strong>Parameters:</strong> Query parameter 'plantId'.</p>
+                            <p><strong>Returns:</strong> JSON response with plant details.</p>
+                            <p><strong>Authorization:</strong> Bearer token in the Authorization header.</p>
+                        </div>
+                    </div>
+        
+                    <div class="api-box">
+                        <button class="api-box-title">Get Plant Collection (GET /dev/getPlantCollection)</button>
+                        <div class="api-box-content">
+                            <p><strong>Description:</strong> Endpoint to fetch a collection of plants.</p>
+                            <p><strong>Parameters:</strong> None.</p>
+                            <p><strong>Returns:</strong> JSON response with an array of plant objects.</p>
+                            <p><strong>Authorization:</strong> Bearer token in the Authorization header.</p>
+                        </div>
+                    </div>
+        
+                    <div class="api-box">
+                        <button class="api-box-title">Get All Plants (GET /dev/getAllPlants)</button>
+                        <div class="api-box-content">
+                            <p><strong>Description:</strong> Endpoint to fetch all your plants.</p>
+                            <p><strong>Parameters:</strong> None.</p>
+                            <p><strong>Returns:</strong> JSON response with an array of all plant objects.</p>
+                            <p><strong>Authorization:</strong> Bearer token in the Authorization header.</p>
+                        </div>
+                    </div>
+        
+                    <div class="api-box">
+                        <button class="api-box-title">Get Comments (GET /dev/getComments)</button>
+                        <div class="api-box-content">
+                            <p><strong>Description:</strong> Endpoint to fetch comments for a specific resource.</p>
+                            <p><strong>Parameters:</strong> Query parameter 'resourceId'.</p>
+                            <p><strong>Returns:</strong> JSON response with comments.</p>
+                            <p><strong>Authorization:</strong> Bearer token in the Authorization header.</p>
+                        </div>
+                    </div>
+        
+                    <div class="api-box">
+                        <button class="api-box-title">Get Collections (GET /dev/getCollections)</button>
+                        <div class="api-box-content">
+                            <p><strong>Description:</strong> Endpoint to fetch collections of resources.</p>
+                            <p><strong>Parameters:</strong> None.</p>
+                            <p><strong>Returns:</strong> JSON response with collections.</p>
+                            <p><strong>Authorization:</strong> Bearer token in the Authorization header.</p>
+                        </div>
+                    </div>
+        
+                    <div class="api-box">
+                        <button class="api-box-title">Get Badges (GET /dev/getBadges)</button>
+                        <div class="api-box-content">
+                            <p><strong>Description:</strong> Endpoint to fetch badges earned by a user.</p>
+                            <p><strong>Parameters:</strong> Query parameter 'userId'.</p>
+                            <p><strong>Returns:</strong> JSON response with badges.</p>
+                            <p><strong>Authorization:</strong> Bearer token in the Authorization header.</p>
+                        </div>
+                    </div>
+        
+                    <div class="api-box">
+                        <button class="api-box-title">Get Friends (GET /dev/getFriends)</button>
+                        <div class="api-box-content">
+                            <p><strong>Description:</strong> Endpoint to fetch a user's friends.</p>
+                            <p><strong>Parameters:</strong> Query parameter 'userId'.</p>
+                            <p><strong>Returns:</strong> JSON response with friends list.</p>
+                            <p><strong>Authorization:</strong> Bearer token in the Authorization header.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="api-method-box">
+                <button class="api-method-title">DELETE</button>
+                <div class="api-method-content">
+
+                    <div class="api-box">
+                        <button class="api-box-title">Delete Plant (DELETE /dev/deletePlant)</button>
+                        <div class="api-box-content">
+                            <p><strong>Description:</strong> Endpoint to delete a specific plant.</p>
+                            <p><strong>Parameters:</strong> Query parameter 'plantId'.</p>
+                            <p><strong>Returns:</strong> JSON response confirming deletion.</p>
+                            <p><strong>Authorization:</strong> Bearer token in the Authorization header.</p>
+                        </div>
+        
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="api-method-box">
+                <button class="api-method-title">PUT</button>
+                <div class="api-method-content">
+
+
+                </div>
+            </div>
+
+            <div class="api-method-box">
+                <button class="api-method-title">UPDATE</button>
+                <div class="api-method-content">
+
+
+                </div>
+            </div>
+
+            <div class="api-method-box">
+                <button class="api-method-title">PATCH</button>
+                <div class="api-method-content">
+
+
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <footer>
+        <img id="github" class="socialMediaIcon" src="../images/social_media/github.png" alt="GitHub Logo">
+        <p class="gradient_Text">© 2024 HeMa. All rights reserved.</p>
+        <img id="uaic" class="socialMediaIcon" src="../images/social_media/uaic_logo_small.png" alt="UAIC Logo">
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../scripts/footer.js"></script>
+    <script src="../scripts/navBar.js"></script>
+    <script src="../scripts/randomColors.js"></script>
+</body>
+
+</html>

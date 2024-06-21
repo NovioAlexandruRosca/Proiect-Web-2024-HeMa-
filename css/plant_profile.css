@@ -411,3 +411,39 @@ main{
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
+
+
+.floating-button {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background-color: #4caf50;
+    color: white;
+    border-radius: 50%; 
+    width: 60px; 
+    height: 60px; 
+    font-size: 36px; 
+    line-height: 60px; 
+    text-align: center; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+    border: none;
+    outline: none;
+    z-index: 1000; 
+}
+
+.floating-button:hover {
+    background-color: #66bb6a; 
+}
+
+#addPlantButton:hover {
+    opacity: 0.9; 
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
+}
+
+#addPlantButton {
+  cursor: url(../images/cursors/PottedPlantNS.cur),auto;
+    position: fixed;
+    right: 20px;
+    top: 120px;
+    z-index: 1;
+}

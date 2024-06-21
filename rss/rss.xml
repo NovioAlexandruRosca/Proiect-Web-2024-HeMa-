@@ -13,7 +13,7 @@ Part of the Family: Rose
 And the Genus: Rose
 Species of: Rose
 Collected at: Iasi
-Popularity: 32 visits until now!
+Popularity: 35 visits until now!
 </description>
           </item>
         
@@ -36,6 +36,18 @@ Popularity: 11 visits until now!
 Part of the Family: Hydrangeaceae
 And the Genus: Hydrangea
 Species of: hydrangea-paniculata
+Popularity: 7 visits until now!
+</description>
+          </item>
+        
+          <item>
+            <title>Mint</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=3</link>
+            <description>Scientific Name: Mentha
+Part of the Family: Lamiaceae
+And the Genus: Mentha
+Species of: Mentha spicata
+Collected at: Bucharest
 Popularity: 6 visits until now!
 </description>
           </item>
@@ -48,18 +60,6 @@ Part of the Family: Lamiaceae
 And the Genus: Mentha
 Species of: mentha-aquatica
 Popularity: 6 visits until now!
-</description>
-          </item>
-        
-          <item>
-            <title>Mint</title>
-            <link>http://localhost:5500/PlantProfilePage.html?id=3</link>
-            <description>Scientific Name: Mentha
-Part of the Family: Lamiaceae
-And the Genus: Mentha
-Species of: Mentha spicata
-Collected at: Bucharest
-Popularity: 5 visits until now!
 </description>
           </item>
         

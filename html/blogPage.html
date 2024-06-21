@@ -41,6 +41,36 @@
       </div>
     <main>
        
+      <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Report Comment</h2>
+            <p id="reportName">Name: </p>
+            <p id="reportComment">Comment: </p>
+            <p>Please select a reason for reporting this comment:</p>
+            <form id="reportForm">
+              <label>
+                <input type="radio" name="motif" value="Spam" required>
+                    <span>Spam</span>
+                </label>
+                <label>
+                    <input type="radio" name="motif" value="Harassment" required>
+                    <span>Harassment</span>
+                </label>
+                <label>
+                    <input type="radio" name="motif" value="Hate Speech" required>
+                    <span>Hate Speech</span>
+                </label>
+                <label>
+                    <input type="radio" name="motif" value="Other" required>
+                    <span>Other</span>
+                </label>
+            
+                <button type="submit" id="bt">Submit</button>
+            </form>
+        </div>
+    </div>
+
       <div class="floating-message"></div>
 
         <div class="container">
