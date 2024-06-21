@@ -49,6 +49,7 @@ Various statistics will be generated and made available in open formats, includi
 
 - The tables from the database are as it follows:
 
+
 CREATE TABLE clients (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL,

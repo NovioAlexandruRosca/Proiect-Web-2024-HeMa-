@@ -55,7 +55,9 @@ const initSlider = () => {
 }
 
 window.addEventListener("resize", initSlider);
-window.addEventListener("load", initSlider);
+window.addEventListener("load", () => {
+    setTimeout(initSlider, 2000);
+});
 
 
 let loginClients = document.getElementById("loginClients");

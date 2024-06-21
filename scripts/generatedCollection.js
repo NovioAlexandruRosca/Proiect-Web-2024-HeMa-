@@ -80,7 +80,7 @@ async function createPlantLayout(plantData) {
     anchor.addEventListener('click', function(event) {
         event.preventDefault(); 
         // sessionStorage.setItem('data-plant-id', anchor.getAttribute('data-plant-id')); 
-        window.location.href = './PlantProfilePage.html?id=123' + anchor.getAttribute('data-plant-id');
+        window.location.href = './PlantProfilePage.html?id=' + anchor.getAttribute('data-plant-id');
     });
 
     let figure = document.createElement('figure');

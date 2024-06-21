@@ -179,6 +179,18 @@ addCommentBtn.addEventListener('click', () => {
           newComment.appendChild(deleteButton);
         }
 
+        const reportButton = document.createElement('p');
+        reportButton.classList.add('reportComment');
+        reportButton.textContent = '🚨';
+        newComment.appendChild(reportButton);
+
+        reportButton.onclick = function() {
+            modal.style.display = "block";
+            localStorage.setItem('reportedId', data.user_id);
+            document.getElementById('reportName').textContent += data.user_name;
+            document.getElementById('reportComment').textContent += data.comment_text;
+        };
+
         const postedDate = new Date(data.posted_date);
         const currentTime = new Date();
         const timeDifference = currentTime - postedDate;
@@ -297,6 +309,18 @@ console.log(commentData.user_id);
     commentElement.appendChild(deleteButton);
   }
 
+  const reportButton = document.createElement('p');
+  reportButton.classList.add('reportComment');
+  reportButton.textContent = '🚨';
+  commentElement.appendChild(reportButton);
+
+    reportButton.onclick = function() {
+    modal.style.display = "block";
+    localStorage.setItem('reportedId', commentData.user_id);
+    document.getElementById('reportName').textContent += commentData.user_name;
+    document.getElementById('reportComment').textContent += commentData.comment_text;
+    };
+
   const postedDate = new Date(commentData.posted_date);
   const currentTime = new Date();
   const timeDifference = currentTime - postedDate;
@@ -406,3 +430,56 @@ document.addEventListener('click', async (event) => {
 window.addEventListener('beforeunload', function (event) {
     sessionStorage.setItem('blogPostData', sessionStorage.getItem('temporaryRefreshBlogPostData'));
 });
+
+
+
+
+const modal = document.getElementById("reportModal");
+const span = document.getElementsByClassName("close")[0];
+
+span.onclick = function() {
+    modal.style.display = "none";
+    document.getElementById('reportName').textContent = "Name: ";
+    document.getElementById('reportComment').textContent = "Comment: ";
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+        document.getElementById('reportName').textContent = "Name: ";
+        document.getElementById('reportComment').textContent = "Comment: ";
+    }
+}
+
+document.getElementById("reportForm").onsubmit = function(event) {
+    event.preventDefault();
+    const selectedMotif = document.querySelector('input[name="motif"]:checked');
+    if (selectedMotif) {
+
+        const reportedId = localStorage.getItem('reportedId');
+        const reportedName = document.getElementById('reportName').textContent.replace(/^Name: /, '');
+        const reportedComment = document.getElementById('reportComment').textContent.replace(/^Comment: /, '');
+        const motif = selectedMotif.value;
+
+        fetch('/api/reportComment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                clientId: reportedId, 
+                reportedUserName: reportedName,
+                reportedUserComment: reportedComment,
+                motif: motif})
+        })
+        .then(response => response.json())
+        .then(data => {
+            modal.style.display = "none";
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    } else {
+        alert("Please select a reason.");
+    }
+};

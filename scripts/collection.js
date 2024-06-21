@@ -1,7 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     checkCollections();
     document.getElementById('addPlantButton').addEventListener('click', addFigure);
+    document.getElementById('importPlantButton').addEventListener('click', importData);
 });
+
+function importData(){
+    console.log("TO BE IMPLEMENTED");
+}
 
 function addFigure() {
 
@@ -312,6 +317,7 @@ async function fetchCollectionData(collectionID) {
                     document.getElementById('edit').style.display = 'none';
                     document.getElementById('delete').style.display = 'none';
                     document.getElementById('addPlantButton').style.display = 'none';
+                    document.getElementById('importPlantButton').style.display = 'none';
                   }
                   else{
                     document.getElementById('profile').style.display = 'none';
@@ -535,6 +541,7 @@ document.addEventListener('DOMContentLoaded', async() => {
   
 
 const divToMove = document.getElementById('addPlantButton');
+const divToMove1 = document.getElementById('importPlantButton');
 const windowHeight = window.innerHeight;
 const divTopOffset = divToMove.offsetTop;
 
@@ -548,6 +555,7 @@ window.addEventListener('scroll', () => {
     } 
 
     divToMove.style.top = newTop + 'px';
+    divToMove1.style.top = newTop + 70 + 'px';
 });
 
 const profileButton = document.getElementById('profile');

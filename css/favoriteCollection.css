@@ -1,0 +1,9 @@
+#collectionButtons{
+    background-color: #a0e090b9; 
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
+    border: 1px solid black;
+    display: flex;
+    justify-content: space-evenly;
+    border-radius: 0px 0px 32px 32px;
+    margin-bottom: 20px;
+}

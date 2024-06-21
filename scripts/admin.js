@@ -1,8 +1,14 @@
 let listOfClients = document.getElementById("listClients");
 let generateReports = document.getElementById("generateReports");
+let reportManager = document.getElementById("reportList");
+
 
 listOfClients.addEventListener('click', function (event) {
     window.location.href = './listOfClients.html';
+});
+
+reportManager.addEventListener('click', function (event) {
+    window.location.href = './reportManager.html';
 });
 
 generateReports.addEventListener('click', function (event) {

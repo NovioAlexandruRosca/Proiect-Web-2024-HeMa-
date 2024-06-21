@@ -27,9 +27,17 @@ document.getElementById("Password").addEventListener("click", () => {
 
 document.addEventListener('DOMContentLoaded', function () {
 
+    if(!localStorage.getItem('clientIsAdmin')){
+        localStorage.setItem('clientIsAdmin', 'false');
+    }
+
     if(localStorage.getItem('clientIsAdmin') == 'true'){
         document.getElementById('resetPassword').style.display = 'none';
     }
+
+    const isAdmin = localStorage.getItem('clientIsAdmin');
+
+    localStorage.setItem('clientIsAdmin', '');
 
     const loginForm = document.getElementById('login_form');
 
@@ -63,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: JSON.stringify({
                     Email: username,
                     Password: password,
-                    IsAdmin: localStorage.getItem('clientIsAdmin'),
+                    IsAdmin: isAdmin,
                 }),
             })
             .then((response) => {

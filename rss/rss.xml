@@ -30,14 +30,81 @@ Popularity: 45 visits until now!
           </item>
         
           <item>
-            <title>Sunflower</title>
-            <link>http://localhost:5500/PlantProfilePage.html?id=12</link>
-            <description>Scientific Name: Helianthus annuus
-Part of the Family: Asteraceae
-And the Genus: Helianthus
-Species of: annuus
-Collected at: USA
-Popularity: 30 visits until now!
+            <title>Hydrangea</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=16</link>
+            <description>Scientific Name: Hydrangea paniculata
+Part of the Family: Hydrangeaceae
+And the Genus: Hydrangea
+Species of: hydrangea-paniculata
+Popularity: 7 visits until now!
+</description>
+          </item>
+        
+          <item>
+            <title>Mint</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=3</link>
+            <description>Scientific Name: Mentha
+Part of the Family: Lamiaceae
+And the Genus: Mentha
+Species of: Mentha spicata
+Collected at: Bucharest
+Popularity: 6 visits until now!
+</description>
+          </item>
+        
+          <item>
+            <title>Mint</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=24</link>
+            <description>Scientific Name: Mentha aquatica
+Part of the Family: Lamiaceae
+And the Genus: Mentha
+Species of: mentha-aquatica
+Popularity: 6 visits until now!
+</description>
+          </item>
+        
+          <item>
+            <title>Tulips</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=28</link>
+            <description>Scientific Name: Tulipa sylvestris
+Part of the Family: Liliaceae
+And the Genus: Tulipa
+Species of: tulipa-sylvestris
+Collected at: Botragy
+Popularity: 5 visits until now!
+</description>
+          </item>
+        
+          <item>
+            <title>Cactus</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=17</link>
+            <description>Scientific Name: Cylindropuntia imbricata
+Part of the Family: Cactaceae
+And the Genus: Cylindropuntia
+Species of: cylindropuntia-imbricata
+Popularity: 3 visits until now!
+</description>
+          </item>
+        
+          <item>
+            <title>Succulent</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=27</link>
+            <description>Scientific Name: Crataegus succulenta
+Part of the Family: Rosaceae
+And the Genus: Crataegus
+Species of: crataegus-succulenta
+Popularity: 3 visits until now!
+</description>
+          </item>
+        
+          <item>
+            <title>Mint</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=31</link>
+            <description>Scientific Name: Mentha aquatica
+Part of the Family: Lamiaceae
+And the Genus: Mentha
+Species of: mentha-aquatica
+Popularity: 3 visits until now!
 </description>
           </item>
         

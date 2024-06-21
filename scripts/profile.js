@@ -296,6 +296,7 @@ async function fetchClientData(clientId) {
           if(data[0].client_id == userID){
             document.getElementById('followButton').style.display = 'none';
           }else{
+            document.getElementById('favorites').style.display = 'none';
             document.getElementById('editButton').style.display = 'none';
             document.getElementById('addPlantButton').style.display = 'none';
           }
@@ -964,3 +965,86 @@ function toggleRotationBadge(element) {
   }
 
 }
+
+
+async function fetchFavoritePlantsAndSetCollectionImage() {
+  console.log("yes");
+  try {
+      const response = await fetch('/api/favoritePlants', {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      });
+
+      if (!response.ok) {
+          throw new Error('Failed to fetch favorite plants');
+      }
+
+      const favoritePlants = await response.json();
+      console.log('Favorite plants:', favoritePlants);
+
+      const collectionContainer = document.getElementById('figurePlace');
+
+      if (!collectionContainer) {
+          console.error('Collection container not found.');
+          return;
+      }
+
+      const newFigure = document.createElement("figure");
+      newFigure.setAttribute('id', 'favorites'); // Set id attribute
+
+      let imageSet = false;
+      const newImage = document.createElement("img");
+      newImage.alt = "New Image";
+      newImage.width = 250;
+      newImage.height = 300;
+      newImage.style.objectFit = 'cover';
+
+      for (const plant of favoritePlants) {
+          try {
+              const avatarResponse = await fetch('/api/plantAvatar', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ plantId: plant.plant_id })
+              });
+
+              if (!avatarResponse.ok) {
+                  throw new Error('Failed to fetch avatar');
+              }
+
+              const imageUrl = await avatarResponse.json();
+
+              if (imageUrl.image !== 'null' && !imageSet) {
+                  newImage.src = imageUrl.image;
+                  imageSet = true;
+                  break;
+              }
+          } catch (error) {
+              console.error(`Error fetching avatar for plant ID ${plant.plant_id}:`, error);
+          }
+      }
+
+      if (!imageSet) {
+          newImage.src = "../images/background/card11.jpg";
+      }
+
+      const newCaption = document.createElement("figcaption");
+      newCaption.textContent = "Favorites";
+
+      newFigure.appendChild(newImage);
+      newFigure.appendChild(newCaption);
+
+      collectionContainer.appendChild(newFigure);
+
+      newFigure.addEventListener('click', () =>{
+        window.location.href = './favoriteCollection.html';
+      });
+  } catch (error) {
+      console.error('Error fetching favorite plants:', error);
+  }
+}
+
+fetchFavoritePlantsAndSetCollectionImage();

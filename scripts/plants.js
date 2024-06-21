@@ -38,7 +38,42 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePlantVisit(plantID);
     fetchPlantData(plantID);
     fetchAvatar(plantID);
+    document.getElementById('addPlantButton').addEventListener('click', addFavorite);
 });
+
+function addFavorite(){
+
+    let isFavorite;
+
+    if(document.getElementById('addPlantButton').textContent == '☆'){
+        document.getElementById('addPlantButton').textContent = '⭐';
+        document.getElementById('addPlantButton').style.fontSize = '22px';
+        isFavorite = 1;
+    }else{
+        document.getElementById('addPlantButton').textContent = '☆';
+        document.getElementById('addPlantButton').style.fontSize = '36px';
+        isFavorite = 0;
+    }
+
+    fetch('/api/updateFavorite', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({plantId: plantID, isFavorite: isFavorite})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            console.error('Error updating favorite status:', data.error);
+        } else {
+            console.log('Favorite status updated successfully');
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
 
 async function updatePlantVisit(plantId) {
     try {
@@ -112,10 +147,18 @@ async function fetchPlantData(plantID){
                 collectionID = data.collection_id;
 
                 if(plantsclientID != connectedclientID){
+                    document.getElementById('addPlantButton').style.display = 'none';
                     editButton.style.display = 'none';
                     deleteButton.style.display ='none';
                 }
 
+                if(data.isFavorite){
+                    document.getElementById('addPlantButton').textContent = '⭐';
+                    document.getElementById('addPlantButton').style.fontSize = '22px';
+                }else{
+                    document.getElementById('addPlantButton').textContent = '☆';
+                    document.getElementById('addPlantButton').style.fontSize = '36px';
+                }
                 
                 handleDataForElement(commonName, data.common_name);
                 handleDataForElement(scientificName, data.scientific_name);
@@ -328,74 +371,84 @@ labels.forEach(label => {
 /////////////////////
 
 
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
+const apiKey = 'ZV16Mmz31CmzTeGtXg4TPrGFFAWwl8qA181uCajQs4zZCFUlD0';
 
-  const formData = new FormData(form);
+form.addEventListener('submit', async (event) => {
+    event.preventDefault();
 
+    const formData = new FormData(form);
+    const commonNamee = formData.get('commonName');
 
-formData.forEach((value, key) => {
-        if(key == "commonName" && value){
-          const trefleToken = "YeJ9rZCmWhqwEJ9f1d06MWdO048SvVcewd7nJlWt4TU";
-        
-          const url = 'https://api.allorigins.win/get?url=' + encodeURIComponent(`https://trefle.io/api/v1/plants/search?token=${trefleToken}&q=${value}`);
-        
-          fetch(url)
-            .then(response => {
-              if (!response.ok) {
-                throw new Error('Failed to fetch plant data');
-              }
-              return response.json();
-            })
-            .then(data => {
-        
-              const responseData = JSON.parse(data.contents);
-              if(responseData.data.length == 0){
-                  console.log("No plant");
-              }else
-              {
-                console.log(responseData.data[0].scientific_name);
-                console.log(responseData.data[0].family);
-                console.log(responseData.data[0].genus);
-                console.log(responseData.data[0].slug);
-                console.log(responseData.data[0].image_url);
+    if(commonNamee){
 
-                  const formDataJson = {};
-                  formData.forEach((value, key) => {
-                    formDataJson[key] = value;
-                  });
-
-                if(formDataJson.scientificName == ""){
-                    formDataJson["scientificName"] = responseData.data[0].scientific_name;
+    try {
+            const accessTokenResponse = await fetch(`https://plant.id/api/v3/kb/plants/name_search?q=${encodeURIComponent(commonNamee)}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Api-Key': apiKey
                 }
-                if(formDataJson.family == ""){
-                    formDataJson["family"] = responseData.data[0].family;
-                }
-                if(formDataJson.genus == ""){
-                    formDataJson["genus"] = responseData.data[0].genus;
-                }
-                if(formDataJson.species == ""){
-                    formDataJson["species"] = responseData.data[0].slug;
-                }
+            });
 
-                if(document.getElementById('plantAvatar').src == "http://localhost:5500/Images/website_Icon/LittleCactus.jpg"){
+            if (!accessTokenResponse.ok) {
+                throw new Error('Failed to fetch access token');
+            }
 
-                    document.getElementById('plantAvatar').src = responseData.data[0].image_url;
+            const accessTokenData = await accessTokenResponse.json();
+            const accessToken = accessTokenData.entities[0].access_token;
 
-                    try {
-                        const response = fetch('/api/uploadPlantAvatar', {
-                        method: 'POST',
-                        body: JSON.stringify({ plantId: plantID, avatar: responseData.data[0].image_url })
-                        });
-        
-                        if (!response.ok) {
-                        throw new Error('Failed to upload avatar');
-                        }
-        
-                        console.log('Avatar uploaded successfully');
-                    } catch (error) {
-                        console.error('Error uploading avatar:', error);
+            const plantDetailsResponse = await fetch(`https://plant.id/api/v3/kb/plants/${accessToken}?details=common_names,synonyms,taxonomy,image`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Api-Key': apiKey
+                }
+            });
+
+            if (!plantDetailsResponse.ok) {
+                throw new Error('Failed to fetch plant details');
+            }
+
+            const plantDetails = await plantDetailsResponse.json();
+
+            const taxonomy = plantDetails.taxonomy;
+            const imageUrl = plantDetails.image.value;
+
+            const formDataJson = {};
+            formData.forEach((value, key) => {
+                formDataJson[key] = value;
+            });
+
+            if(formDataJson.scientificName == ""){
+                formDataJson["scientificName"] = taxonomy.order;
+            }
+            if(formDataJson.family == ""){
+                formDataJson["family"] = taxonomy.family;
+            }
+            if(formDataJson.genus == ""){
+                formDataJson["genus"] = taxonomy.genus;
+            }
+            if(formDataJson.species == ""){
+                formDataJson["species"] = taxonomy.class;
+            }
+
+            if(document.getElementById('plantAvatar').src == "http://localhost:5500/Images/website_Icon/LittleCactus.jpg"){
+
+                document.getElementById('plantAvatar').src = imageUrl;
+
+                try {
+                    const response = fetch('/api/uploadPlantAvatar', {
+                    method: 'POST',
+                    body: JSON.stringify({ plantId: plantID, avatar: imageUrl })
+                    });
+
+                    if (!response.ok) {
+                    throw new Error('Failed to upload avatar');
                     }
+
+                    console.log('Avatar uploaded successfully');
+                } catch (error) {
+                    console.error('Error uploading avatar:', error);
                 }
 
                 fetch('/api/updatePlant', {
@@ -450,18 +503,269 @@ formData.forEach((value, key) => {
                 .catch(error => {
                     console.error('Error submitting form:', error);
                 });
-                
+            }
 
-              }
+
+        } catch (error) {
+            console.error('Error:', error);
+            
+            const formDataJson = {};
+            formData.forEach((value, key) => {
+                formDataJson[key] = value;
+            });
+
+            fetch('/api/updatePlant', {
+                method: 'PUT',
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    formData: formDataJson,
+                    plantID: plantID
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                throw new Error('Failed to submit form');
+                }else{
+                    fetch('/api/modifyCollection', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ collectionId: collectionID})
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            console.error('Failed to modify collection:', response.status);
+                        }
+                    });
+
+                    console.log(formDataJson);
+
+                    handleDataForElement(commonName, formDataJson.commonName);
+                    handleDataForElement(scientificName, formDataJson.scientificName);
+                    handleDataForElement(family, formDataJson.family);
+                    handleDataForElement(genus, formDataJson.genus);
+                    handleDataForElement(species, formDataJson.species);
+                    handleDataForElement(place, formDataJson.place);
+                    handleDataForElement(color, formDataJson.color);
+
+                    hashtags.textContent = formDataJson.hashtags;
+                    dateOfCollection.textContent = formDataJson.dateOfCollection;
+                    commonName.textContent = formDataJson.commonName;
+                    scientificName.textContent = formDataJson.scientificName;
+                    family.textContent = formDataJson.family;
+                    genus.textContent = formDataJson.genus;
+                    species.textContent = formDataJson.species;
+                    place.textContent = formDataJson.place;
+                    color.textContent = formDataJson.color;
+                }
+                console.log('Form submitted successfully');
             })
             .catch(error => {
-              console.error('Error fetching plant data:', error);
+                console.error('Error submitting form:', error);
             });
         }
-    });
+    }else{
 
-  modal.style.display = 'none';
+        const formDataJson = {};
+            formData.forEach((value, key) => {
+                formDataJson[key] = value;
+            });
+
+        fetch('/api/updatePlant', {
+            method: 'PUT',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                formData: formDataJson,
+                plantID: plantID
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+            throw new Error('Failed to submit form');
+            }else{
+                fetch('/api/modifyCollection', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ collectionId: collectionID})
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        console.error('Failed to modify collection:', response.status);
+                    }
+                });
+
+                console.log(formDataJson);
+
+                handleDataForElement(commonName, formDataJson.commonName);
+                handleDataForElement(scientificName, formDataJson.scientificName);
+                handleDataForElement(family, formDataJson.family);
+                handleDataForElement(genus, formDataJson.genus);
+                handleDataForElement(species, formDataJson.species);
+                handleDataForElement(place, formDataJson.place);
+                handleDataForElement(color, formDataJson.color);
+
+                hashtags.textContent = formDataJson.hashtags;
+                dateOfCollection.textContent = formDataJson.dateOfCollection;
+                commonName.textContent = formDataJson.commonName;
+                scientificName.textContent = formDataJson.scientificName;
+                family.textContent = formDataJson.family;
+                genus.textContent = formDataJson.genus;
+                species.textContent = formDataJson.species;
+                place.textContent = formDataJson.place;
+                color.textContent = formDataJson.color;
+            }
+            console.log('Form submitted successfully');
+        })
+        .catch(error => {
+            console.error('Error submitting form:', error);
+        });
+    }
+
+    modal.style.display = 'none';
 });
+
+
+// form.addEventListener('submit', (event) => {
+//   event.preventDefault();
+
+//   const formData = new FormData(form);
+
+
+// formData.forEach((value, key) => {
+//         if(key == "commonName" && value){
+//           const trefleToken = "YeJ9rZCmWhqwEJ9f1d06MWdO048SvVcewd7nJlWt4TU";
+        
+//           const url = 'https://api.allorigins.win/get?url=' + encodeURIComponent(`https://trefle.io/api/v1/plants/search?token=${trefleToken}&q=${value}`);
+        
+//           fetch(url)
+//             .then(response => {
+//               if (!response.ok) {
+//                 throw new Error('Failed to fetch plant data');
+//               }
+//               return response.json();
+//             })
+//             .then(data => {
+        
+//               const responseData = JSON.parse(data.contents);
+//               if(responseData.data.length == 0){
+//                   console.log("No plant");
+//               }else
+//               {
+//                 console.log(responseData.data[0].scientific_name);
+//                 console.log(responseData.data[0].family);
+//                 console.log(responseData.data[0].genus);
+//                 console.log(responseData.data[0].slug);
+//                 console.log(responseData.data[0].image_url);
+
+//                   const formDataJson = {};
+//                   formData.forEach((value, key) => {
+//                     formDataJson[key] = value;
+//                   });
+
+//                 if(formDataJson.scientificName == ""){
+//                     formDataJson["scientificName"] = responseData.data[0].scientific_name;
+//                 }
+//                 if(formDataJson.family == ""){
+//                     formDataJson["family"] = responseData.data[0].family;
+//                 }
+//                 if(formDataJson.genus == ""){
+//                     formDataJson["genus"] = responseData.data[0].genus;
+//                 }
+//                 if(formDataJson.species == ""){
+//                     formDataJson["species"] = responseData.data[0].slug;
+//                 }
+
+//                 if(document.getElementById('plantAvatar').src == "http://localhost:5500/Images/website_Icon/LittleCactus.jpg"){
+
+//                     document.getElementById('plantAvatar').src = responseData.data[0].image_url;
+
+//                     try {
+//                         const response = fetch('/api/uploadPlantAvatar', {
+//                         method: 'POST',
+//                         body: JSON.stringify({ plantId: plantID, avatar: responseData.data[0].image_url })
+//                         });
+        
+//                         if (!response.ok) {
+//                         throw new Error('Failed to upload avatar');
+//                         }
+        
+//                         console.log('Avatar uploaded successfully');
+//                     } catch (error) {
+//                         console.error('Error uploading avatar:', error);
+//                     }
+//                 }
+
+//                 fetch('/api/updatePlant', {
+//                     method: 'PUT',
+//                     headers: {
+//                     'Content-Type': 'application/json'
+//                     },
+//                     body: JSON.stringify({
+//                         formData: formDataJson,
+//                         plantID: plantID
+//                     })
+//                 })
+//                 .then(response => {
+//                     if (!response.ok) {
+//                     throw new Error('Failed to submit form');
+//                     }else{
+//                         fetch('/api/modifyCollection', {
+//                             method: 'PUT',
+//                             headers: {
+//                                 'Content-Type': 'application/json'
+//                             },
+//                             body: JSON.stringify({ collectionId: collectionID})
+//                         })
+//                         .then(response => {
+//                             if (!response.ok) {
+//                                 console.error('Failed to modify collection:', response.status);
+//                             }
+//                         });
+
+//                         console.log(formDataJson);
+
+//                         handleDataForElement(commonName, formDataJson.commonName);
+//                         handleDataForElement(scientificName, formDataJson.scientificName);
+//                         handleDataForElement(family, formDataJson.family);
+//                         handleDataForElement(genus, formDataJson.genus);
+//                         handleDataForElement(species, formDataJson.species);
+//                         handleDataForElement(place, formDataJson.place);
+//                         handleDataForElement(color, formDataJson.color);
+
+//                         hashtags.textContent = formDataJson.hashtags;
+//                         dateOfCollection.textContent = formDataJson.dateOfCollection;
+//                         commonName.textContent = formDataJson.commonName;
+//                         scientificName.textContent = formDataJson.scientificName;
+//                         family.textContent = formDataJson.family;
+//                         genus.textContent = formDataJson.genus;
+//                         species.textContent = formDataJson.species;
+//                         place.textContent = formDataJson.place;
+//                         color.textContent = formDataJson.color;
+//                     }
+//                     console.log('Form submitted successfully');
+//                 })
+//                 .catch(error => {
+//                     console.error('Error submitting form:', error);
+//                 });
+                
+
+//               }
+//             })
+//             .catch(error => {
+//               console.error('Error fetching plant data:', error);
+//             });
+//         }
+//     });
+
+//   modal.style.display = 'none';
+// });
 
 
 function handleImageUpload() {
@@ -544,4 +848,22 @@ function handleImageUpload() {
         floatingMessage.style.display = 'none';
         });
     }
+});
+
+
+
+const divToMove = document.getElementById('addPlantButton');
+const windowHeight = window.innerHeight;
+const divTopOffset = divToMove.offsetTop;
+
+window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+
+    let newTop = divTopOffset - scrollY;
+
+    if (newTop <= 90) {
+        newTop = 60 + scrollY;
+    } 
+
+    divToMove.style.top = newTop + 'px';
 });
