@@ -176,7 +176,7 @@ table span{
     margin-right: 4px;
 }
 
-#order_input, #display_input{
+#sort_input, #order_input, #display_input{
     font-size: 20px;
     font-weight: bold;
     font-family: 'Dancing Script', sans-serif;
@@ -194,7 +194,11 @@ table span{
     margin-left: 10px;
 }
 
-#order_input:hover, #display_input:hover{
+#sort_input{
+    margin-left: 10px;
+}
+
+#sort_input:hover, #order_input:hover, #display_input:hover{
     background-color: rgb(219, 217, 217);
     border: 1px solid #496989cb;
 }
@@ -222,7 +226,7 @@ select {
         margin-top: 10px;
         padding: 5px;
     }
-    #order_input , #display_input{
+    #sort_input, #order_input , #display_input{
         font-size: 10px;
     }
 }

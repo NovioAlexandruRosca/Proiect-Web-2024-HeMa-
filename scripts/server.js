@@ -9,7 +9,8 @@ const { parse } = require('querystring');
 require('dotenv').config();
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
-const devRouter = require('./dev/dev')
+const devRouter = require('./dev/dev');
+const plantRouter = require('./plants/plantRouter');
 const PDFDocument = require('pdfkit');  // Use require for PDFDocument
 const { createObjectCsvStringifier } = require('csv-writer');  // Use require for csv-writer
 
@@ -39,6 +40,110 @@ const server = http.createServer(async (req, res) => {
 
     const cookieValue = `sessionId=${sessionId}; HttpOnly; Max-Age=${24 * 60 * 60}`;
     res.setHeader('Set-Cookie', cookieValue);
+
+
+    // Endpoint to fetch all shared collections
+    if (req.method === 'GET' && req.url === '/api/allSharedCollections') {
+        headerNotModified = false;
+        console.log('Fetching all shared collections...');
+        pool.getConnection((err, connection) => {
+            if (err) {
+                console.error('Error getting connection from pool:', err);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                return;
+            }
+
+            const query = `
+                SELECT 
+                    plant_collections.collection_id AS id, 
+                    plant_collections.name, 
+                    clients.name AS sharedBy,
+                    plant_collections.creation_time AS postingDate, 
+                    plant_collections.description
+                FROM plant_collections
+                JOIN clients ON plant_collections.client_id = clients.id
+                WHERE plant_collections.is_shared = 1
+            `;
+
+            connection.query(query, (err, results) => {
+                connection.release();
+                if (err) {
+                    console.error('Database query error:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                } else {
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(results));
+                }
+            });
+        });
+    }
+
+    // Endpoint to react to a collection
+    if (req.method === 'POST' && req.url === '/api/react') {
+        headerNotModified = false;  
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+
+        req.on('end', () => {
+            const parsedBody = JSON.parse(body);
+            console.log("Request body:", body); // Debugging line
+            console.log("Parsed request body:", parsedBody); // Debugging line
+            const { collectionId, reactionType } = parsedBody;
+            const userId = sessionData.userId; // Assuming this function gets the user ID from the session
+            console.log("User ID from session:", userId); // Debugging line
+
+            if (!userId || !collectionId || !reactionType || !['like', 'dislike'].includes(reactionType)) {
+                console.log("Invalid request data:", { userId, collectionId, reactionType }); // Debugging line
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Invalid request data' }));
+                return;
+            }
+
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    return;
+                }
+
+                // Check if the user has already reacted to the collection
+                const checkReactionQuery = `SELECT id FROM collection_reactions WHERE user_id = ? AND collection_id = ?`;
+                connection.query(checkReactionQuery, [userId, collectionId], (err, results) => {
+                    if (err) {
+                        console.error('Database query error:', err);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                        connection.release();
+                        return;
+                    }
+
+                    if (results.length > 0) {
+                        res.writeHead(400, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'You have already reacted to this collection' }));
+                        connection.release();
+                    } else {
+                        const insertReactionQuery = `INSERT INTO collection_reactions (user_id, collection_id, reaction_type) VALUES (?, ?, ?)`;
+                        connection.query(insertReactionQuery, [userId, collectionId, reactionType], (err, results) => {
+                            connection.release();
+                            if (err) {
+                                console.error('Database query error:', err);
+                                res.writeHead(500, { 'Content-Type': 'application/json' });
+                                res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                            } else {
+                                res.writeHead(201, { 'Content-Type': 'application/json' });
+                                res.end(JSON.stringify({ success: true }));
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    }
 
     //USED TO update the password of a client
     if (req.method === 'PUT' && req.url === '/api/updatePassword') {
@@ -592,39 +697,8 @@ const server = http.createServer(async (req, res) => {
         }
     }
     
-    // USED FOR getting the id of the most popular plant
-    if (req.method === 'GET' && req.url === '/api/mostPopularPlantId') {
+    if(!plantRouter(req, res)){
         headerNotModified = false;
-      
-        pool.getConnection((err, connection) => {
-          if (err) {
-            console.error('Error getting connection from pool:', err);
-            res.writeHead(500, { 'Content-Type': 'text/plain' });
-            res.end('Internal Server Error');
-            return;
-          }
-      
-          connection.query('SELECT plant_id FROM plants ORDER BY number_of_visits DESC LIMIT 1', (err, results, fields) => {
-            if (err) {
-              console.error('Error executing query:', err);
-              res.writeHead(500, { 'Content-Type': 'text/plain' });
-              res.end('Internal Server Error');
-              return;
-            }
-      
-            if (results.length > 0) {
-              const firstPlantId = results[0].plant_id; 
-              console.log(firstPlantId);
-              res.writeHead(200, { 'Content-Type': 'text/plain' });
-              res.end(JSON.stringify({ plantId: firstPlantId })); 
-            } else {
-              res.writeHead(404, { 'Content-Type': 'text/plain' });
-              res.end('No plants found'); 
-            }
-          });
-      
-          connection.release(); 
-        });
     }
 
     // USED FOR getting the 10 most popular plants in the database
@@ -2021,16 +2095,17 @@ const server = http.createServer(async (req, res) => {
                                 const isPasswordValid = await bcrypt.compare(Password, hashedPassword);
 
                                 if (isPasswordValid) {
-                                    const sessionId = createSession();
-                                    
+                                    // const sessionId = createSession();
+                                
+                                    const sessionId = setSessionData( results[0].id, 'True');
+                                    const userData = {sessionId: sessionId, userId: results[0].id, username: results[0].name, isAdmin: 'True'};
+                                    console.log("TEST ADMIN " + sessionId + " " + userData.userId + " " + userData.isAdmin);
+                                    // setSessionData(sessionId, userData);
+                                    console.log(userData);
+
                                     //cookies
                                     const cookieValue = `sessionId=${sessionId}; HttpOnly; Max-Age=${24 * 60 * 60}`;
                                     res.setHeader('Set-Cookie', cookieValue);
-
-                                    const userData = {sessionId: sessionId, userId: results[0].id, username: results[0].name, isAdmin: 'True'};
-                                    setSessionData(sessionId, userData.userId, userData.isAdmin);
-                                    // setSessionData(sessionId, userData);
-                                    console.log(userData);
 
                                     console.log(`Admin with ID ${userData.userId} authenticated successfully`);
                                     res.writeHead(200, { 'Content-Type': 'text/plain', 'isAdmin': 'Yes' });
@@ -2070,16 +2145,17 @@ const server = http.createServer(async (req, res) => {
                                         res.writeHead(403, { 'Content-Type': 'text/plain' });
                                         res.end('Forbidden');
                                     }else{
-                                        const sessionId = createSession();
+                                        // const sessionId = createSession();
                                         
+                                        const sessionId = setSessionData(results[0].id, 'False');
+                                        const userData = {sessionId: sessionId, userId: results[0].id, username: results[0].name, isAdmin: 'False'};
+                                        console.log("TEST CLIENT " + sessionId + " " + userData.userId + " " + userData.isAdmin);
+                                        // setSessionData(sessionId, userData);
+                                        console.log(userData);
+
                                         //cookies
                                         const cookieValue = `sessionId=${sessionId}; HttpOnly; Max-Age=${24 * 60 * 60}`;
                                         res.setHeader('Set-Cookie', cookieValue);
-
-                                        const userData = {sessionId: sessionId, userId: results[0].id, username: results[0].name, isAdmin: 'False'};
-                                        setSessionData(sessionId, userData.userId, userData.isAdmin);
-                                        // setSessionData(sessionId, userData);
-                                        console.log(userData);
 
                                         console.log(`User with ID ${userData.userId} authenticated successfully`);
                                         res.writeHead(200, { 'Content-Type': 'text/plain', 'isAdmin': 'No' });
@@ -2587,18 +2663,19 @@ const getSession = async (sessionId) => {
 //     sessions[sessionId] = data;
 // };
 
-const setSessionData = (sessionId, clientId, isAdmin) => {
+const setSessionData = (clientId, isAdmin) => {
+    const sessionId = generateSessionId();
     console.log( clientId, isAdmin, sessionId);
-    const sql = 'UPDATE sessions SET client_id = ?, isAdmin = ? WHERE session_id = ?';
-    const values = [clientId, isAdmin, sessionId];
+    const sql = 'INSERT INTO sessions (session_id, client_id, isAdmin) VALUES (?, ?, ?)';
+    const values = [sessionId, clientId, isAdmin];
   
-    pool.getConnection((err, connection) => {
+    pool.getConnection(async (err, connection) => {
       if (err) {
         console.error('Error getting connection from pool:', err);
         return;
       }
-  
-      connection.query(sql, values, (error, results) => {
+    
+    connection.query(sql, values, (error, results) => {
         connection.release(); 
   
         if (error) {
@@ -2608,6 +2685,7 @@ const setSessionData = (sessionId, clientId, isAdmin) => {
         }
       });
     });
+    return sessionId;
   };
 
 // Function to destroy session
@@ -2758,7 +2836,6 @@ function generateClientsPDFReport(res) {
       });
     });
   }
-  
   
   function generateClientsCSVReport(res) {
     const query = `

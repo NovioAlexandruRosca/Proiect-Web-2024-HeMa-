@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const isAdmin = localStorage.getItem('clientIsAdmin');
+    console.log(isAdmin);
 
     localStorage.setItem('clientIsAdmin', '');
 

@@ -291,6 +291,8 @@ async function fetchCollectionData(collectionID) {
           if(response.status === 200){
             userID = response.headers.get('userId');
           
+            console.log(collectionID);
+
             fetch('/api/collectionData', {
                 method: 'POST',
                 headers: {
