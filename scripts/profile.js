@@ -332,6 +332,7 @@ async function fetchClientData(clientId) {
 
 async function fetchPlantId(collectionId) {
   try {
+    console.log(collectionId);
       const response = await fetch(`/api/getPlantId`, {
           method: 'POST',
           headers: {
@@ -612,8 +613,10 @@ async function fetchClientFollowing(clientId){
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const clientId = sessionStorage.getItem('clientID'); 
+
+  await fetchFavoritePlantsAndSetCollectionImage();
 
   fetchAvatar(clientId);
   fetchClientData(clientId);
@@ -1046,5 +1049,3 @@ async function fetchFavoritePlantsAndSetCollectionImage() {
       console.error('Error fetching favorite plants:', error);
   }
 }
-
-fetchFavoritePlantsAndSetCollectionImage();
