@@ -2422,6 +2422,159 @@ const server = http.createServer(async (req, res) => {
         generatePlantsCSVReport(res);
     } 
 
+    // Endpoint to fetch all ban reports
+    if (req.method === 'GET' && req.url === '/admin/api/bans') {
+        headerNotModified = false;
+        pool.getConnection((err, connection) => {
+            if (err) {
+                console.error('Error getting connection from pool:', err);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                return;
+            }
+
+            const query = `
+                SELECT 
+                    r.id, 
+                    r.client_id AS clientId, 
+                    r.reportedUserName, 
+                    r.reportedUserComment, 
+                    r.motif,
+                    c.name AS reportedBy,
+                    c.email AS email
+                FROM reports r
+                JOIN clients c ON r.client_id = c.id
+            `;
+
+            connection.query(query, (err, results) => {
+                connection.release();
+                if (err) {
+                    console.error('Database query error:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                } else {
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(results));
+                }
+            });
+        });
+    }
+
+    // Endpoint to ban a user based on a report
+    if (req.method === 'POST' && req.url === '/admin/api/banUser') {
+        headerNotModified = false;  
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+
+        req.on('end', () => {
+            const parsedBody = JSON.parse(body);
+            const { clientId, motif } = parsedBody;
+
+            if (!clientId || !motif) {
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Invalid request data' }));
+                return;
+            }
+
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    return;
+                }
+
+                const selectQuery = `SELECT email FROM clients WHERE id = ?`;
+                connection.query(selectQuery, [clientId], (err, results) => {
+                    if (err) {
+                        console.error('Database query error:', err);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                        connection.release();
+                        return;
+                    }
+
+                    if (results.length === 0) {
+                        res.writeHead(400, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Client not found' }));
+                        connection.release();
+                        return;
+                    }
+
+                    const email = results[0].email;
+
+                    const insertBanQuery = `INSERT INTO banned_users (email, motif) VALUES (?, ?)`;
+                    connection.query(insertBanQuery, [email, motif], (err, results) => {
+                        if (err) {
+                            console.error('Database query error:', err);
+                            res.writeHead(500, { 'Content-Type': 'application/json' });
+                            res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                            connection.release();
+                            return;
+                        }
+
+                        const deleteClientQuery = `DELETE FROM clients WHERE id = ?`;
+                        connection.query(deleteClientQuery, [clientId], (err, results) => {
+                            connection.release();
+                            if (err) {
+                                console.error('Database query error:', err);
+                                res.writeHead(500, { 'Content-Type': 'application/json' });
+                                res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                            } else {
+                                res.writeHead(200, { 'Content-Type': 'application/json' });
+                                res.end(JSON.stringify({ success: true }));
+                            }
+                        });
+                    });
+                });
+            });
+        });
+    }
+
+    // Endpoint to reject a report
+    if (req.method === 'POST' && req.url === '/admin/api/rejectReport') {
+        headerNotModified = false;  
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+
+        req.on('end', () => {
+            const parsedBody = JSON.parse(body);
+            const { reportId } = parsedBody;
+
+            if (!reportId) {
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Invalid request data' }));
+                return;
+            }
+
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error('Error getting connection from pool:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    return;
+                }
+
+                const rejectQuery = `DELETE FROM reports WHERE id = ?`;
+                connection.query(rejectQuery, [reportId], (err, results) => {
+                    connection.release();
+                    if (err) {
+                        console.error('Database query error:', err);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                    } else {
+                        res.writeHead(200, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ success: true }));
+                    }
+                });
+            });
+        });
+    }
+
     if(!devRouter(req, res)){
         headerNotModified = false;
     }
