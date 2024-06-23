@@ -419,6 +419,8 @@ form.addEventListener('submit', async (event) => {
                 formDataJson[key] = value;
             });
 
+            console.log("Inainte ",formDataJson);
+
             if(formDataJson.scientificName == ""){
                 formDataJson["scientificName"] = taxonomy.order;
             }
@@ -431,6 +433,7 @@ form.addEventListener('submit', async (event) => {
             if(formDataJson.species == ""){
                 formDataJson["species"] = taxonomy.class;
             }
+            console.log("Dupa ",formDataJson);
 
             if(document.getElementById('plantAvatar').src == "http://localhost:5500/Images/website_Icon/LittleCactus.jpg"){
 
@@ -450,6 +453,8 @@ form.addEventListener('submit', async (event) => {
                 } catch (error) {
                     console.error('Error uploading avatar:', error);
                 }
+            }
+                
 
                 fetch('/api/updatePlant', {
                     method: 'PUT',
@@ -503,7 +508,7 @@ form.addEventListener('submit', async (event) => {
                 .catch(error => {
                     console.error('Error submitting form:', error);
                 });
-            }
+            
 
 
         } catch (error) {

@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
             generateTokenModalButton.addEventListener('click', async () => {
         
                 try {
-                    const response = await fetch(`/dev/generateToken`, {
+                    const response = await fetch(`/dev/v1/generateToken`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             fetchTokenButton.addEventListener('click', async () => {
                 try {
-                    const response = await fetch(`/dev/getToken`, {
+                    const response = await fetch(`/dev/v1/getToken`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

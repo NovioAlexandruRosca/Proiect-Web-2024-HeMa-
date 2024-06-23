@@ -81,7 +81,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(data => {
-            alert('User banned successfully');
             reportElement.remove();
         })
         .catch(error => {
@@ -104,7 +103,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(data => {
-            alert('Report rejected successfully');
             reportElement.remove();
         })
         .catch(error => {

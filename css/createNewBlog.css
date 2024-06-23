@@ -72,6 +72,7 @@
     width:60%;
     resize: none;
     font-size:25px;
+    scrollbar-width: none;
 }
 
 
@@ -242,4 +243,9 @@ button{
   
 .f-wrapper--2 .f{
     transform: translate(-350%,-50%) rotate(160deg);
+}
+
+.descriptionInput::-webkit-scrollbar {
+    width: 0px; 
+    background: transparent;
 }

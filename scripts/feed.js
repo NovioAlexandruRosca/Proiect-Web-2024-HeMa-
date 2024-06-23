@@ -94,43 +94,76 @@ document.addEventListener('DOMContentLoaded', function() {
   const footerRow = document.createElement('tr');
   
   ['like', 'dislike', 'visit'].forEach(type => {
-      const th = document.createElement('th');
-      th.classList.add(type);
-      th.innerHTML = `<span class="emoji">${type === 'like' ? '👍🏻' : type === 'dislike' ? '👎🏻' : '🌱'}</span>`;
-      footerRow.appendChild(th);
-  
-      if (type === 'visit') {
-          th.addEventListener('mouseover', function() {
-              th.style.fontSize = '23.5px';
-              if (th.classList.contains('visit')) {
-                  th.textContent = 'Visit';
-              }
-          });
-  
-          th.addEventListener('mouseout', function() {
-              th.style.fontSize = '20px';
-              if (th.classList.contains('visit')) {
-                  th.textContent = '🌱';
-              }
-          });
-  
-          th.addEventListener('click', function() {
-              console.log('Visit button clicked'); // Debugging line
-              try {
-                  const tableElement = th.closest('table');
-                  console.log('Table element:', tableElement); // Debugging line
-                  const collectionId = tableElement.getAttribute('data-collection-id');
-                  const collectionName = tableElement.getAttribute('data-collection-name');
-                  console.log('Table Collection ID:', collectionId); // Debugging line
-                  console.log('Table Collection Name:', collectionName); // Debugging line
-                  sessionStorage.setItem('data-collection-id', collectionId);
-                  window.location.href = "./collection.html";
-              } catch (error) {
-                  console.error('Error parsing collectionId or setting localStorage:', error);
-              }
-          });
-      }
-  });
+    const th = document.createElement('th');
+    th.classList.add(type);
+    th.innerHTML = `<span class="emoji">${type === 'like' ? '👍🏻' : type === 'dislike' ? '👎🏻' : '🌱'}</span>`;
+    footerRow.appendChild(th);
+
+    if (type === 'visit') {
+        th.addEventListener('mouseover', function() {
+            th.style.fontSize = '23.5px';
+            if (th.classList.contains('visit')) {
+                th.textContent = 'Visit';
+            }
+        });
+
+        th.addEventListener('mouseout', function() {
+            th.style.fontSize = '20px';
+            if (th.classList.contains('visit')) {
+                th.textContent = '🌱';
+            }
+        });
+
+        th.addEventListener('click', function() {
+            console.log('Visit button clicked'); // Debugging line
+            try {
+                const tableElement = th.closest('table');
+                console.log('Table element:', tableElement); // Debugging line
+                const collectionId = tableElement.getAttribute('data-collection-id');
+                const collectionName = tableElement.getAttribute('data-collection-name');
+                console.log('Table Collection ID:', collectionId); // Debugging line
+                console.log('Table Collection Name:', collectionName); // Debugging line
+                sessionStorage.setItem('data-collection-id', collectionId);
+                window.location.href = "./collection.html";
+            } catch (error) {
+                console.error('Error parsing collectionId or setting localStorage:', error);
+            }
+        });
+    } else {
+      th.addEventListener('mouseover', function () {
+          fetch(`http://localhost:5500/api/reactionCount?collectionId=${collection.id}&reactionType=${type}`)
+              .then(response => response.json())
+              .then(data => {
+                  th.textContent = `${type === 'like' ? '👍🏻' : '👎🏻'} ${data.count}`;
+              })
+              .catch(error => {
+                  console.error('Error fetching reaction count:', error);
+              });
+      });
+
+      th.addEventListener('mouseout', function () {
+          th.textContent = `${type === 'like' ? '👍🏻' : '👎🏻'}`;
+      });
+
+      th.addEventListener('click', function () {
+          fetch('/api/react', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ collectionId: collection.id, reactionType: type })
+          })
+              .then(response => {
+                  if (response.ok) {
+                      th.textContent = `${type === 'like' ? '👍🏻' : '👎🏻'}`;
+                  } else {
+                      console.error('Error reacting to collection:', response.statusText);
+                  }
+              })
+              .catch(error => {
+                  console.error('Error reacting to collection:', error);
+              });
+      });
+  }
+});
   
   tfoot.appendChild(footerRow);
   table.appendChild(tfoot);
@@ -219,41 +252,81 @@ document.addEventListener('DOMContentLoaded', function() {
   const footerRowBack = document.createElement('tr');
   
   ['like', 'dislike', 'visit'].forEach(type => {
-      const thBack = document.createElement('th');
-      thBack.classList.add(type);
-      thBack.innerHTML = `<span class="emoji">${type === 'like' ? '👍🏻' : type === 'dislike' ? '👎🏻' : '🌱'}</span>`;
-      footerRowBack.appendChild(thBack);
-  
-      if (type === 'visit') {
-          thBack.addEventListener('mouseover', function() {
-              thBack.style.fontSize = '23.5px';
-              if (thBack.classList.contains('visit')) {
-                  thBack.textContent = 'Visit';
-              }
-          });
-  
-          thBack.addEventListener('mouseout', function() {
-              thBack.style.fontSize = '20px';
-              if (thBack.classList.contains('visit')) {
-                  thBack.textContent = '🌱';
-              }
-          });
-  
-          thBack.addEventListener('click', function() {
-              console.log('Visit button clicked'); // Debugging line
-              try {
-                  const collectionId = flipCard.getAttribute('data-collection-id');
-                  const collectionName = collection.name;
-                  console.log('Flip Collection ID:', collectionId); // Debugging line
-                  console.log('Flip Collection Name:', collectionName); // Debugging line
-                  sessionStorage.setItem('data-collection-id', collectionId);
-                  window.location.href = "./collection.html";
-              } catch (error) {
-                  console.error('Error parsing collectionId or setting localStorage:', error);
-              }
-          });
-      }
-  });
+    const thBack = document.createElement('th');
+    thBack.classList.add(type);
+    thBack.innerHTML = `<span class="emoji">${type === 'like' ? '👍🏻' : type === 'dislike' ? '👎🏻' : '🌱'}</span>`;
+    footerRowBack.appendChild(thBack);
+
+    if (type === 'visit') {
+        thBack.addEventListener('mouseover', function() {
+            thBack.style.fontSize = '23.5px';
+            if (thBack.classList.contains('visit')) {
+                thBack.textContent = 'Visit';
+            }
+        });
+
+        thBack.addEventListener('mouseout', function() {
+            thBack.style.fontSize = '20px';
+            if (thBack.classList.contains('visit')) {
+                thBack.textContent = '🌱';
+            }
+        });
+
+        thBack.addEventListener('click', function() {
+            console.log('Visit button clicked'); // Debugging line
+            try {
+                const collectionId = flipCard.getAttribute('data-collection-id');
+                const collectionName = collection.name;
+                console.log('Flip Collection ID:', collectionId); // Debugging line
+                console.log('Flip Collection Name:', collectionName); // Debugging line
+                sessionStorage.setItem('data-collection-id', collectionId);
+                window.location.href = "./collection.html";
+            } catch (error) {
+                console.error('Error parsing collectionId or setting localStorage:', error);
+            }
+        });
+    } else {
+        thBack.addEventListener('mouseover', function() {
+            fetch(`http://localhost:5500/api/reactionCount?collectionId=${collection.id}&reactionType=${type}`)
+                .then(response => response.json())
+                .then(data => {
+                    thBack.textContent = `${type === 'like' ? '👍🏻' : '👎🏻'} ${data.count}`;
+                })
+                .catch(error => {
+                    console.error('Error fetching reaction count:', error);
+                });
+        });
+
+        thBack.addEventListener('mouseout', function() {
+            thBack.textContent = `${type === 'like' ? '👍🏻' : '👎🏻'}`;
+        });
+
+        thBack.addEventListener('click', function() {
+            fetch('/api/react', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ collectionId: collection.id, reactionType: type })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error(response.statusText);
+                    }
+                })
+                .then(data => {
+                    if (data.success) {
+                        thBack.textContent = `${type === 'like' ? '👍🏻' : '👎🏻'}`;
+                    } else {
+                        console.error('Error reacting to collection:', data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error reacting to collection:', error);
+                });
+        });
+    }
+});
   
   tfootBack.appendChild(footerRowBack);
   tableBack.appendChild(tfootBack);
