@@ -11,8 +11,10 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const devRouter = require('./dev/dev');
 const plantRouter = require('./plants/plantRouter');
-const PDFDocument = require('pdfkit');  // Use require for PDFDocument
-const { createObjectCsvStringifier } = require('csv-writer');  // Use require for csv-writer
+const PDFDocument = require('pdfkit');  
+const { createObjectCsvStringifier } = require('csv-writer');  
+const formidable = require('formidable');
+const csv = require('csv-parser');
 
 // DATA NEEDED TO CONNECT TO THE DATABASE
 const pool = require('./database')
@@ -27,6 +29,7 @@ const sessions = {};
 const generateSessionId = () => {
     return Math.random().toString(36).substring(2, 15);
 };
+
 
 // WE CREATE THE BASE OF THE SERVER
 const server = http.createServer(async (req, res) => {
@@ -2575,6 +2578,174 @@ const server = http.createServer(async (req, res) => {
         });
     }
 
+    // Endpoint to import plants from a CSV file
+    // if (req.method === 'POST' && req.url === '/api/importPlants') {
+    //     headerNotModified = false;
+    //     const form = new formidable.IncomingForm();
+    //     form.uploadDir = path.join(__dirname, 'uploads');
+    //     form.keepExtensions = true;
+
+    //     form.parse(req, (err, fields, files) => {
+    //         if (err) {
+    //             console.error('Form parse error:', err);
+    //             res.writeHead(500, { 'Content-Type': 'application/json' });
+    //             res.end(JSON.stringify({ error: 'Failed to parse form data' }));
+    //             return;
+    //         }
+
+    //         if (!files.plantsFile) {
+    //             console.error('No file uploaded');
+    //             res.writeHead(400, { 'Content-Type': 'application/json' });
+    //             res.end(JSON.stringify({ error: 'No file uploaded' }));
+    //             return;
+    //         }
+
+    //         const filePath = files.plantsFile.filepath;
+    //         console.log('File uploaded to:', filePath);
+
+    //         const results = [];
+    //         fs.createReadStream(filePath)
+    //             .pipe(csv())
+    //             .on('data', (data) => {
+    //                 console.log('Parsed CSV row:', data);
+    //                 results.push(data);
+    //             })
+    //             .on('end', () => {
+    //                 console.log('Parsed CSV file:', results);
+
+    //                 // Save data to the database
+    //                 savePlantsData(results, (dbError) => {
+    //                     if (dbError) {
+    //                         console.error('Database error:', dbError);
+    //                         res.writeHead(500, { 'Content-Type': 'application/json' });
+    //                         res.end(JSON.stringify({ error: 'Failed to import plant data' }));
+    //                     } else {
+    //                         res.writeHead(200, { 'Content-Type': 'application/json' });
+    //                         res.end(JSON.stringify({ success: true, message: 'Plants imported successfully' }));
+    //                     }
+    //                 });
+    //             })
+    //             .on('error', (csvError) => {
+    //                 console.error('CSV parse error:', csvError);
+    //                 res.writeHead(500, { 'Content-Type': 'application/json' });
+    //                 res.end(JSON.stringify({ error: 'Failed to parse CSV file' }));
+    //             });
+    //     });
+    // } 
+
+    const defaultValues = {
+        owner_id: 1, // Default owner ID for invalid entries
+        collection_id: 0,
+        collection_date: '1970-01-01',
+        hashtags: '',
+        common_name: 'Unknown',
+        scientific_name: 'Unknown',
+        family: 'Unknown',
+        genus: 'Unknown',
+        species: 'Unknown',
+        place_of_collection: 'Unknown',
+        color: 'Unknown',
+        number_of_visits: 0,
+        picture: 'http://example.com/default.jpg',
+        isFavorite: 0
+    };
+    
+
+    if (req.method === 'POST' && req.url === '/api/importPlants') {
+        headerNotModified = false;
+        const form = new formidable.IncomingForm();
+
+        form.parse(req, (err, fields, files) => {
+            console.log('Parsing form data...');
+            if (err) {
+                console.error('Error parsing form data:', err);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Error parsing form data' }));
+                return;
+            }
+
+            console.log('Form fields:', fields);
+            console.log('Form files:', files);
+
+            const file = files.plantsFile[0]; // Access the first element of the array
+            const filePath = file.filepath || file.path;
+            console.log('Uploaded file path:', filePath);
+
+            if (!filePath) {
+                console.error('No file uploaded');
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'No file uploaded' }));
+                return;
+            }
+
+            const plantValues = [];
+
+            // Simulating session data
+            const session = {
+                client_id: 31, // Example client_id from session
+                collection_id: 11 // Example collection_id from session
+            };
+
+            fs.createReadStream(filePath)
+                .pipe(csv())
+                .on('data', (row) => {
+                    console.log('CSV Row:', row);
+
+                    const validatedRow = [
+                        session.client_id,
+                        session.collection_id,
+                        row.collection_date || defaultValues.collection_date,
+                        row.hashtags || defaultValues.hashtags,
+                        row.common_name || defaultValues.common_name,
+                        row.scientific_name || defaultValues.scientific_name,
+                        row.family || defaultValues.family,
+                        row.genus || defaultValues.genus,
+                        row.species || defaultValues.species,
+                        row.place_of_collection || defaultValues.place_of_collection,
+                        row.color || defaultValues.color,
+                        row.number_of_visits || defaultValues.number_of_visits,
+                        row.picture || defaultValues.picture,
+                        row.isFavorite === 'true' ? 1 : row.isFavorite === 'false' ? 0 : defaultValues.isFavorite
+                    ].map(value => (isNaN(value) ? value : Number(value) || 0)); // Ensure numeric fields default to 0
+
+                    plantValues.push(validatedRow);
+                })
+                .on('end', () => {
+                    console.log('CSV parsing completed. Plant values:', plantValues);
+
+                    pool.getConnection((err, connection) => {
+                        if (err) {
+                            console.error('Error getting connection from pool:', err);
+                            res.writeHead(500, { 'Content-Type': 'application/json' });
+                            res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                            return;
+                        }
+
+                        const insertPlant = `INSERT INTO plants (owner_id, collection_id, collection_date, hashtags, common_name, scientific_name, family, genus, species, place_of_collection, color, number_of_visits, picture, isFavorite) VALUES ?`;
+
+                        connection.query(insertPlant, [plantValues], (err, result) => {
+                            connection.release();
+                            if (err) {
+                                console.error('Error inserting plant data:', err);
+                                res.writeHead(500, { 'Content-Type': 'application/json' });
+                                res.end(JSON.stringify({ error: 'Error inserting plant data' }));
+                                return;
+                            }
+
+                            console.log('Plant data inserted successfully:', result);
+                            res.writeHead(200, { 'Content-Type': 'application/json' });
+                            res.end(JSON.stringify({ message: 'Plants imported successfully', result }));
+                        });
+                    });
+                })
+                .on('error', (error) => {
+                    console.error('Error reading CSV file:', error);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Error reading CSV file' }));
+                });
+        });
+    }
+
     if(!devRouter(req, res)){
         headerNotModified = false;
     }
@@ -3171,3 +3342,26 @@ function generateClientsPDFReport(res) {
       });
     });
   }
+
+function savePlantsData(plants, callback) {
+    const query = 'INSERT INTO plants (plant_id, name, description, collection_id) VALUES ?';
+    const values = plants.map(plant => [plant.plant_id, plant.name, plant.description, plant.collection_id]);
+
+    pool.getConnection((err, connection) => {
+        if (err) {
+            callback(err);
+            return;
+        }
+
+        connection.query(query, [values], (err, results) => {
+            connection.release();
+            if (err) {
+                callback(err);
+                return;
+            }
+
+            console.log('Plants data saved to the database:', results);
+            callback(null);
+        });
+    });
+}

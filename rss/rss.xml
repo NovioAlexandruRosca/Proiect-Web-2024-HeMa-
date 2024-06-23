@@ -41,5 +41,65 @@ Popularity: 30 visits until now!
 </description>
           </item>
         
+          <item>
+            <title>Jasmine</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=68</link>
+            <description>Scientific Name: Jasminum
+Part of the Family: Jasminaceae
+And the Genus: Jasminum
+Species of: Jasminum sambac
+Collected at: Garden
+Popularity: 25 visits until now!
+</description>
+          </item>
+        
+          <item>
+            <title>Mango</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=67</link>
+            <description>Scientific Name: Mangifera indica
+Part of the Family: Anacardiaceae
+And the Genus: Mangifera
+Species of: Mangifera indica
+Collected at: Orchard
+Popularity: 21 visits until now!
+</description>
+          </item>
+        
+          <item>
+            <title>Basil</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=66</link>
+            <description>Scientific Name: Ocimum basilicum
+Part of the Family: Lamiaceae
+And the Genus: Ocimum
+Species of: Ocimum basilicum
+Collected at: Kitchen
+Popularity: 15 visits until now!
+</description>
+          </item>
+        
+          <item>
+            <title>Aloe</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=65</link>
+            <description>Scientific Name: Aloe vera
+Part of the Family: Asphodelaceae
+And the Genus: Aloe
+Species of: Aloe vera
+Collected at: Home
+Popularity: 10 visits until now!
+</description>
+          </item>
+        
+          <item>
+            <title>Rose</title>
+            <link>http://localhost:5500/PlantProfilePage.html?id=64</link>
+            <description>Scientific Name: Rosa
+Part of the Family: Rosaceae
+And the Genus: Rosa
+Species of: Rosa rubiginosa
+Collected at: Garden
+Popularity: 5 visits until now!
+</description>
+          </item>
+        
         </channel>
       </rss>
