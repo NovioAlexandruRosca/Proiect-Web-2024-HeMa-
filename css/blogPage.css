@@ -237,7 +237,7 @@ main{
     background-color: #fefefed3;
     margin: 60% auto; 
     padding: 20px 40px;
-    border: 1px solid #888;
+    border: 3px solid #23462f;
     border-radius: 15px;
     width: 80%; 
     font-size: 30px;
@@ -274,7 +274,6 @@ label {
     position: relative;
     padding-left: 30px; /* Space for custom bullet point */
     margin-bottom: 10px;
-    cursor: pointer;
 }
 
 /* Custom bullet point */
@@ -293,7 +292,7 @@ input[type="radio"] + span::before {
 
 /* Change bullet point color when selected */
 input[type="radio"]:checked + span::before {
-    background-color: #007bff;
+    background-color: #458b82;
 }
 
 /* Style for the text next to the bullet point */
@@ -301,4 +300,16 @@ label span {
     display: inline-block;
     vertical-align: middle;
     margin-left: 10px;
+}
+
+
+#bt:hover{
+    background-color: #1b6158;
+}
+
+.spaceLine{
+    margin: 5px 0px;
+    width: 40%;
+    height: 2px;
+    background-color: #1b6158;
 }

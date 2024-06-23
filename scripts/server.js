@@ -45,44 +45,6 @@ const server = http.createServer(async (req, res) => {
     res.setHeader('Set-Cookie', cookieValue);
 
 
-    // Endpoint to fetch all shared collections
-    if (req.method === 'GET' && req.url === '/api/allSharedCollections') {
-        headerNotModified = false;
-        console.log('Fetching all shared collections...');
-        pool.getConnection((err, connection) => {
-            if (err) {
-                console.error('Error getting connection from pool:', err);
-                res.writeHead(500, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ error: 'Internal Server Error' }));
-                return;
-            }
-
-            const query = `
-                SELECT 
-                    plant_collections.collection_id AS id, 
-                    plant_collections.name, 
-                    clients.name AS sharedBy,
-                    plant_collections.creation_time AS postingDate, 
-                    plant_collections.description
-                FROM plant_collections
-                JOIN clients ON plant_collections.client_id = clients.id
-                WHERE plant_collections.is_shared = 1
-            `;
-
-            connection.query(query, (err, results) => {
-                connection.release();
-                if (err) {
-                    console.error('Database query error:', err);
-                    res.writeHead(500, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
-                } else {
-                    res.writeHead(200, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify(results));
-                }
-            });
-        });
-    }
-
     // Endpoint to react to a collection
     if (req.method === 'POST' && req.url === '/api/react') {
         headerNotModified = false;  
@@ -198,6 +160,8 @@ const server = http.createServer(async (req, res) => {
 
         req.on('end', () => {
             const data = JSON.parse(body);
+
+            console.log(data);
 
             const formData = data.formData;
             const plantID = data.plantID;
@@ -604,7 +568,7 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
-    // USED FOR getting the users name
+    // USED FOR getting the a user
     if(req.method === 'GET' && req.url === '/api/user'){
         headerNotModified = false;        
         res.writeHead(200, { 'Content-Type': 'text/plain', 'Name' : sessionData.username });
@@ -618,7 +582,7 @@ const server = http.createServer(async (req, res) => {
         res.end('Error404 Back To Page');
     }
 
-    // USED FOR getting the users name
+    // USED FOR getting all the blogs
     if (req.method === 'GET' && req.url === '/api/blogs') {
         headerNotModified = false; 
         pool.query('SELECT * FROM blog_posts', (error, results, fields) => {
@@ -700,7 +664,7 @@ const server = http.createServer(async (req, res) => {
         }
     }
     
-    if(!plantRouter(req, res)){
+    if(!plantRouter(req, res, sessionData)){
         headerNotModified = false;
     }
 

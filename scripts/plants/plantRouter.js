@@ -1,7 +1,8 @@
-const { getMostPopularPlantId } = require('./plantHandler');
+const { getMostPopularPlantId, getAllSharedCollections, updatePlantData } = require('./plantHandler');
+const checkSessionAndExecute = require('../verifySessionData/verifySessionData');
 const url  = require('url');
 
-function plantRouter(req, res) {
+function plantRouter(req, res, sessionData) {
     const parsedUrl = url.parse(req.url, true);
     const { pathname, query } = parsedUrl;
     const method = req.method;
@@ -21,14 +22,23 @@ function plantRouter(req, res) {
 
     if (method === 'GET') {
         if (pathname === '/api/mostPopularPlantId') {  // USED FOR getting the id of the most popular plant
-            getMostPopularPlantId(req, res);
             branchExecuted = true;
-        } 
+            checkSessionAndExecute(sessionData, req, res, getMostPopularPlantId);
+        }else if(pathname === '/api/allSharedCollections'){
+            branchExecuted = true;
+            checkSessionAndExecute(sessionData, req, res, getAllSharedCollections);
+        }
     }
 
     // if (method === 'DELETE') {
     //     if (pathname === '/dev/deletePlant') {
     //         deletePlant(req, res);
+    //         branchExecuted = true;
+    //     }
+    // }
+
+    // if (method === 'PUT') {
+    //     if (pathname === '/api/updatePlant') {
     //         branchExecuted = true;
     //     }
     // }
