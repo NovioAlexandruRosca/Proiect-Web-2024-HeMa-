@@ -9,13 +9,13 @@ function devRouter(req, res) {
     let branchExecuted = false;
 
     if (method === 'POST') {
-        if (pathname === '/dev/addPlant') {
+        if (pathname === '/dev/v1/addPlant') {
             addPlant(req, res);
             branchExecuted = true;
-        }else if (pathname === '/dev/generateToken') {
+        }else if (pathname === '/dev/v1/generateToken') {
             generateTokenHandler(req, res);
             branchExecuted = true;
-        }else if (pathname === '/dev/getToken') {
+        }else if (pathname === '/dev/v1/getToken') {
             getToken(req, res);
             branchExecuted = true;
         }
@@ -23,32 +23,32 @@ function devRouter(req, res) {
     }
 
     if (method === 'GET') {
-        if (pathname === '/dev/getPlant') {
+        if (pathname === '/dev/v1/getPlant') {
             getPlant(req, res);
             branchExecuted = true;
-        } else if (pathname === '/dev/getPlantCollection') {
+        } else if (pathname === '/dev/v1/getPlantCollection') {
             getPlantCollection(req, res);
             branchExecuted = true;
-        } else if (pathname === '/dev/getAllPlants') {
+        } else if (pathname === '/dev/v1/getAllPlants') {
             getAllPlants(req, res);
             branchExecuted = true;
-        } else if (pathname === '/dev/getComments') {
+        } else if (pathname === '/dev/v1/getComments') {
             getComments(req, res);
             branchExecuted = true;
-        } else if (pathname === '/dev/getCollections') {
+        } else if (pathname === '/dev/v1/getCollections') {
             getCollections(req, res);
             branchExecuted = true;
-        } else if (pathname === '/dev/getBadges') {
+        } else if (pathname === '/dev/v1/getBadges') {
             getBadges(req, res);
             branchExecuted = true;
-        } else if (pathname === '/dev/getFriends') {
+        } else if (pathname === '/dev/v1/getFriends') {
             getFriends(req, res);
             branchExecuted = true;
         }
     }
 
     if (method === 'DELETE') {
-        if (pathname === '/dev/deletePlant') {
+        if (pathname === '/dev/v1/deletePlant') {
             deletePlant(req, res);
             branchExecuted = true;
         }

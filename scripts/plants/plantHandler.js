@@ -34,7 +34,98 @@ async function getMostPopularPlantId(req, res) {
 
 }
 
+async function getAllSharedCollections(req, res){
+  console.log('Fetching all shared collections...');
+        pool.getConnection((err, connection) => {
+            if (err) {
+                console.error('Error getting connection from pool:', err);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                return;
+            }
+
+            const query = `
+                SELECT 
+                    plant_collections.collection_id AS id, 
+                    plant_collections.name, 
+                    clients.name AS sharedBy,
+                    plant_collections.creation_time AS postingDate, 
+                    plant_collections.description
+                FROM plant_collections
+                JOIN clients ON plant_collections.client_id = clients.id
+                WHERE plant_collections.is_shared = 1
+            `;
+
+            connection.query(query, (err, results) => {
+                connection.release();
+                if (err) {
+                    console.error('Database query error:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+                } else {
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(results));
+                }
+            });
+        });
+}
+
+async function updatePlantData(req, res){
+  let body = '';
+      req.on('data', chunk => {
+          body += chunk.toString(); 
+      });
+
+      req.on('end', () => {
+          const data = JSON.parse(body);
+
+          const formData = data.formData;
+          const plantID = data.plantID;
+          const {hashtags, dateOfCollection, commonName, scientificName, family, genus, species, place, color} = formData;
+
+
+          pool.getConnection((err, connection) => {
+              if (err) {
+                  console.error('Error getting connection from pool:', err);
+                  res.writeHead(500, { 'Content-Type': 'text/plain' });
+                  res.end('Internal Server Error');
+                  return;
+              }
+          
+              connection.query(`UPDATE plants
+              SET hashtags = ?, 
+                  collection_date = ?, 
+                  common_name = ?, 
+                  scientific_name = ?, 
+                  family = ?, 
+                  genus = ?, 
+                  species = ?, 
+                  place_of_collection = ?, 
+                  color = ?
+              WHERE plant_id = ?`, 
+                          [hashtags, dateOfCollection == '' ? null: dateOfCollection , commonName, scientificName, family, genus, species, place, color, plantID],
+                            (err, result) => {
+              if (err) {
+                  console.error('Error updating collection:', err);
+                  res.writeHead(500, { 'Content-Type': 'text/plain' });
+                  res.end('Internal Server Error');
+                  connection.release();
+                  return;
+              }
+      
+              console.log(`Plant with ID ${plantID} updated successfully`);
+              res.writeHead(200, { 'Content-Type': 'text/plain' });
+              res.end('Collection updated successfully');
+              
+              connection.release();
+          });
+          });
+          
+      });
+}
 
 module.exports = {
-    getMostPopularPlantId
+    getMostPopularPlantId,
+    getAllSharedCollections,
+    updatePlantData
 };
