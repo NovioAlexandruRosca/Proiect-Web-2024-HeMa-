@@ -66,6 +66,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     document.getElementById("Email").value = "";
                     document.getElementById("Error_Message").innerText = "Email already exists!";
+                }else if(response.status === 409){
+                    document.getElementById("Error_Message").innerText = "Banned Email!";
                 }
                 else{
                     document.getElementById("Error_Message").innerText = "Activate Your Account From Your Email";

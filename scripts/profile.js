@@ -427,8 +427,8 @@ async function fetchClientCollections(clientId) {
                 }
                 
                 const newCaption = document.createElement("figcaption");
-                newCaption.textContent = item.name || ''; 
-                
+                newCaption.textContent = truncateString(item.name) || ''; 
+
                 newFigure.appendChild(newImage);
                 newFigure.appendChild(newCaption);
                 
@@ -625,6 +625,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   fetchClientFollowing(clientId);
   fetchBadges(clientId);
 });
+
+const truncateString = (str, maxLength = 15) => {
+  if (str.length > maxLength) {
+      return str.substring(0, maxLength - 2) + "..";
+  }
+  return str;
+};
 
 async function fetchAvatar(clientId) {
   try {

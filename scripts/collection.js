@@ -4,152 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('importPlantButton').addEventListener('click', importData);
 });
 
-// document.getElementById('importPlantButton').addEventListener('click', importData);
-
-// function importData(){
-//     const inputFile = document.createElement('input');
-//     inputFile.type = 'file';
-//     inputFile.accept = '.csv';
-
-//     inputFile.addEventListener('change', function(event) {
-//         const file = event.target.files[0];
-//         if (file) {
-//             const reader = new FileReader();
-//             reader.onload = function(e) {
-//                 const csvData = e.target.result;
-//                 sendDataToServer(csvData);
-//             };
-//             reader.readAsText(file);
-//         }
-//     });
-
-//     inputFile.click();
-// }
-
-// function sendDataToServer(csvData) {
-//     fetch('/api/importPlants', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ csvData: csvData })
-//     })
-//     .then(response => {
-//         if (response.ok) {
-//             return response.json();
-//         } else {
-//             throw new Error('Failed to import plant data');
-//         }
-//     })
-//     .then(data => {
-//         console.log('Plant data imported successfully:', data);
-//     })
-//     .catch(error => {
-//         console.error('Error importing plant data:', error);
-//     });
-// }
-
-
-// async function importData() {
-//     const fileInput = document.getElementById('importFile');
-//     const file = fileInput.files[0];
-
-//     if (!file) {
-//         alert('Please select a CSV file to import.');
-//         return;
-//     }
-
-//     const reader = new FileReader();
-//     reader.onload = async function(event) {
-//         const csvData = event.target.result;
-//         const parsedData = parseCSV(csvData);
-
-//         for (const plant of parsedData) {
-//             await fetch('/api/addPlant', {
-//                 method: 'POST',
-//                 headers: {
-//                     'Content-Type': 'application/json'
-//                 },
-//                 body: JSON.stringify(plant)
-//             })
-//             .then(response => {
-//                 if (!response.ok) {
-//                     throw new Error('Failed to add plant');
-//                 }
-//                 return response.json();
-//             })
-//             .then(data => {
-//                 console.log('Plant added successfully:', data);
-//             })
-//             .catch(error => {
-//                 console.error('Error adding plant:', error);
-//             });
-//         }
-//     };
-
-//     reader.readAsText(file);
-// }
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     checkCollections();
-//     document.getElementById('addPlantButton').addEventListener('click', addFigure);
-//     document.getElementById('importPlantButton').addEventListener('click', importData);
-// });
-
-// function importData() {
-//     const inputFile = document.createElement('input');
-//     inputFile.type = 'file';
-//     inputFile.accept = '.csv';
-
-//     inputFile.addEventListener('change', function(event) {
-//         const file = event.target.files[0];
-//         if (file) {
-//             const formData = new FormData();
-//             formData.append('plantsFile', file);
-
-//             fetch('/api/importPlants', {
-//                 method: 'POST',
-//                 body: formData
-//             })
-//             .then(response => {
-//                 if (response.ok) {
-//                     return response.json();
-//                 } else {
-//                     throw new Error('Failed to import plant data');
-//                 }
-//             })
-//             .then(data => {
-//                 console.log('Plant data imported successfully:', data);
-//             })
-//             .catch(error => {
-//                 console.error('Error importing plant data:', error);
-//             });
-//         }
-//     });
-
-//     inputFile.click();
-// }
-
-// function sendDataToServer(formData) {
-//     fetch('/api/importPlants', {
-//         method: 'POST',
-//         body: formData
-//     })
-//     .then(response => {
-//         if (response.ok) {
-//             return response.json();
-//         } else {
-//             throw new Error('Failed to import plant data');
-//         }
-//     })
-//     .then(data => {
-//         console.log('Plant data imported successfully:', data);
-//     })
-//     .catch(error => {
-//         console.error('Error importing plant data:', error);
-//     });
-// }
-
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('importPlantButton').addEventListener('click', importData);
 });
@@ -159,15 +13,19 @@ function importData() {
     inputFile.type = 'file';
     inputFile.accept = '.csv';
 
+    const collection__id = sessionStorage.getItem('data-collection-id');
+    console.log(collection__id);
+
     inputFile.addEventListener('change', function(event) {
         const file = event.target.files[0];
         if (file) {
             const formData = new FormData();
+            formData.append('collection_id', collection__id);
             formData.append('plantsFile', file);
 
             fetch('/api/importPlants', {
                 method: 'POST',
-                body: formData
+                body: formData 
             })
             .then(response => {
                 if (response.ok) {
