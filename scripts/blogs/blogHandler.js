@@ -34,8 +34,6 @@ function addSection(postId, title, description) {
     });
 }
 
-
-
 async function deletePost(req, res){
     let body = '';
         req.on('data', chunk => {
