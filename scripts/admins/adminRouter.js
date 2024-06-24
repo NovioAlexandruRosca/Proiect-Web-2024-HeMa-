@@ -1,4 +1,4 @@
-const { generatePlantsCsv, generatePlantsPdf, generateClientsPdf, generateClientsCsv, rejectReport, banUser, listOfClients, deleteClient, getReports } = require('./adminHandler');
+const { generateClientsJson, generatePlantsJson, generatePlantsCsv, generatePlantsPdf, generateClientsPdf, generateClientsCsv, rejectReport, banUser, listOfClients, deleteClient, getReports } = require('./adminHandler');
 const checkSessionAndExecute = require('../verifySessionData/verifySessionData');
 const url  = require('url');
 
@@ -32,12 +32,18 @@ function adminRouter(req, res, sessionData) {
         }else if (pathname === '/admin/api/reports/clients/csv') {      
             branchExecuted = true;
             checkSessionAndExecute(sessionData, req, res, generateClientsCsv);
+        }else if(pathname === '/admin/api/reports/clients/json'){
+            branchExecuted = true;
+            checkSessionAndExecute(sessionData, req, res, generateClientsJson);
         }else if(pathname === '/admin/api/reports/plants/pdf'){
             branchExecuted = true;
             checkSessionAndExecute(sessionData, req, res, generatePlantsPdf);
         }else if(pathname === '/admin/api/reports/plants/csv'){
             branchExecuted = true;
             checkSessionAndExecute(sessionData, req, res, generatePlantsCsv);
+        }else if(pathname === '/admin/api/reports/plants/json'){
+            branchExecuted = true;
+            checkSessionAndExecute(sessionData, req, res, generatePlantsJson);
         }
     }
 

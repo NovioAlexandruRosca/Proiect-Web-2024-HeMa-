@@ -20,7 +20,7 @@ document.getElementById('error').addEventListener('click', function (event) {
 });
 
 document.getElementById('documentation').addEventListener('click', function (event) {
-    window.location.href = '../Documentatie/Documentatie.html';
+    window.location.href = './Documentatie.html';
 });
 
 document.getElementById('adminLogout').addEventListener("click", function(event){
