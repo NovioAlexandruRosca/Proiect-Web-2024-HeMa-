@@ -63,8 +63,23 @@ async function sendContactMail(req, res){
         });
 }
 
+async function getOpenApi(req, res){
+    const filePath = path.join(__dirname, './openapi.yaml');
+    console.log(filePath);
+    fs.readFile(filePath, 'utf-8', (err, content) => {
+        if (err) {
+            res.writeHead(500);
+            res.end('Server Error');
+        } else {
+            res.writeHead(200, { 'Content-Type': 'text/yaml' });
+            res.end(content);
+        }
+    });
+}
+
 module.exports = {
     generateRss,
     returnError404,
-    sendContactMail
+    sendContactMail,
+    getOpenApi
 };

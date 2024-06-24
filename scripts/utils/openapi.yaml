@@ -1,0 +1,907 @@
+openapi: 3.0.3
+info:
+  title: HeMa - OpenAPI 3.0
+  description: >-
+    Welcome to the HeMa API! This API enables users to add and showcase their
+    plant collections, write and share informative blogs, and connect with
+    fellow nature enthusiasts. Our mission is to create a vibrant and engaging
+    community where everyone can share their passion for plants and nature.
+
+
+    You can learn more about HeMa and contribute to the improvement of our API.
+    By providing feedback or making changes to the API definition or the code,
+    you help us enhance the API and introduce new features over time.
+
+
+    Dive in and start exploring the world of HeMa today!
+
+
+    If you're looking for more resources or want to contribute, check out the
+    following links:
+
+    - [HeMa
+    Repository](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-)
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: hemabusiness@gmail.com
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: localhost:5500/dev/v1
+tags:
+  - name: comment
+    description: Operations about comments
+  - name: plant
+    description: Operations about plants
+  - name: badge
+    description: Operations about badges
+  - name: collection
+    description: Operations about collections
+  - name: follower
+    description: Operations about followers
+paths:
+  /dev/v1/getComments:
+    get:
+      summary: Retrieve comments
+      operationId: getComments
+      tags:
+        - comment
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+        '400':
+          description: Missing userId in query parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing userId in query parameters
+        '401':
+          description: 
+            Unauthorized Bearer token missing or expired
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 
+                      Unauthorized: Bearer token missing or expired
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 
+                      Unauthorized: Too Many Requests
+      security:
+        - BearerAuth: []
+  /dev/v1/getAllPlants:
+    get:
+      summary: Retrieve all plants for the authenticated owner
+      operationId: getAllPlants
+      tags:
+        - plant
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Plant'
+        '400':
+          description: Missing ownerId in query parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing ownerId in query parameters
+        '401':
+          description: 
+            Unauthorized Bearer token missing or expired
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 
+                      Unauthorized: Bearer token missing or expired
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 
+                      Unauthorized: Too Many Requests
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal Server Error
+      security:
+        - BearerAuth: []
+  /dev/v1/getBadges:
+    get:
+      summary: Retrieve badges for the authenticated client
+      operationId: getBadges
+      tags:
+        - badge
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Badge'
+        '400':
+          description: Missing clientId in query parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing clientId in query parameters
+        '401':
+          description: 
+            Unauthorized Bearer token missing or expired
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 
+                      Unauthorized: Bearer token missing or expired
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 
+                      Unauthorized: Too Many Requests
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal Server Error
+      security:
+        - BearerAuth: []
+  /dev/v1/getFriends:
+    get:
+      summary: Retrieve friends for the authenticated user
+      operationId: getFriends
+      tags:
+        - follower
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Follower'
+        '400':
+          description: Missing followedId in query parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing followedId in query parameters
+        '401':
+          description: 
+            Unauthorized Bearer token missing or expired
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 
+                      Unauthorized: Bearer token missing or expired
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 
+                      Unauthorized: Too Many Requests
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal Server Error
+      security:
+        - BearerAuth: []
+  /dev/v1/getCollections:
+    get:
+      summary: Retrieve collections owned by the authenticated client
+      operationId: getCollections
+      tags:
+        - collection
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlantCollection'
+        '400':
+          description: Missing clientId in query parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing clientId in query parameters
+        '401':
+          description: 
+            Unauthorized Bearer token missing or expired
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 
+                      Unauthorized: Bearer token missing or expired
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 
+                      Unauthorized: Too Many Requests
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal Server Error
+      security:
+        - BearerAuth: []
+  /dev/v1/getPlantCollection:
+    get:
+      summary: Retrieve details of a specific plant collection
+      operationId: getPlantCollection
+      tags:
+        - collection
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+        - in: query
+          name: collectionId
+          required: true
+          schema:
+            type: integer
+            example: 18
+            description: ID of the plant collection to retrieve
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlantCollection'
+        '400':
+          description: Missing collectionId in query parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing collectionId in query parameters
+        '401':
+          description: 
+            Unauthorized Bearer token missing or expired
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 
+                      Unauthorized: Bearer token missing or expired
+        '404':
+          description: Plant collection not found or unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Plant collection not found or unauthorized
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 
+                      Unauthorized: Too Many Requests
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal Server Error
+      security:
+        - BearerAuth: []
+  /dev/v1/getPlant:
+    get:
+      summary: Retrieve details of a specific plant
+      operationId: getPlant
+      tags:
+        - plant
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+        - in: query
+          name: plantId
+          required: true
+          schema:
+            type: integer
+            example: 9
+            description: ID of the plant to retrieve
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plant'
+        '400':
+          description: Missing plantId in query parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing plantId in query parameters
+        '401':
+          description: 
+            Unauthorized Bearer token missing or expired
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 
+                      Unauthorized: Bearer token missing or expired
+        '404':
+          description: Plant not found or unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Plant not found or unauthorized
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 
+                      Unauthorized: Too Many Requests
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal Server Error
+      security:
+        - BearerAuth: []
+  /dev/v1/addPlant:
+    post:
+      summary: Add a new plant to a specified collection
+      operationId: addPlant
+      tags:
+        - plant
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+        - in: query
+          name: collection_id
+          required: true
+          schema:
+            type: integer
+            example: 15
+            description: ID of the collection where the plant belongs
+        - in: query
+          name: collection_date
+          required: false
+          schema:
+            type: string
+            format: date
+            example: "2024-06-25"
+            description: Date when the plant was added to the collection
+        - in: query
+          name: hashtags
+          required: false
+          schema:
+            type: string
+            example: "#Yay"
+            description: Hashtags associated with the plant
+        - in: query
+          name: common_name
+          required: true
+          schema:
+            type: string
+            example: "Rose"
+            description: Common name of the plant
+        - in: query
+          name: scientific_name
+          required: true
+          schema:
+            type: string
+            example: "Rosa"
+            description: Scientific name of the plant
+        - in: query
+          name: family
+          required: true
+          schema:
+            type: string
+            example: "Rosaceae"
+            description: Family of the plant
+        - in: query
+          name: genus
+          required: true
+          schema:
+            type: string
+            example: "Rosa"
+            description: Genus of the plant
+        - in: query
+          name: species
+          required: true
+          schema:
+            type: string
+            example: "Rosa chinensis"
+            description: Species of the plant
+        - in: query
+          name: place_of_collection
+          required: true
+          schema:
+            type: string
+            example: "Bucuresti"
+            description: Place where the plant was collected
+      responses:
+        '200':
+          description: Plant added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Plant added successfully
+                  plantId:
+                    type: integer
+                    example: 42
+                    description: ID of the newly added plant
+        '400':
+          description: Missing required fields in request body
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing required fields in request body
+        '401':
+          description: 
+            Unauthorized Bearer token missing or expired
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 
+                      Unauthorized Bearer token missing or expired
+        '404':
+          description: Collection not found or unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Collection not found or unauthorized
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal Server Error
+      security:
+        - BearerAuth: []
+  /dev/v1/deletePlant:
+    delete:
+      summary: Delete a plant by plantId
+      operationId: deletePlant
+      tags:
+        - plant
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+        - in: query
+          name: plantId
+          required: true
+          schema:
+            type: integer
+            example: 37
+            description: ID of the plant to delete
+      responses:
+        '200':
+          description: Plant deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Plant deleted successfully
+        '400':
+          description: Missing plantId or ownerId in request body
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing plantId or ownerId in request body
+        '401':
+          description: 
+            Unauthorized Bearer token missing or expired
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 
+                      Unauthorized: Bearer token missing or expired
+        '404':
+          description: Plant not found or unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Plant not found or unauthorized
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal Server Error
+      security:
+        - BearerAuth: []
+components:
+  schemas:
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 27
+        post_id:
+          type: integer
+          format: int64
+          example: 18
+        user_id:
+          type: integer
+          format: int64
+          example: 10
+        user_name:
+          type: string
+          example: Alexandru-David Rosca
+        comment_text:
+          type: string
+          example: Hello there
+        posted_date:
+          type: string
+          format: date-time
+          example: '2024-05-02T16:28:14.000Z'
+      xml:
+        name: comment
+    Plant:
+      type: object
+      properties:
+        plant_id:
+          type: integer
+          format: int64
+          example: 1
+        owner_id:
+          type: integer
+          format: int64
+          example: 101
+        collection_id:
+          type: integer
+          format: int64
+          example: 202
+        collection_date:
+          type: string
+          format: date
+          example: '2023-05-15'
+        hashtags:
+          type: string
+          example: '#garden #flowers'
+        common_name:
+          type: string
+          example: Rose
+        scientific_name:
+          type: string
+          example: Rosa
+        family:
+          type: string
+          example: Rosaceae
+        genus:
+          type: string
+          example: Rosa
+        species:
+          type: string
+          example: Rosa gallica
+        place_of_collection:
+          type: string
+          example: Home garden
+        color:
+          type: string
+          example: Red
+        number_of_visits:
+          type: integer
+          example: 15
+        picture:
+          type: string
+          format: binary
+          example: base64-encoded-image
+        isFavorite:
+          type: boolean
+          example: true
+      xml:
+        name: plant
+    Badge:
+      type: object
+      properties:
+        client_id:
+          type: integer
+          example: 1
+        badge1:
+          type: string
+          example: Gold Badge
+        badge2:
+          type: string
+          example: Silver Badge
+        badge3:
+          type: string
+          example: Bronze Badge
+        badge4:
+          type: string
+          example: Platinum Badge
+        badge5:
+          type: string
+          example: Diamond Badge
+      xml:
+        name: badge
+    Follower:
+      type: object
+      properties:
+        follower_id:
+          type: integer
+          example: 1
+        followed_id:
+          type: integer
+          example: 2
+        follow_time:
+          type: string
+          format: date-time
+          example: '2024-06-23T14:29:38.000Z'
+      xml:
+        name: follower
+    PlantCollection:
+      type: object
+      properties:
+        collection_id:
+          type: integer
+          format: int64
+          example: 1
+        client_id:
+          type: integer
+          format: int64
+          example: 12345
+        name:
+          type: string
+          example: My Plant Collection
+        description:
+          type: string
+          example: A collection of various plants from my garden
+        is_shared:
+          type: boolean
+          example: true
+        creation_time:
+          type: string
+          format: date-time
+          example: '2024-06-23T14:29:38.000Z'
+        modification_time:
+          type: string
+          format: date-time
+          example: '2024-06-24T09:12:45.000Z'
+        likes:
+          type: integer
+          example: 10
+        dislikes:
+          type: integer
+          example: 2
+      xml:
+        name: plantCollection
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
