@@ -2,63 +2,7 @@ const pool = require('../database')
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const sendResetPasswordLink = require('../sendResetPasswordLink');
-
-function generateToken(length) {
-    return crypto.randomBytes(Math.ceil(length / 2))
-        .toString('hex') 
-        .slice(0, length);
-}
-
-const generateSessionId = () => {
-    return Math.random().toString(36).substring(2, 15);
-};
-
-const destroySession = (clientId) => {
-    const sql = 'DELETE FROM sessions WHERE client_id = ?';
-    const values = [clientId];
-  
-    pool.getConnection((err, connection) => {
-      if (err) {
-        console.error('Error getting connection from pool:', err);
-        return;
-      }
-  
-      connection.query(sql, values, (error, results) => {
-        connection.release();
-  
-        if (error) {
-          console.error('Error deleting session:', error);
-        } else {
-          console.log('Session deleted for clientId:', clientId);
-        }
-      });
-    });
-  };
-
-const setSessionData = (clientId, isAdmin) => {
-    const sessionId = generateSessionId();
-    console.log( clientId, isAdmin, sessionId);
-    const sql = 'INSERT INTO sessions (session_id, client_id, isAdmin) VALUES (?, ?, ?)';
-    const values = [sessionId, clientId, isAdmin];
-
-    pool.getConnection(async (err, connection) => {
-        if (err) {
-        console.error('Error getting connection from pool:', err);
-        return;
-        }
-
-    connection.query(sql, values, (error, results) => {
-        connection.release(); 
-
-        if (error) {
-            console.error('Error updating session data:', error);
-        } else {
-            console.log('Session data updated for sessionId:', sessionId);
-        }
-        });
-    });
-    return sessionId;
-};
+const {generateToken, destroySession, generateSessionId, setSessionData} = require('../utils/utils');
 
 
 async function updatePassword(req, res){

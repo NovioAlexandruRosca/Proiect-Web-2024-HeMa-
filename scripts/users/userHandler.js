@@ -1,34 +1,5 @@
 const pool = require('../database')
-
-const generateSessionId = () => {
-    return Math.random().toString(36).substring(2, 15);
-};
-
-const setSessionData = (clientId, isAdmin) => {
-    const sessionId = generateSessionId();
-    console.log( clientId, isAdmin, sessionId);
-    const sql = 'INSERT INTO sessions (session_id, client_id, isAdmin) VALUES (?, ?, ?)';
-    const values = [sessionId, clientId, isAdmin];
-  
-    pool.getConnection(async (err, connection) => {
-      if (err) {
-        console.error('Error getting connection from pool:', err);
-        return;
-      }
-    
-    connection.query(sql, values, (error, results) => {
-        connection.release(); 
-  
-        if (error) {
-          console.error('Error updating session data:', error);
-        } else {
-          console.log('Session data updated for sessionId:', sessionId);
-        }
-      });
-    });
-    return sessionId;
-  };
-  
+const {setSessionData} = require('../utils/utils')
 
 
 async function getUsername(req, res, sessionData){
