@@ -1,4 +1,4 @@
-const { sendContactMail, returnError404, generateRss } = require('./utilHandler');
+const { getOpenApi, sendContactMail, returnError404, generateRss } = require('./utilHandler');
 const checkSessionAndExecute = require('../verifySessionData/verifySessionData');
 const url  = require('url');
 
@@ -23,6 +23,9 @@ function utilRouter(req, res, sessionData) {
         if (pathname === '/rss') {      
             branchExecuted = true;
             generateRss(req, res);
+        }else if (pathname === '/api-docs') {      
+            branchExecuted = true;
+            getOpenApi(req, res);
         }
     }
 

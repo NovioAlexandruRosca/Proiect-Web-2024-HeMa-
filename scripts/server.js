@@ -21,7 +21,6 @@ const server = http.createServer(async (req, res) => {
     const cookieValue = `sessionId=${sessionId}; HttpOnly; Max-Age=${24 * 60 * 60}`;
     res.setHeader('Set-Cookie', cookieValue);
 
-
     if(!router(req, res, sessionData)){
         headerNotModified = false;
     }

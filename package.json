@@ -9,7 +9,9 @@
     "mysql2": "^3.10.1",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.13",
-    "pdfkit": "^0.15.0"
+    "pdfkit": "^0.15.0",
+    "swagger-ui-dist": "^5.17.14",
+    "yamljs": "^0.3.0"
   },
   "name": "proiect-web-2024-hema-",
   "description": "March 25, 2024 - Present",
