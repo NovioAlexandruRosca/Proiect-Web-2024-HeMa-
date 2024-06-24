@@ -99,9 +99,7 @@ const server = http.createServer(async (req, res) => {
                 });
             });
         }else{  // HERE WAS THE BEGINING OF THE NORMAL PART
-            if(req.url == '../Documentatie/Documentatie.html'){
-                filePath = 'Documentatie/Documentatie.html';
-            }else if(getContentType(req.url) == 'text/html'){
+            if(getContentType(req.url) == 'text/html'){
                 filePath = './html' + req.url;
             }else if(req.url == '/'){
                 filePath = './html/landingPage.html';
@@ -115,7 +113,7 @@ const server = http.createServer(async (req, res) => {
 
             if(sessionData){
             if(getContentType(req.url) == 'text/html')
-                    if(sessionData.isAdmin == 'True' && (filePath != './html/admin.html' && filePath != './html/generateReports.html' && filePath != './html/listOfClients.html' && filePath != './html/landingPage.html' && filePath != './html/login.html' && filePath != './html/register.html' && filePath != './html/reportManager.html'))
+                    if(sessionData.isAdmin == 'True' && (filePath != './html/admin.html' && filePath != './html/generateReports.html' && filePath != './html/listOfClients.html' && filePath != './html/landingPage.html' && filePath != './html/login.html' && filePath != './html/register.html' && filePath != './html/reportManager.html' && filePath != './html/Documentatie.html'))
                         filePath = './html/error404.html';
                     else if(sessionData.isAdmin == 'False' && (filePath == './html/admin.html' || filePath == './html/generateReports.html' || filePath == './html/listOfClients.html'))
                         filePath = './html/error404.html';

@@ -1,6 +1,7 @@
 const pool = require('../database')
 const PDFDocument = require('pdfkit');  
 const { createObjectCsvStringifier } = require('csv-writer');  
+const {generateClientsJSONReport, generatePlantsJSONReport} = require('../utils/utils');
 
 async function listOfClients(req, res){
     pool.getConnection((err, connection) => {
@@ -341,6 +342,45 @@ async function generateClientsCsv(req, res){
   });
 }
 
+async function generateClientsJson(req, res){
+    const query = `
+    SELECT c.id, c.email, c.name, cd.occupation, cd.city, cd.street, cd.house_number,
+            cd.facebook_link, cd.github_link, cd.instagram_link, cd.twitter_link, b.badge1, b.badge2, b.badge3, b.badge4, b.badge5,
+            co.comment_text, co.posted_date
+    FROM clients c
+    LEFT JOIN clients_details cd ON c.id = cd.client_id
+    LEFT JOIN badges b ON c.id = b.client_id
+    LEFT JOIN comments co ON c.id = co.user_id
+  `;
+
+  pool.getConnection((err, connection) => {
+    if (err) {
+      console.error('Error getting connection from pool:', err);
+      res.writeHead(500, { 'Content-Type': 'text/plain' });
+      res.end('Internal Server Error');
+      return;
+    }
+
+    connection.query(query, (err, results) => {
+      connection.release();
+
+      if (err) {
+        console.error('Error executing query:', err);
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.end('Internal Server Error');
+        return;
+      }
+
+      res.writeHead(200, {
+        'Content-Type': 'application/json',
+        'Content-Disposition': 'attachment; filename="clients_report.json"',
+      });
+
+      res.end(JSON.stringify(results, null, 2));
+    });
+  });
+}
+
 async function generatePlantsPdf(req, res){
     const query = `
         SELECT plant_id, owner_id, collection_id, collection_date, hashtags, common_name,
@@ -456,6 +496,41 @@ async function generatePlantsCsv(req, res){
     });
 }
 
+async function generatePlantsJson(req, res){
+    const query = `
+    SELECT plant_id, owner_id, collection_id, collection_date, hashtags, common_name,
+            scientific_name, family, genus, species, place_of_collection, color, number_of_visits
+    FROM plants
+  `;
+
+  pool.getConnection((err, connection) => {
+    if (err) {
+      console.error('Error getting connection from pool:', err);
+      res.writeHead(500, { 'Content-Type': 'text/plain' });
+      res.end('Internal Server Error');
+      return;
+    }
+
+    connection.query(query, (err, results) => {
+      connection.release();
+
+      if (err) {
+        console.error('Error executing query:', err);
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.end('Internal Server Error');
+        return;
+      }
+
+      res.writeHead(200, {
+        'Content-Type': 'application/json',
+        'Content-Disposition': 'attachment; filename="plants_report.json"',
+      });
+
+      res.end(JSON.stringify(results, null, 2));
+    });
+  });
+}
+
 module.exports = {
     listOfClients,
     deleteClient,
@@ -465,5 +540,7 @@ module.exports = {
     generateClientsPdf,
     generateClientsCsv,
     generatePlantsPdf,
-    generatePlantsCsv
+    generatePlantsCsv,
+    generateClientsJson,
+    generatePlantsJson
 };
