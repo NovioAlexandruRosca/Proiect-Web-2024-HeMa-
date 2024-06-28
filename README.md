@@ -32,8 +32,7 @@ Various statistics will be generated and made available in open formats, includi
 3. Set up MySQL database and configure database connection
 5. Start the application using npm start
 
-## Video Presentation
-https://youtu.be/kZe1CNKseC0
+## [Video Presentation](https://youtu.be/kZe1CNKseC0)
 
 ## <a name="dependencies"></a>Dependencies  
 - **bcrypt** (Version 5.1.1)
