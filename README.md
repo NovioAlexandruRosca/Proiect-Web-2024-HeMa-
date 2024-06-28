@@ -1,4 +1,4 @@
-![image](https://github.com/NovioAlexandruRosca/Proiect-Web-2024-HeMa-/assets/113398639/abcafeb3-6ff9-4c79-b2d2-2450651fa786)# Project Title: <img src="images/website_Icon/plant.png" alt="Logo" width="35" style="margin-top: 10px;">HeMa (Herbal Web Manager)
+# Project Title: <img src="images/website_Icon/plant.png" alt="Logo" width="35" style="margin-top: 10px;">HeMa (Herbal Web Manager)
 
 ## Creation Interval.
 March 25, 2024 - June 24, 2024
